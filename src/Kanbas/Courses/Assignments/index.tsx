@@ -30,10 +30,6 @@ export default function Assignments(){
                 </li>
                 <p style={{margin: '0'}}>Multiple Modules | <strong>Not available until</strong> May 20 at 12:00am|<br/> 
                 <strong>Due</strong> May 27 at 11:59pm | 100 pts</p>
-      
-      
-      
-
             </ul>
             </div>
             

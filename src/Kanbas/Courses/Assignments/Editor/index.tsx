@@ -31,7 +31,7 @@ export default function AssignmentEditor() {
               <label htmlFor="wd-group">Assignment group</label>
             </td>
             <td>
-            <select id="wd-select-one">
+            <select id="wd-group">
           <option selected value="assignments">ASSIGNMENTS</option>
         </select>
             </td>
@@ -42,7 +42,7 @@ export default function AssignmentEditor() {
               <label htmlFor="wd-display-grade-as">Display Grade As</label>
             </td>
             <td>
-            <select id="wd-select-one">
+            <select id="wd-display-grade-as">
           <option selected value="p">Percentage</option>
         </select>
             </td>
@@ -53,26 +53,26 @@ export default function AssignmentEditor() {
               <label htmlFor="wd-submission-type">Submission Type</label>
             </td>
             <td>
-            <select id="wd-select-one">
+            <select id="wd-submission-type">
           <option selected value="Online">Online</option>
         </select><br/>
             <br/>
             <label>Online Entry options</label>
             <br/>
             <input type="checkbox"
-                  name="check-entry-options" id="wd-chkbox-comedy"/>
+                  name="check-entry-options" id="wd-text-entry"/>
             <label htmlFor="wd-text-entry">Text entry</label><br/>
             <input type="checkbox"
-                  name="check-genre" id="wd-chkbox-drama"/>
+                  name="check-genre" id="wd-website-url"/>
             <label htmlFor="wd-website-url">Website URL</label><br/>
             <input type="checkbox"
-                  name="check-genre" id="wd-chkbox-scifi"/>
+                  name="check-genre" id="wd-media-recordings"/>
             <label htmlFor="wd-media-recordings">Media Recordings</label><br/>
             <input type="checkbox"
-                  name="check-genre" id="wd-chkbox-fantasy"/>
+                  name="check-genre" id="wd-student-annotation"/>
             <label htmlFor="wd-student-annotation">Student Annotations</label><br/>
             <input type="checkbox"
-                  name="check-genre" id="wd-chkbox-fantasy"/>
+                  name="check-genre" id="wd-file-upload"/>
             <label htmlFor="wd-file-upload">File Upload</label>
             </td>
           </tr>
@@ -82,21 +82,21 @@ export default function AssignmentEditor() {
               <label htmlFor="wd-points">Assign</label>
             </td>
             <td>
-                <label htmlFor="wd-points">Assign to </label><br/>
+                <label htmlFor="wd-assign-to">Assign to </label><br/>
                 <input id="wd-points" placeholder="Everyone" />
               <tr>
               <br/>
-              <label htmlFor="wd-points">Due</label><br/>
+              <label htmlFor="wd-due-date">Due</label><br/>
               <input type="date" value="2024-05-13"/>
               </tr>
               <br/>
               <tr>
               <td>
-              <label htmlFor="wd-points">Avaiable from</label><br/>
+              <label htmlFor="wd-available from">Avaiable from</label><br/>
               <input type="date" value="2024-05-13"/>
               </td>
               <td>
-              <label htmlFor="wd-points">Until</label><br/>
+              <label htmlFor="available until">Until</label><br/>
               <input type="date" value="2024-05-20"/>
               </td>
               </tr>
