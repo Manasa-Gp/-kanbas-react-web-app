@@ -63,41 +63,41 @@ export default function AssignmentEditor() {
                   name="check-entry-options" id="wd-text-entry"/>
             <label htmlFor="wd-text-entry">Text entry</label><br/>
             <input type="checkbox"
-                  name="check-genre" id="wd-website-url"/>
+                  name="check-website-url" id="wd-website-url"/>
             <label htmlFor="wd-website-url">Website URL</label><br/>
             <input type="checkbox"
-                  name="check-genre" id="wd-media-recordings"/>
+                  name="check-media-recordings" id="wd-media-recordings"/>
             <label htmlFor="wd-media-recordings">Media Recordings</label><br/>
             <input type="checkbox"
-                  name="check-genre" id="wd-student-annotation"/>
+                  name="check-student-annotation" id="wd-student-annotation"/>
             <label htmlFor="wd-student-annotation">Student Annotations</label><br/>
             <input type="checkbox"
-                  name="check-genre" id="wd-file-upload"/>
+                  name="check-file-upload" id="wd-file-upload"/>
             <label htmlFor="wd-file-upload">File Upload</label>
             </td>
           </tr>
           <br/>
           <tr>
             <td align="right" valign="top">
-              <label htmlFor="wd-points">Assign</label>
+              <label htmlFor="wd-assign">Assign</label>
             </td>
             <td>
                 <label htmlFor="wd-assign-to">Assign to </label><br/>
-                <input id="wd-points" placeholder="Everyone" />
+                <input id="wd-assign-to" placeholder="Everyone" />
               <tr>
               <br/>
               <label htmlFor="wd-due-date">Due</label><br/>
-              <input type="date" value="2024-05-13"/>
+              <input id = "wd-due-date" type="date" value="2024-05-13"/>
               </tr>
               <br/>
               <tr>
               <td>
               <label htmlFor="wd-available from">Avaiable from</label><br/>
-              <input type="date" value="2024-05-13"/>
+              <input id = "wd-available from" type="date" value="2024-05-13"/>
               </td>
               <td>
               <label htmlFor="available until">Until</label><br/>
-              <input type="date" value="2024-05-20"/>
+              <input id ="available until" type="date" value="2024-05-20"/>
               </td>
               </tr>
             </td>

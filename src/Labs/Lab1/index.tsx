@@ -162,20 +162,6 @@ export default function lab1() {
           </tfoot>
         </table>
       </div>
-      <div id="wd-images">
-        <h4>Image tag</h4>
-        Loading an image from the internet:
-        <br />
-        <img
-          id="wd-starship"
-          width="400px"
-          src="https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"
-        />
-        <br />
-        Loading a local image:
-        <br />
-        <img id="wd-teslabot" src="images/teslabot.jpg" height="200px" />
-      </div>
       <div id="wd-forms">
         <h4>Form Elements</h4>
         <form id="wd-text-fields">
@@ -200,7 +186,6 @@ export default function lab1() {
             value="Wonderland"
             title="The last name"
           />
-          {/* copy rest of form elements here  */}
         </form>
       </div>
       <h5>Text boxes</h5>
