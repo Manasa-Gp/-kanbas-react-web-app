@@ -1,0 +1,57 @@
+icon-assignment{
+    font-style: normal;
+    content: "";
+}
+
+.wd-assignment-link {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;  /* Specify the font family */
+    font-weight: bold;
+    font-size: 16px;
+    display: inline-block;
+    line-height: 1;
+    text-decoration: none;  /* Optional: Removes underline from link */
+    color: #2D3B45;  /* Optional: Inherits the color from its parent */
+}
+
+.wd-assignment-due {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   /* Specify the font family */
+    font-size: 12px;
+    display: inline-block;
+    line-height: 1;
+    text-decoration: none;  /* Optional: Removes underline from link */
+    color: #4C5860;  /* Optional: Inherits the color from its parent */
+
+}
+
+.row-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content-container {
+    display: flex;
+    align-items: center;
+}
+
+.rounded-rectangle-mini {
+    width: 100px;      
+    height: 30px;       
+    background-color: #dcddde;
+    border-radius: 15px; 
+    display: flex;      
+    justify-content: center;
+    align-items: center;
+    color: rgb(12, 12, 12);       
+    font-family: Arial, sans-serif; 
+    font-size: 14px; 
+    border-color: black;   
+}
+
+.square-button {
+
+ border-radius: 5px;
+}
+.grayed {
+   background-color: #b9bcbe;
+   }
