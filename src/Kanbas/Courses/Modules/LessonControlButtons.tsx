@@ -5,7 +5,6 @@ export default function LessonControlButtons() {
     <div className="float-end">
       <GreenCheckmark />
       <IoEllipsisVertical className="fs-4" />
-      Krish Naik 
 
     </div>
 );}
