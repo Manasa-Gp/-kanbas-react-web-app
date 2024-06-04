@@ -4,8 +4,6 @@ import { BsGripVertical } from "react-icons/bs";
 import AssignmentControlButton from "./AssignmentControlButton";
 import { MdAssignment } from "react-icons/md";
 import { IoMdArrowDropdown } from "react-icons/io";
-
-import "./styles.css";
 export default function Assignments() {
   return (
     <div>

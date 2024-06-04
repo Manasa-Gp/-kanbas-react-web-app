@@ -6,7 +6,6 @@ import Assignments from "./Assignments";
 import { FaAlignJustify } from "react-icons/fa"; // Had to add this 
 import AssignmentEditor from "./Assignments/Editor";
 import Home from "./Home";
-import "./styles.css"
 export default function Courses() {
   return (
     <div id="wd-courses">
@@ -16,7 +15,7 @@ export default function Courses() {
     <FaAlignJustify className="fs-3 mb-1" />
   </div>
   <div className="col">
-    <div className="font-style">Course 1234</div>
+    <div className="course-font-style">Course 1234</div>
   </div>
 </div>
 <hr />

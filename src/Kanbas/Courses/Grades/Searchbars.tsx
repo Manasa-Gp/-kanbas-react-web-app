@@ -1,4 +1,3 @@
-import "./styles.css";
 import { CiSearch } from "react-icons/ci";
 
 export default function Searchbars() {

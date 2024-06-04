@@ -15,7 +15,7 @@ return (
         <FaPlus className="position-relative me-2" />
         Group
       </button>
-<button id="wd-add-module-btn" className="btn btn-lg btn-danger float-end  square-button">
+<button id="wd-add-module-btn" className="btn btn-lg float-end red square-button">
         <FaPlus className="position-relative me-2"  />
         Assignment
       </button>

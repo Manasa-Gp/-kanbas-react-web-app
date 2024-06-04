@@ -1,17 +1,15 @@
-import "./styles.css";
-import { FaCalendarAlt } from "react-icons/fa";
 
 
 export default function AssignmentEditor() {
     return (
       <div id="wd-assignments-editor" className="container p-5">
         <div id = "wd-name" className="mb-2">
-        <label htmlFor="wd-name">Assignment Name</label><br /><br />
-        <input id="wd-name" className="form-control border border-gray" value="A1" />
+        <label htmlFor="wd-name" className="fw-bold">Assignment Name</label><br /><br />
+        <input id="wd-name" className="form-control border form-border-gray" value="A1" />
         </div>
 
 
-       <div className = "form-control mb-3">
+       <div className = "form-control border form-border-gray mb-3">
         The assignment is <span className="fs-7 text-danger"> available online.</span> <br/>
         Submit a link to the landing page of your Web application running on <br/>
         Netlify. <br/>
@@ -30,7 +28,7 @@ export default function AssignmentEditor() {
        <label htmlFor="wd-points">Points</label>
        </div>
        <div className="col-8 d-flex">
-       <input id="wd-points" className="form-control" value={100} />
+       <input id="wd-points" className="form-control border form-border-gray" value={100} />
        </div>
        </div>
        <div className="row justify-content-end mb-3">
@@ -38,7 +36,7 @@ export default function AssignmentEditor() {
            <label htmlFor="wd-group" >Assignment group</label>
        </div>
        <div className="col-8 d-flex">
-       <select id="wd-group" className="form-select">
+       <select id="wd-group" className="form-select border form-border-gray">
           <option selected value="assignments">ASSIGNMENTS</option>
          </select>
        </div>
@@ -48,7 +46,7 @@ export default function AssignmentEditor() {
           <label htmlFor="wd-display-grade-as">Display Grade As</label>
         </div>
         <div className="col-8">
-          <select id="wd-display-grade-as" className="form-select">
+          <select id="wd-display-grade-as" className="form-select border form-border-gray">
             <option selected value="p">Percentage</option>
           </select>
         </div>
@@ -62,31 +60,31 @@ export default function AssignmentEditor() {
           <label htmlFor="wd-submission-type">Submission Type</label>
         </div>
         <div className="col-8">
-        <div className="form-control">
-          <select id="wd-submission-type" className="form-select">
+        <div className="form-control border form-border-gray">
+          <select id="wd-submission-type" className="form-select border form-border-gray mb-2">
             <option selected value="Online">Online</option>
           </select>
           
           <label><strong>Online Entry options</strong></label>
           <div >
           <div  className="my-3">
-      <input type="checkbox" className=" form-check-input mr-3"  name="check-entry-options" id="wd-text-entry" />
+      <input type="checkbox" className=" form-check-input mr-3 border form-border-gray"  name="check-entry-options" id="wd-text-entry" />
       <label htmlFor="wd-text-entry">Text entry</label>
       </div >
       <div  className="my-3">
-      <input type="checkbox"className="form-check-input"  name="check-website-url" id="wd-website-url" />
+      <input type="checkbox"className="form-check-input border form-border-gray"  name="check-website-url" id="wd-website-url" />
       <label htmlFor="wd-website-url">Website URL</label>
       </div>
       <div  className="my-3">
-      <input type="checkbox" className="form-check-input"  name="check-media-recordings" id="wd-media-recordings" />
+      <input type="checkbox" className="form-check-input border form-border-gray"  name="check-media-recordings" id="wd-media-recordings" />
       <label htmlFor="wd-media-recordings">Media Recordings</label>
       </div>
       <div  className="my-3">
-      <input type="checkbox" className="form-check-input" name="check-student-annotation" id="wd-student-annotation" />
+      <input type="checkbox" className="form-check-input border form-border-gray" name="check-student-annotation" id="wd-student-annotation" />
       <label htmlFor="wd-student-annotation">Student Annotations</label>
       </div>
       <div  className="my-3">
-      <input type="checkbox" className="form-check-input" name="check-file-upload" id="wd-file-upload" />
+      <input type="checkbox" className="form-check-input border form-border-gray" name="check-file-upload" id="wd-file-upload" />
       <label htmlFor="wd-file-upload">File Upload</label>
       </div>
       </div>
@@ -99,19 +97,19 @@ export default function AssignmentEditor() {
     <label htmlFor="wd-assign">Assign</label>
         </div>
         <div className="col-8">
-        <div className="form-control">
+        <div className="form-control border form-border-gray">
         <label htmlFor="wd-assign-to"><strong>Assign to </strong></label><br/>
-        <input id="wd-assign-to" className="form-control my-2" placeholder="Everyone" />
+        <input id="wd-assign-to" className="form-control border form-border-gray my-2" placeholder="Everyone" />
         <label htmlFor="wd-assign-to"><strong>Due </strong></label><br/>
-        <input id = "wd-due-date" className="form-control my-2" type="date" value="2024-05-13"/>
+        <input id = "wd-due-date" className="form-control border form-border-gray my-2" type="date" value="2024-05-13"/>
         <div className="row my-4">
         <div className="col-auto">
         <label htmlFor="wd-available from"><strong>Avaiable from</strong></label>
-        <input id = "wd-available from"  className="form-control my-2" type="date" value="2024-05-13"/>
+        <input id = "wd-available from"  className="form-control border form-border-gray my-2" type="date" value="2024-05-13"/>
         </div>
         <div className="col-auto">
         <label htmlFor="available until"><strong> Until </strong> </label>
-        <input id ="available until" className="form-control my-2" type="date" value="2024-05-20"/>
+        <input id ="available until" className="form-control border form-border-gray my-2" type="date" value="2024-05-20"/>
   </div>
         </div>
         
@@ -122,11 +120,11 @@ export default function AssignmentEditor() {
      
        
         <hr style={{ textAlign: 'right' }} />
-        <div className="dropdown d-inline  float-end">
+        <div className="dropdown d-inline  float-end mb-3">
 <button id="wd-add-module-btn" className="btn btn-lg me-1 grayed square-button">
         Cancel
       </button>
-<button id="wd-add-module-btn" className="btn btn-lg btn-danger float-end  square-button">
+<button id="wd-add-module-btn" className="btn btn-lg float-end red square-button">
         Save
       </button>
 </div>
