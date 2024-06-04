@@ -14,7 +14,7 @@ export default function ModulesControls() {
           Collapse All
         </button>
         <button id="wd-view-progress" className="btn btn-lg btn-secondary me-1"
-          type="button" data-bs-toggle="dropdown">
+          type="button">
           View Progress 
         </button>
         <button id="wd-publish-all-btn" className="btn btn-lg btn-secondary dropdown-toggle"
