@@ -1,6 +1,5 @@
 import { IoEllipsisVertical } from "react-icons/io5";
 import { BsPlus } from "react-icons/bs";
-import GreenCheckmark from "./GreenCheckmark";
 import "./styles.css"
 export default function AssignmentControlButton() {
   return (
