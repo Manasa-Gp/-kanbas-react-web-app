@@ -7,7 +7,7 @@ export default function AssignmentEditor() {
       <div id="wd-assignments-editor" className="container p-5">
         <div id = "wd-name" className="mb-2">
         <label htmlFor="wd-name">Assignment Name</label><br /><br />
-        <input id="wd-name" className="form-control border border-dark" value="A1" />
+        <input id="wd-name" className="form-control border border-gray" value="A1" />
         </div>
 
 
