@@ -67,7 +67,7 @@ export default function Assignments() {
                           </span>
                           <span className="mx-1">|</span>
                           <strong>Not available until</strong> May 13 at 12:00am |
-                          <span className="mx-0 d-block">
+                          <span className="d-block mt-1">
                             <strong>Due</strong> May 20 at 11:59pm | 100 pts
                           </span>
                         </p>
@@ -97,7 +97,7 @@ export default function Assignments() {
                           </span>
                           <span className="mx-1">|</span>
                           <strong>Not available until</strong> May 20 at 12:00am |
-                          <span className="d-block">
+                          <span className="d-block mt-1">
                             <strong>Due</strong> May 27 at 11:59pm | 100 pts
                           </span>
                         </p>
