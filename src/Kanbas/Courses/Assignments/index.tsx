@@ -8,12 +8,12 @@ export default function Assignments() {
   return (
     <div>
       <div id="wd-modules" className="p-5">
-        < AssignmentControls/>
+        <AssignmentControls />
         <ul id="wd-modules" className="list-group rounded-0">
           <li className="wd-module list-group-item p-0 mb-5 fs- 5 border-gray">
             <div className="wd-title p-3 ps-2 bg-secondary">
               <BsGripVertical className="me-2 fs-3" />
-              <IoMdArrowDropdown className="me-1"/>
+              <IoMdArrowDropdown className="me-1" />
               ASSIGNMENTS
               <AssignmentControlButton />
             </div>
@@ -34,10 +34,12 @@ export default function Assignments() {
                         <p className="wd-assignment-due">
                           <span className="fs-7 text-danger">
                             Multiple Modules
-                          </span>{" "}
-                          |<strong>Not available until</strong> May 6 at 12:00am
-                          |<br />
-                          <strong>Due</strong> May 13 at 11:59pm | 100 pts
+                          </span>
+                          <span className="mx-1">|</span>
+                          <strong>Not available until</strong> May 6 at 12:00am |
+                          <span className="d-block mt-1">
+                            <strong>Due</strong> May 13 at 11:59pm | 100 pts
+                          </span>
                         </p>
                       </div>
                     </div>
@@ -62,10 +64,12 @@ export default function Assignments() {
                         <p className="wd-assignment-due">
                           <span className="fs-7 text-danger">
                             Multiple Modules
-                          </span>{" "}
-                          |<strong>Not available until</strong> May 13 at
-                          12:00am |<br />
-                          <strong>Due</strong> May 20 at 11:59pm | 100 pts
+                          </span>
+                          <span className="mx-1">|</span>
+                          <strong>Not available until</strong> May 13 at 12:00am |
+                          <span className="mx-0 d-block">
+                            <strong>Due</strong> May 20 at 11:59pm | 100 pts
+                          </span>
                         </p>
                       </div>
                     </div>
@@ -90,10 +94,12 @@ export default function Assignments() {
                         <p className="wd-assignment-due">
                           <span className="fs-7 text-danger">
                             Multiple Modules
-                          </span>{" "}
-                          |<strong>Not available until</strong> May 20 at
-                          12:00am |<br />
-                          <strong>Due</strong> May 27 at 11:59pm | 100 pts
+                          </span>
+                          <span className="mx-1">|</span>
+                          <strong>Not available until</strong> May 20 at 12:00am |
+                          <span className="d-block">
+                            <strong>Due</strong> May 27 at 11:59pm | 100 pts
+                          </span>
                         </p>
                       </div>
                     </div>

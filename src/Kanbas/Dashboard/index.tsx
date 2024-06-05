@@ -8,7 +8,7 @@ export default function Dashboard() {
       <div className = "ms-5">
       <h2 id="wd-dashboard-published"> Published Courses (12)</h2> <hr />
       <div id="wd-dashboard-courses" className="row row-cols-1 row-cols-md-4 g-4 mt-2" >
-          <div className="wd-dashboard-course col" style={{    width: "270px", marginRight: "35px",marginBottom: "35px"}}>
+          <div className="wd-dashboard-course col" style = {{ width: "300px"}}>
             <div className="card">
               <img src="/images/reactjs.jpg" />
               <div className="card-body">
@@ -37,7 +37,7 @@ export default function Dashboard() {
             </div>
            
           </div>
-          <div className="wd-dashboard-course col" style={{    width: "270px", marginRight: "35px",marginBottom: "35px"}}>
+          <div className="wd-dashboard-course col" style={{ width: "300px"}}>
             <div className="card">
               <img src="/images/reactjs.jpg" />
               <div className="card-body">
@@ -66,7 +66,7 @@ export default function Dashboard() {
             </div>
            
           </div>
-          <div className="wd-dashboard-course col" style={{    width: "270px", marginRight: "35px",marginBottom: "35px"}} >
+          <div className="wd-dashboard-course col" style={{ width: "300px"}} >
             <div className="card">
               <img src="/images/reactjs.jpg" />
               <div className="card-body">
@@ -95,7 +95,7 @@ export default function Dashboard() {
             </div>
            
           </div>
-          <div className="wd-dashboard-course col" style={{    width: "270px", marginRight: "35px",marginBottom: "35px"}}>
+          <div className="wd-dashboard-course col" style={{ width: "300px"}}>
             <div className="card">
               <img src="/images/reactjs.jpg" />
               <div className="card-body">
@@ -124,7 +124,7 @@ export default function Dashboard() {
             </div>
            
           </div>
-          <div className="wd-dashboard-course col" style={{    width: "270px", marginRight: "35px",marginBottom: "35px"}}>
+          <div className="wd-dashboard-course col" style={{width: "300px"}}>
             <div className="card">
               <img src="/images/reactjs.jpg" />
               <div className="card-body">
@@ -152,7 +152,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div className="wd-dashboard-course col" style={{    width: "270px", marginRight: "35px",marginBottom: "35px"}} >
+          <div className="wd-dashboard-course col" style={{ width: "300px"}} >
             <div className="card">
               <img src="/images/reactjs.jpg" />
               <div className="card-body">
@@ -181,7 +181,7 @@ export default function Dashboard() {
             </div>
            
           </div>
-          <div className="wd-dashboard-course col" style={{    width: "270px", marginRight: "35px",marginBottom: "35px"}} >
+          <div className="wd-dashboard-course col" style={{ width: "300px" }} >
             <div className="card">
               <img src="/images/reactjs.jpg" />
               <div className="card-body">
