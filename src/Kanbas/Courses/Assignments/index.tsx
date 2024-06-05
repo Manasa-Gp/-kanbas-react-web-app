@@ -58,7 +58,7 @@ export default function Assignments() {
                         className="wd-assignment-link"
                         href="#/Kanbas/Courses/1234/Assignments/123"
                       >
-                        A2-CSS+ BOOTSTRAP
+                        A2
                       </a>
                       <div>
                         <p className="wd-assignment-due">
@@ -88,7 +88,7 @@ export default function Assignments() {
                         className="wd-assignment-link"
                         href="#/Kanbas/Courses/1234/Assignments/123"
                       >
-                        A3-JAVASCRIPT + REACT
+                        A3
                       </a>
                       <div>
                         <p className="wd-assignment-due">
