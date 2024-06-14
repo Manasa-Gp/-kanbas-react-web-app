@@ -1,8 +1,18 @@
 import GradeFiles from "./GradeFiles";
 import Searchbars from "./Searchbars";
 import { BsFunnel } from "react-icons/bs";
-
+import { useParams } from "react-router";
+import { assignments,grades,enrollments,users } from "../../Database"
 export default function Grades() {
+  const {cid} = useParams();
+  const enrollment  = enrollments.filter(enroll => enroll.course === cid);
+  const students = enrollment.map(e => ({
+    ...users.find(u => u._id === e.user),
+    grade: grades.filter(g => g.student === e.user)
+  }));
+  const assignment = assignments.filter(assign => assign.course === cid);
+
+  
   return (
     <div className="p-5 mx-5">
       <div className="row mb-4">
@@ -31,105 +41,33 @@ export default function Grades() {
                Students Name
                </div>
               </th>
+              {assignment.map(assign =>(
+               
+        
               <td className="text-center">
-                A1 SETUP
+                {assign._id}
                 <br />
                 Out of 100
               </td>
-              <td className="text-center">
-                A2 HTML
-                <br />
-                Out of 200
-              </td>
-              <td className="text-center">
-                A3 CSS
-                <br />
-                Out of 100
-              </td>
-              <td className="text-center">
-                A4 BOOTSTRAP
-                <br />
-                Out of 150
-              </td>
+               ))}
             </tr>
+            
+        {students.map(s => (
             <tr>
+      
               <td className="text-danger">
               <div className="ms-2">
-                Jane Adams
+                {s.firstName} {s.lastName}
                 </div>
                 </td>
-              <td className="text-center">100%</td>
-              <td className="text-center">96.67%</td>
-              <td className="text-center">92.18%</td>
-              <td className="text-center">66.22%</td>
+                {assignment.map(assign => {
+                  const mappedGrade =  s.grade.find(g => g.assignment === assign._id);
+                  return <td key={`${assign._id}`} className="assignment-header">{mappedGrade ? `${mappedGrade.grade}` : 'N/A'}</td>;
+                })}
             </tr>
-            <tr>
-              <td className="text-danger">
-              <div className="ms-2">
-                Christina Allen
-                </div>
-                </td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">
-              <div className="ms-2">
-                Samreen Ansari
-                </div>
-                </td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">
-              <div className="ms-2">
-                Han Bao
-                </div>
-                </td>
-              <td className="text-center">100%</td>
-              <td className="text-center">96.67%</td>
-              <td className="text-center">88.03%</td>
-              <td className="text-center">98.99%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">
-              <div className="ms-2">
-                Mahi Sai Srinivas Bobbili
-                </div>
-                </td>
-              <td className="text-center">100%</td>
-              <td className="text-center">96.67%</td>
-              <td className="text-center">99.37%</td>
-              <td className="text-center">100%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">
-              <div className="ms-2">
-                Siran Cao
-                </div>
-                </td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-            </tr>
-            <tr>
-              <td className="text-danger">
-              <div className="ms-2">
-                Caroline Brown
-                </div>
-                </td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-              <td className="text-center">100%</td>
-            </tr>
-         
+               ))}
+                       
+
           </tbody>
         </table>
       </div>

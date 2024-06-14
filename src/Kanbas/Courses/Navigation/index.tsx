@@ -1,44 +1,25 @@
-import "./index.css";
+import { Link, useParams, useLocation } from 'react-router-dom';
+import "./index.css"
+
 export default function CoursesNavigation() {
-  return (
-    <div id="wd-courses-navigation" className="list-group fs-5 rounded-0">
-      
-      <a id="wd-course-home-link" href="#/Kanbas/Courses/1234/Home"
-         className="list-group-item active border border-0"> Home </a>
-      
-      <a id="wd-course-modules-link" href="#/Kanbas/Courses/1234/Modules"
-         className="list-group-item text-danger border border-0"> Modules </a>
-      <a id="wd-course-piazza-link" href="#/Kanbas/Courses/1234/Piazza"
-         className="list-group-item text-danger border border-0"> Piazza </a>
-      <a id="wd-course-zoom-link" href="#/Kanbas/Courses/1234/Zoom"
-         className="list-group-item text-danger border border-0"> Zoom </a>
-      <a id="wd-course-quizzes-link" href="#/Kanbas/Courses/1234/Assignments"
-         className="list-group-item text-danger border border-0"> Assignments </a>
-      <a id="wd-course-assignments-link" href="#/Kanbas/Courses/1234/Quizzes"
-         className="list-group-item text-danger border border-0"> Quizzes </a>
-      <a id="wd-course-grades-link" href="#/Kanbas/Courses/1234/Grades"
-         className="list-group-item text-danger border border-0"> Grades </a>
-    </div>
-    
-  );
-}
+    const { cid } = useParams();
+    const location = useLocation();
+    const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades"];
 
-
-
-
-/*export default function CoursesNavigation() {
     return (
-      <ul id="wd-courses-navigation">
-        <li><a id="wd-course-home-link"    href="#/Kanbas/Courses/1234/Home">Home</a></li>
-        <li><a id="wd-course-modules-link" href="#/Kanbas/Courses/1234/Modules">Modules
-          </a></li>
-        <li><a id="wd-course-piazza-link"  href="#/Kanbas/Courses/1234/Piazza">Piazza</a></li>
-        <li><a id="wd-course-zoom-link"    href="#/Kanbas/Courses/1234/Zoom">Zoom</a></li>
-        <li><a id="wd-course-quizzes-link" href="#/Kanbas/Courses/1234/Assignments">
-            Assignments</a></li>
-        <li><a id="wd-course-assignments-link" href="#/Kanbas/Courses/1234/Quizzes">Quizzes
-          </a></li>
-        <li><a id="wd-course-grades-link"  href="#/Kanbas/Courses/1234/Grades">Grades</a></li>
-      </ul>
-  );} */
-  
+        <div id="wd-courses-navigation" className="list-group fs-5 rounded-0">
+            {links.map((link, index) => {
+                const isActive = location.pathname.includes(`/Kanbas/Courses/${cid}/${link}`);
+                return (
+                    <Link
+                        key={index}
+                        to={`/Kanbas/Courses/${cid}/${link}`}
+                        className={`list-group-item ${isActive ? 'active' : 'text-danger'} border-0`}
+                    >
+                        {link}
+                    </Link>
+                );
+            })}
+        </div>
+    );
+}

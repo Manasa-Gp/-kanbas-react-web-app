@@ -1,11 +1,13 @@
-
-
+import { assignments } from "../../../Database";
+import { useParams,Link } from "react-router-dom";
 export default function AssignmentEditor() {
+  const { cid,aid } = useParams();
+  const assignment = assignments.find(assn => assn._id === aid);
     return (
       <div id="wd-assignments-editor" className="container p-5">
         <div id = "wd-name" className="mb-2">
         <label htmlFor="wd-name" className="fw-bold">Assignment Name</label><br /><br />
-        <input id="wd-name" className="form-control border form-border-gray" value="A1" />
+        <input id="wd-name" className="form-control border form-border-gray" value={`${assignment?._id}`} />
         </div>
 
 
@@ -101,15 +103,15 @@ export default function AssignmentEditor() {
         <label htmlFor="wd-assign-to"><strong>Assign to </strong></label><br/>
         <input id="wd-assign-to" className="form-control border form-border-gray my-2" placeholder="Everyone" />
         <label htmlFor="wd-assign-to"><strong>Due </strong></label><br/>
-        <input id = "wd-due-date" className="form-control border form-border-gray my-2" type="date" value="2024-05-13"/>
+        <input id = "wd-due-date" className="form-control border form-border-gray my-2" type="date" value={`${assignment?.due_date}`}/>
         <div className="row my-4">
         <div className="col-auto">
         <label htmlFor="wd-available from"><strong>Avaiable from</strong></label>
-        <input id = "wd-available from"  className="form-control border form-border-gray my-2" type="date" value="2024-05-13"/>
+        <input id = "wd-available from"  className="form-control border form-border-gray my-2" type="date" value={`${assignment?.available_from_date}`}/>
         </div>
-        <div className="col-auto">
+        <div className="col-auto ms-4">
         <label htmlFor="available until"><strong> Until </strong> </label>
-        <input id ="available until" className="form-control border form-border-gray my-2" type="date" value="2024-05-20"/>
+        <input id ="available until" className="form-control border form-border-gray my-2" type="date" value={`${assignment?.due_date}`}/>
   </div>
         </div>
         
@@ -121,12 +123,16 @@ export default function AssignmentEditor() {
        
         <hr style={{ textAlign: 'right' }} />
         <div className="dropdown d-inline  float-end mb-3">
+<Link to = {`/Kanbas/Courses/${cid}/Assignments`}>
 <button id="wd-add-module-btn" className="btn btn-lg me-1 grayed square-button">
         Cancel
       </button>
+</Link>
+<Link to = {`/Kanbas/Courses/${cid}/Assignments`}>
 <button id="wd-add-module-btn" className="btn btn-lg float-end red square-button">
         Save
       </button>
+      </Link>
 </div>
       </div>
   );}
