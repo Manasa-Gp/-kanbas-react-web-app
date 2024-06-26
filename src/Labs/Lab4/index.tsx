@@ -10,6 +10,7 @@ import ArrayStateVariable from "./ArrayStateVariable";
 import ChildStateComponent from "./ChildStateComponent";
 import ParentStateComponent from "./ParentStateComponent";
 import ReduxExamples from "./ReduxExamples";
+import TodoList from "./ReduxExamples/todos/TodoList";
 export default function Lab4() {
     
   function sayHello() {
@@ -32,6 +33,7 @@ export default function Lab4() {
                 throw new Error("Function not implemented.");
             } }/>
          <ReduxExamples/>
+         <TodoList/>
     </div>
       
     )
