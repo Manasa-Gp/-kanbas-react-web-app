@@ -1,28 +1,30 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useDispatch,useSelector } from "react-redux";
+import {addAssignment} from "./reducer";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { updateAssignment } from "../reducer";
-export default function AssignmentEditor() {
+export default function AssignEditor() {
       
-      const { cid,aid } = useParams();
+      const {cid} = useParams();
       const dispatch = useDispatch();
       const router = useNavigate();
 
-    const {assignments} = useSelector((state: any) => state.assignmentsReducer);
-    const curAssignment = assignments.find((item: any) => item._id === aid);
-
-    const [assignment, setAssignment] = useState({
-        ...curAssignment
+      const [assignment, setAssignment] = useState({
+        course: cid,
+        _id: '',
+        title: '',
+        description: '',
+        points: 100,
+        due_date: '',
+        available_from_date: ''
     });
-
     const handleSet = (e: any) => {
       const value = e.target.value;
       setAssignment({...assignment, [e.target.name]: value});
   };
 
-  const UpdateAssign = () => {
-    dispatch(updateAssignment(assignment));
+  const addAssign = () => {
+    dispatch(addAssignment(assignment));
     router(`/Kanbas/Courses/${cid}/Assignments/`);
     
   };
@@ -152,13 +154,11 @@ export default function AssignmentEditor() {
         Cancel
       </button>
 </Link>
-<button id="wd-add-module-btn" onClick={UpdateAssign} className="btn btn-lg float-end red square-button">
+<button id="wd-add-module-btn" onClick={addAssign} className="btn btn-lg float-end red square-button">
         Save
       </button>
       </div>
         </div>
       );
     }
-
-
     

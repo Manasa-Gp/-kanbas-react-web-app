@@ -1,6 +1,10 @@
 import { FaPlus } from "react-icons/fa6";
 import { CiSearch } from "react-icons/ci";
-export default function AssignmentControls() {
+import { Link } from "react-router-dom";
+export default function AssignmentControls(
+  {cid}: {cid: string}
+
+) {
 
 return (
 <div className = "text-nowrap row-layout mb-3">
@@ -15,11 +19,17 @@ return (
         <FaPlus className="position-relative me-2" />
         Group
       </button>
-<button id="wd-add-module-btn" className="btn btn-lg float-end red square-button">
+      <Link to = {`/Kanbas/Courses/${cid}/Assignments/plus`}>
+<button id="wd-add-module-btn" className="btn btn-lg float-end red square-button"
+data-bs-toggle="modal" data-bs-target="#wd-add-assignment-dialog" 
+>
         <FaPlus className="position-relative me-2"  />
         Assignment
       </button>
+      </Link>
+   
 </div>
+
 </div>
 
 );

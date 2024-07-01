@@ -4,24 +4,33 @@ import { BsGripVertical } from "react-icons/bs";
 import { MdAssignment } from "react-icons/md";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link,useParams } from "react-router-dom";
-import{assignments} from "../../Database";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAssignment } from "./reducer";
+import GreenCheckmark from "./GreenCheckmark";
+import { IoEllipsisVertical } from "react-icons/io5";
 export default function Assignments() {
-  const { cid } = useParams();
-  const filteredAssignments = assignments.filter(assign => assign.course === cid);
+  const {cid} = useParams();
+  const dispatch = useDispatch();
+  const {assignments} = useSelector((state: any) => state.assignmentsReducer);
+  const mapAssign = assignments.filter((assignment: any) => assignment.course === cid);
+
   return (
     <div>
       <div className="p-5">
-        <AssignmentControls />
+        <AssignmentControls cid={cid!}/>
         <ul className="list-group rounded-0">
           <li className="list-group-item p-0 mb-5 fs-5 border-gray">
             <div className="wd-title p-3 ps-2 bg-secondary">
               <BsGripVertical className="me-2 fs-3" />
               <IoMdArrowDropdown className="me-1" />
               ASSIGNMENTS
-              <AssignControlButton />
+              <div className="float-end me-2">
+      <GreenCheckmark />
+      <IoEllipsisVertical className="fs-4" />
+    </div>
             </div>
             <ul className="list-group rounded-0">
-              {filteredAssignments.map(assign => (
+              {mapAssign && mapAssign.map( (assign:any) => (
                 <li key={assign._id} className="list-group-item p-2 ps-1">
                   <div className="row-layout">
                     <div className="content-container">
@@ -39,16 +48,16 @@ export default function Assignments() {
                             <span className="fs-7 text-danger">Multiple Modules</span>
                             <span className="mx-1">|</span>
                             <span className="mt-1">
-                            <strong>Not available until</strong> {assign.available_from} at 12:00 am |
+                            <strong>Not available until</strong> {assign.available_from_date} at 12:00 am |
                             </span>
                             <span className="d-block mt-1">
-                              <strong>Due</strong> {assign.due} at 11:59 pm | 100 pts
+                              <strong>Due</strong> {assign.due_date} at 11:59 pm | 100 pts
                             </span>
                           </p>
                         </div>
                       </div>
                     </div>
-                    <AssignControlButton />
+                    <AssignControlButton assignmentId= {assign._id}  deleteAssignment={(assignmentId) =>dispatch(deleteAssignment(assignmentId))}/>
                   </div>
                 </li>
               ))}

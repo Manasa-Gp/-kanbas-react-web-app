@@ -6,6 +6,7 @@ import Assignments from "./Assignments";
 import { FaAlignJustify } from "react-icons/fa"; // Had to add this 
 import AssignmentEditor from "./Assignments/Editor";
 import Home from "./Home";
+import AssignEditor from "./Assignments/AssignEditor";
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   const course = courses.find((course) => course._id === cid);
@@ -29,6 +30,7 @@ export default function Courses({ courses }: { courses: any[]; }) {
           <Route path="Home" element={<Home />} />
           <Route path="Modules" element={<Modules />} />
           <Route path="Assignments" element={<Assignments />} />
+          <Route path={`Assignments/plus`} element={<AssignEditor />} />
           <Route path={`Assignments/:aid`} element={<AssignmentEditor />} />
           <Route path="Grades" element={<Grades />} />
         </Routes>
