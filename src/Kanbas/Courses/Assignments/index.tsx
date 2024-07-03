@@ -51,7 +51,7 @@ export default function Assignments() {
                             <strong>Not available until</strong> {assign.available_from_date} at 12:00 am |
                             </span>
                             <span className="d-block mt-1">
-                              <strong>Due</strong> {assign.due_date} at 11:59 pm | 100 pts
+                              <strong>Due</strong> {assign.due_date} at 11:59 pm | {assign.points}
                             </span>
                           </p>
                         </div>
