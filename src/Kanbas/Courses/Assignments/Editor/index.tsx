@@ -52,7 +52,7 @@ export default function AssignmentEditor() {
        </div>
        <div className="col-8 d-flex">
        <input id="wd-points" className="form-control border form-border-gray"  onChange={handleSet}
-                               value={assignment.points}/>
+                               value={assignment.points} name = "points"/>
        </div>
        </div>
        <div className="row justify-content-end mb-3">
