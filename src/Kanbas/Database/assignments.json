@@ -22,6 +22,7 @@
     "title": "Nozzle Design Project",
     "course": "RS101",
     "description": "hello",
+    "points": 100,
     "available_from_date": "2024-05-20",
     "due_date": "2024-05-27"
   },
@@ -47,6 +48,9 @@
     "_id": "A203",
     "title": "Heating Analysis",
     "course": "RS102",
+    "description": "hello",
+
+    "points": 100,
     "available_from_date": "2024-05-20",
     "due_date": "2024-05-27"
   },
