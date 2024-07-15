@@ -5,15 +5,28 @@ import { MdAssignment } from "react-icons/md";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link,useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAssignment } from "./reducer";
+import { setAssignment,deleteAssignment } from "./reducer";
 import GreenCheckmark from "./GreenCheckmark";
 import { IoEllipsisVertical } from "react-icons/io5";
+import * as client from "./client";
+import { useState, useEffect } from "react";
+
 export default function Assignments() {
   const {cid} = useParams();
   const dispatch = useDispatch();
   const {assignments} = useSelector((state: any) => state.assignmentsReducer);
   const mapAssign = assignments.filter((assignment: any) => assignment.course === cid);
-
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignment(assignments));
+  };
+  const removeAssignment = async (AssignmentId: string) => {
+    await client.deleteAssignment(AssignmentId);
+    dispatch(deleteAssignment(AssignmentId));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
   return (
     <div>
       <div className="p-5">
@@ -57,7 +70,7 @@ export default function Assignments() {
                         </div>
                       </div>
                     </div>
-                    <AssignControlButton assignmentId= {assign._id}  deleteAssignment={(assignmentId) =>dispatch(deleteAssignment(assignmentId))}/>
+                    <AssignControlButton assignmentId= {assign._id}  deleteAssignment={(assignmentId) =>removeAssignment(assignmentId)}/>
                   </div>
                 </li>
               ))}

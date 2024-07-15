@@ -1,8 +1,9 @@
-import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch,useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { updateAssignment } from "../reducer";
+import { useState, useEffect } from "react";
+import * as client from "../client";
 export default function AssignmentEditor() {
       
       const { cid,aid } = useParams();
@@ -21,12 +22,15 @@ export default function AssignmentEditor() {
       setAssignment({...assignment, [e.target.name]: value});
   };
 
-  const UpdateAssign = () => {
+  const saveAssignment = async (assignment: any) => {
+    const status = await client.updateAssignment(assignment);
     dispatch(updateAssignment(assignment));
-    router(`/Kanbas/Courses/${cid}/Assignments/`);
-    
-  };
+    router(`/Kanbas/Courses/${cid}/Assignments`);
 
+  };
+  const handleSaveAssignment = () => {
+    saveAssignment(assignment);
+}
 
       
       return (
@@ -152,7 +156,7 @@ export default function AssignmentEditor() {
         Cancel
       </button>
 </Link>
-<button id="wd-add-module-btn" onClick={UpdateAssign} className="btn btn-lg float-end red square-button">
+<button id="wd-add-module-btn" onClick={handleSaveAssignment} className="btn btn-lg float-end red square-button">
         Save
       </button>
       </div>
