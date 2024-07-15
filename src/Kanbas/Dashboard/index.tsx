@@ -50,7 +50,7 @@ export default function Dashboard(
     event.preventDefault();
     setCourse(course);
   }}
-  className="btn btn-warning me-2 float-end" >
+  className="btn btn-warning me-2" >
   Edit
 </button>
 
