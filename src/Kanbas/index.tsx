@@ -8,6 +8,8 @@ import * as client from "./Courses/client";
 import { useState,useEffect } from "react";
 import store from "./store";
 import { Provider } from "react-redux";
+import Account from "./Account";
+import ProtectedRoute from "./ProtectedRoute";
 export default function Kanbas() {
   const [courses, setCourses] = useState<any[]>([]);
   const fetchCourses = async () => {
@@ -19,7 +21,7 @@ export default function Kanbas() {
   }, []);
 
   const [course, setCourse] = useState<any>({
-    _id: "1234", name: "New Course", number: "New Number",
+     name: "New Course", number: "New Number",
     startDate: "2023-09-10", endDate: "2023-12-15", description: "New Description",
   });
   const addNewCourse = async () => {
@@ -28,6 +30,7 @@ export default function Kanbas() {
   };
 
   const deleteCourse = async (courseId: string) => {
+    console.log(courseId);
     await client.deleteCourse(courseId);
     setCourses(courses.filter(
       (c) => c._id !== courseId));
@@ -56,16 +59,19 @@ export default function Kanbas() {
     </div>
     <div className="flex-fill">
       <Routes>
-        <Route path="/" element={<Navigate to="Dashboard" />} />
-        <Route path="Dashboard" element={            
-             <Dashboard
+      <Route path="/" element={<Navigate to="Dashboard" />} />
+      <Route path="/Account/*" element={<Account />} />
+      <Route path="Dashboard" element={<ProtectedRoute>
+            <Dashboard
               courses={courses}
               course={course}
               setCourse={setCourse}
               addNewCourse={addNewCourse}
               deleteCourse={deleteCourse}
-              updateCourse={updateCourse}/>} />
-        <Route path="Courses/:cid/*" element={<Courses courses={courses}/>} />
+              updateCourse={updateCourse}/></ProtectedRoute>} />
+            <Route path="Courses/:cid/*" element={<ProtectedRoute><Courses courses={courses} /></ProtectedRoute>} />
+            <Route path="Calendar" element={<h1>Calendar</h1>} />
+            <Route path="Inbox" element={<h1>Inbox</h1>} />
       </Routes>
     </div>
   </div>

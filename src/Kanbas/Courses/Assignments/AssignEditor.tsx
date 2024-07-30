@@ -12,7 +12,7 @@ export default function AssignEditor() {
 
       const [assignment, setAssignment] = useState({
         course: cid,
-        _id: '',
+        id: '',
         title: '',
         description: '',
         points: 100,
@@ -39,7 +39,7 @@ export default function AssignEditor() {
         <div id="wd-assignments-editor" className="container p-5">
         <div id = "wd-name" className="mb-2">
         <label htmlFor="wd-name" className="fw-bold">Assignment Name</label><br /><br />
-        <input id="wd-name" name="_id" className="form-control border form-border-gray" value={assignment._id} 
+        <input id="wd-name" name="id" className="form-control border form-border-gray" value={assignment.id} 
         onChange={handleSet}
          />
 

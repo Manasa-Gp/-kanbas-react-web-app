@@ -7,7 +7,7 @@ export default function Searchbars() {
   const assignment = assignments.filter(assign => assign.course === cid);
   const enrollment  = enrollments.filter(enroll => enroll.course === cid);
   const students = enrollment.map(e => ({
-    ...users.find(u => u._id === e.user),
+    ...users.find(u => u.id === e.user),
     grade: grades.filter(g => g.student === e.user)
   }));
   return (
@@ -31,7 +31,7 @@ export default function Searchbars() {
 <select id="wd-display-grade-as" aria-placeholder = "Search students"className="form-select" style={{ paddingLeft: '2.5rem' }}>
             <option className = "mx-5" value="" >Search Assignments</option>
             {assignment.map(a =>(
-              <option className = "mx-5" value="">{a._id}-{a.title}</option>
+              <option className = "mx-5" value="">{a.id}-{a.title}</option>
             ))}
           </select>
   <CiSearch className="position-absolute top-50 translate-middle-y ms-2 " />

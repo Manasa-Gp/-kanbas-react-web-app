@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
+const generateUniqueId = () => '_' + Math.random().toString(36).slice(2, 9);
+
 export default function Dashboard({
   courses,
   course,
@@ -14,7 +16,27 @@ export default function Dashboard({
   addNewCourse: () => void;
   deleteCourse: (course: any) => void;
   updateCourse: () => void;
-}) {
+}) 
+
+{
+  const [isNewCourse, setIsNewCourse] = useState(false);
+
+  const handleAddNewCourse = () => {
+    const newCourse = { ...course, id: generateUniqueId(), }; 
+    setCourse(newCourse); 
+    setIsNewCourse(true); 
+    console.log(newCourse);
+    console.log("k");
+  };
+
+  useEffect(() => {
+    if (isNewCourse) {
+      addNewCourse(); 
+      setIsNewCourse(false);
+    }
+  }, [course, isNewCourse, addNewCourse]);
+
+
   return (
     <div className="p-4" id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
@@ -23,7 +45,7 @@ export default function Dashboard({
         <button
           className="btn btn-primary float-end"
           id="wd-add-new-course-click"
-          onClick={addNewCourse}
+          onClick={handleAddNewCourse}
         >
           {" "}
           Add{" "}
@@ -47,7 +69,6 @@ export default function Dashboard({
         className="form-control"
         onChange={(e) => setCourse({ ...course, description: e.target.value })}
       />
-      <textarea value={course.description} className="form-control" />
       <hr />
       <hr />
       <h2 id="wd-dashboard-published">
@@ -57,9 +78,9 @@ export default function Dashboard({
       <div className="row" id="wd-dashboard-courses">
         <div className="row row-cols-1 row-cols-md-5 g-4">
           {courses.map((course) => (
-            <div key={course._id} className="col" style={{ width: "300px" }}>
+            <div key={course.id} className="col" style={{ width: "300px" }}>
               <Link
-                to={`/Kanbas/Courses/${course._id}/Home`}
+                to={`/Kanbas/Courses/${course.id}/Home`}
                 className="text-decoration-none"
               >
                 <div className="card rounded-3 overflow-hidden">
@@ -83,12 +104,11 @@ export default function Dashboard({
                       {course.description}
                     </p>
                     <Link
-                      to={`/Kanbas/Courses/${course._id}/Home`}
+                      to={`/Kanbas/Courses/${course.id}/Home`}
                       className="btn btn-primary"
                     >
                       Go
                     </Link>
-
                     <button
                       onClick={(event) => {
                         event.preventDefault();
@@ -109,9 +129,10 @@ export default function Dashboard({
                     >
                       Edit
                     </button>
-                  </div>
+                </div>
                 </div>
               </Link>
+
             </div>
           ))}
         </div>

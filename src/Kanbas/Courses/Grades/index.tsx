@@ -7,7 +7,7 @@ export default function Grades() {
   const {cid} = useParams();
   const enrollment  = enrollments.filter(enroll => enroll.course === cid);
   const students = enrollment.map(e => ({
-    ...users.find(u => u._id === e.user),
+    ...users.find(u => u.id === e.user),
     grade: grades.filter(g => g.student === e.user)
   }));
   const assignment = assignments.filter(assign => assign.course === cid);
@@ -45,7 +45,7 @@ export default function Grades() {
                
         
               <td className="text-center">
-                {assign._id}
+                {assign.id}
                 <br />
                 Out of 100
               </td>
@@ -61,8 +61,8 @@ export default function Grades() {
                 </div>
                 </td>
                 {assignment.map(assign => {
-                  const mappedGrade =  s.grade.find(g => g.assignment === assign._id);
-                  return <td key={`${assign._id}`} className="assignment-header">{mappedGrade ? `${mappedGrade.grade}` : 'N/A'}</td>;
+                  const mappedGrade =  s.grade.find(g => g.assignment === assign.id);
+                  return <td key={`${assign.id}`} className="assignment-header">{mappedGrade ? `${mappedGrade.grade}` : 'N/A'}</td>;
                 })}
             </tr>
                ))}

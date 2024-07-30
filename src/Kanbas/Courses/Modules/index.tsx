@@ -13,6 +13,8 @@ export default function Modules() {
   const dispatch = useDispatch();
   const createModule = async (module: any) => {
     const newModule = await client.createModule(cid as string, module);
+    console.log("create");
+    console.log(newModule);
     dispatch(addModule(newModule));
   };
 
@@ -53,8 +55,9 @@ export default function Modules() {
                   <input className="form-control w-50 d-inline-block"
                     onChange={(e) =>
                   
-                        saveModule({ ...module, name: e.target.value })
-                      
+                      dispatch(
+                        updateModule({ ...module, name: e.target.value })
+                      )                      
                     }
                     onKeyDown={(e) => {
                       if (e.key === "Enter") {

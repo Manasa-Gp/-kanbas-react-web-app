@@ -44,7 +44,7 @@ export default function Assignments() {
             </div>
             <ul className="list-group rounded-0">
               {mapAssign && mapAssign.map( (assign:any) => (
-                <li key={assign._id} className="list-group-item p-2 ps-1">
+                <li key={assign.id} className="list-group-item p-2 ps-1">
                   <div className="row-layout">
                     <div className="content-container">
                       <BsGripVertical className="me-2 fs-3" />
@@ -52,9 +52,9 @@ export default function Assignments() {
                       <div>
                         <Link
                           className="wd-assignment-link"
-                          to={`/Kanbas/Courses/${cid}/Assignments/${assign._id}`}
+                          to={`/Kanbas/Courses/${cid}/Assignments/${assign.id}`}
                         >
-                          {assign._id}
+                          {assign.id}
                         </Link>
                         <div>
                           <p className="wd-assignment-due">
@@ -70,7 +70,7 @@ export default function Assignments() {
                         </div>
                       </div>
                     </div>
-                    <AssignControlButton assignmentId= {assign._id}  deleteAssignment={(assignmentId) =>removeAssignment(assignmentId)}/>
+                    <AssignControlButton assignmentId= {assign.id}  deleteAssignment={(assignmentId) =>removeAssignment(assignmentId)}/>
                   </div>
                 </li>
               ))}

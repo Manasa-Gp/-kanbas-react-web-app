@@ -21,7 +21,6 @@ return (
       </button>
       <Link to = {`/Kanbas/Courses/${cid}/Assignments/plus`}>
 <button id="wd-add-module-btn" className="btn btn-lg float-end red square-button"
-data-bs-toggle="modal" data-bs-target="#wd-add-assignment-dialog" 
 >
         <FaPlus className="position-relative me-2"  />
         Assignment

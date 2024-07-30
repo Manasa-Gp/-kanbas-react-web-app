@@ -11,7 +11,7 @@ export default function AssignmentEditor() {
       const router = useNavigate();
 
     const {assignments} = useSelector((state: any) => state.assignmentsReducer);
-    const curAssignment = assignments.find((item: any) => item._id === aid);
+    const curAssignment = assignments.find((item: any) => item.id === aid);
 
     const [assignment, setAssignment] = useState({
         ...curAssignment
@@ -37,7 +37,7 @@ export default function AssignmentEditor() {
         <div id="wd-assignments-editor" className="container p-5">
         <div id = "wd-name" className="mb-2">
         <label htmlFor="wd-name" className="fw-bold">Assignment Name</label><br /><br />
-        <input id="wd-name" name="_id" className="form-control border form-border-gray" value={assignment._id} 
+        <input id="wd-name" name="_id" className="form-control border form-border-gray" value={assignment.id} 
         onChange={handleSet}
          />
 

@@ -11,8 +11,9 @@ const modulesSlice = createSlice({
     },
 
     addModule: (state, { payload: module }) => {
+      console.log(module._id);
       const newModule: any = {
-        _id: new Date().getTime().toString(),
+        _id: module._id,
         lessons: [],
         name: module.name,
         course: module.course,
@@ -24,6 +25,7 @@ const modulesSlice = createSlice({
         (m: any) => m._id !== moduleId);
     },
     updateModule: (state, { payload: module }) => {
+      console.log(module._id);
       state.modules = state.modules.map((m: any) =>
         m._id === module._id ? module : m
       ) as any;
