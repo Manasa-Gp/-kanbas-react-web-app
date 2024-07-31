@@ -9,7 +9,7 @@ import { useState,useEffect } from "react";
 import store from "./store";
 import { Provider } from "react-redux";
 import Account from "./Account";
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "./Account/ProtectedRoute";
 export default function Kanbas() {
   const [courses, setCourses] = useState<any[]>([]);
   const fetchCourses = async () => {
