@@ -14,6 +14,7 @@ export default function Profile() {
       const account = await client.profile();
       setProfile(account);
     } catch (err: any) {
+      console.log("Profiler error: react")
       navigate("/Kanbas/Account/Signin");
     }
   };

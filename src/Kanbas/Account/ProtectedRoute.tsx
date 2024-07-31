@@ -5,7 +5,6 @@ export default function ProtectedRoute({ children }: { children: any }) {
   if (currentUser) {
     return children;
   } else {
-    console.log("hello hry");
     return <Navigate to="/Kanbas/Account/Signin" />;
   }
 }
