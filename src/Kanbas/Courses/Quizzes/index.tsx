@@ -5,7 +5,6 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { setQuizzes } from './reducer';
 import { findQuizzesForCourse } from "./client";
-
 import { MdArrowDropDown } from "react-icons/md";
 import { IoRocketOutline } from "react-icons/io5";
 import GreenCheckmark from './GreenCheckmark';
@@ -15,9 +14,11 @@ export default function Quizzes() {
   const { cid } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {quiz} = useSelector((state: any) => state.quizzesReducer);
-  const quizzes = quiz ? quiz.filter((q: any) => q.course === cid):[];
+  const {quizzes} = useSelector((state: any) => state.quizzesReducer);
+  const mapQuiz = quizzes ? quizzes.filter((q: any) => q.course === cid):[];
+
   const loadQuizzes = async () => {
+
     if (cid) {
       const quizzesData = await findQuizzesForCourse(cid as string);
       dispatch(setQuizzes(quizzesData));
@@ -28,9 +29,7 @@ export default function Quizzes() {
   };
   useEffect(() => {
     loadQuizzes();
-  }, [cid, dispatch]);
-
-
+  }, []);
 
   return (
     <div id="wd-quizzes">
@@ -59,17 +58,15 @@ export default function Quizzes() {
         Assignment Quizzes
         </div>
         <ul className="wd-lessons list-group rounded-0 wd-padded-left wd-bg-color-green">
-        {quizzes.map((q: any) => (
+        {mapQuiz.map((q: any) => (
           <li key={q._id} className="wd-lesson list-group-item d-flex align-items-center p-3">
             <div className="icon-container me-2">
-              <IoRocketOutline className="text-success fs-3" />
+              <IoRocketOutline className="text-success fs-5" />
             </div>
             <div className="quiz-details flex-grow-1">
-              <strong>
-                <Link to={`/Kanbas/Courses/${cid}/Quizzes/Details/${q._id}`} className="wd-_id">
+                <Link to={`/Kanbas/Courses/${cid}/Quizzes/Details/${q._id}`} className="wd-quiz-link">
                   {q.title}
                 </Link>
-              </strong>
               <h6>
                 <p className="wd-fg-color-red">
                   <span className="wd-fg-color-black"> | <b>Due</b> {'No Due Date'} | {0} pts</span>

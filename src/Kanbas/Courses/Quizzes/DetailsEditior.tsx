@@ -12,25 +12,25 @@ function QuizEditor() {
   const   {assignments} = useSelector((state: any) => state.assignmentsReducer);
   const quiz = assignments.filter((assignment: any) => assignment.course === cid);
 
-  // const [quizDetails, setQuizDetails] = useState({
-  //   _id: qid || `quiz-${Date.now()}`,
-  //   title: quiz.title || '',
-  //   description: quiz.description || '',
-  //   quizType: quiz.quizType || 'Graded Quiz',
-  //   assignmentGroup: quiz.assignmentGroup || 'Quizzes',
-  //   shuffleAnswers: quiz.shuffleAnswers || false,
-  //   timeLimit: quiz.timeLimit || 20,
-  //   multipleAttempts: quiz.multipleAttempts || false,
-  //   showCorrectAnswers: quiz.showCorrectAnswers || '',
-  //   accessCode: quiz.accessCode || '',
-  //   oneQuestionAtATime: quiz.oneQuestionAtATime || true,
-  //   webcamRequired: quiz.webcamRequired || false,
-  //   lockQuestionsAfterAnswering: quiz.lockQuestionsAfterAnswering || false,
-  //   dueDate: quiz.dueDate || '',
-  //   availableDate: quiz.availableDate || '',
-  //   untilDate: quiz.untilDate || '',
-  //   questions: quiz.questions || []
-  // });
+  const [quizDetails, setQuizDetails] = useState({
+    _id: qid || `quiz-${Date.now()}`,
+    title: quiz.title || '',
+    description: quiz.description || '',
+    quizType: quiz.quizType || 'Graded Quiz',
+    assignmentGroup: quiz.assignmentGroup || 'Quizzes',
+    shuffleAnswers: quiz.shuffleAnswers || false,
+    timeLimit: quiz.timeLimit || 20,
+    multipleAttempts: quiz.multipleAttempts || false,
+    showCorrectAnswers: quiz.showCorrectAnswers || '',
+    accessCode: quiz.accessCode || '',
+    oneQuestionAtATime: quiz.oneQuestionAtATime || true,
+    webcamRequired: quiz.webcamRequired || false,
+    lockQuestionsAfterAnswering: quiz.lockQuestionsAfterAnswering || false,
+    dueDate: quiz.dueDate || '',
+    availableDate: quiz.availableDate || '',
+    untilDate: quiz.untilDate || '',
+    questions: quiz.questions || []
+  });
 
 
 
