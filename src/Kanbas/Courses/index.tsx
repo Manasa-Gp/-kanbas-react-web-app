@@ -8,6 +8,8 @@ import AssignmentEditor from "./Assignments/Editor";
 import Home from "./Home";
 import AssignEditor from "./Assignments/AssignEditor";
 import PeopleTable from "./people/table";
+import Quizzes from "./Quizzes";
+import QuizEditor from "./Quizzes/DetailsEditior";
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   console.log(cid);
@@ -37,7 +39,10 @@ export default function Courses({ courses }: { courses: any[]; }) {
           <Route path="Grades" element={<Grades />} />
           <Route path="People" element={<PeopleTable />} />
           <Route path="People/:uid" element={<PeopleTable />} />
-            
+          <Route path="Quizzes" element={<Quizzes />} />
+          <Route path="Quizzes/edit/:qid" element={<QuizEditor />} />
+          {/* <Route path="Quizzes/Details/:qid" element={<QuizDetails />} /> */}
+          <Route path="Quizzes/new" element={<QuizEditor />} />
           
         </Routes>
       </div>
