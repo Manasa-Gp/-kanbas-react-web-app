@@ -1,45 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-//import { fetchQuizDetails, updateQuizDetails } from "./client";
+import {findQuizzesForCourse, GetQuizDetails} from "./client";
 // import { setQuizDetails as reduxSetQuizDetails } from './reducer';
 import QuestionEditor from './QuestionEditor';
+import { setQuizzes } from './reducer';
 
 function QuizEditor() {
   const { cid, qid } = useParams<{ cid: string; qid: string }>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const   {assignments} = useSelector((state: any) => state.assignmentsReducer);
-  const quiz = assignments.filter((assignment: any) => assignment.course === cid);
+  const   {quizzes} = useSelector((state: any) => state.quizzesReducer);
+  const quiz = quizzes ? quizzes.find((q: any) => q._id === qid): null;
+
 
   const [quizDetails, setQuizDetails] = useState({
-    _id: qid || `quiz-${Date.now()}`,
-    title: quiz.title || '',
-    description: quiz.description || '',
-    quizType: quiz.quizType || 'Graded Quiz',
-    assignmentGroup: quiz.assignmentGroup || 'Quizzes',
-    shuffleAnswers: quiz.shuffleAnswers || false,
-    timeLimit: quiz.timeLimit || 20,
-    multipleAttempts: quiz.multipleAttempts || false,
-    showCorrectAnswers: quiz.showCorrectAnswers || '',
-    accessCode: quiz.accessCode || '',
-    oneQuestionAtATime: quiz.oneQuestionAtATime || true,
-    webcamRequired: quiz.webcamRequired || false,
-    lockQuestionsAfterAnswering: quiz.lockQuestionsAfterAnswering || false,
-    dueDate: quiz.dueDate || '',
-    availableDate: quiz.availableDate || '',
-    untilDate: quiz.untilDate || '',
-    questions: quiz.questions || []
+    _id: qid ? qid : `quiz-${Date.now()}`,
+    title: quiz?.title || '',
+    description: quiz?.description || '',
+    quizType: quiz?.quizType || 'Graded Quiz',
+    assignmentGroup: quiz?.assignmentGroup || 'Quizzes',
+    shuffleAnswers: quiz?.shuffleAnswers || false,
+    timeLimit: quiz?.timeLimit || 20,
+    multipleAttempts: quiz?.multipleAttempts || false,
+    showCorrectAnswers: quiz?.showCorrectAnswers || '',
+    accessCode: quiz?.accessCode || '',
+    oneQuestionAtATime: quiz?.oneQuestionAtATime || true,
+    webcamRequired: quiz?.webcamRequired || false,
+    lockQuestionsAfterAnswering: quiz?.lockQuestionsAfterAnswering || false,
+    due: quiz?.due || '',
+    availableFrom: quiz?.availableFrom || '',
+    availableUntil: quiz?.availableUntil || '',
+    questions: quiz?.questions || []
   });
 
-
-
-  
+  const handleSet = (e: any) => {
+    const { name, value } = e.target;
+    setQuizDetails(prevDetails => ({
+      ...prevDetails,
+      [name]: value
+    }));
+  };
 
   const handleCancel = () => {
     navigate(`/Kanbas/Courses/${cid}/Quizzes`);
   };
 
+  // useEffect(() => {
+  //   if (qid && !quiz) {
+  //     GetQuizDetails(qid).then(fetchedQuiz => {
+  //       setQuizDetails(fetchedQuiz);
+  //     });
+  //   }
+  // }, [qid, quiz]);
   const [activeTab, setActiveTab] = useState('detail');
 
   return (
@@ -54,17 +67,17 @@ function QuizEditor() {
       <br/>
       {activeTab === 'detail' && (
         <>
-          <input type="text" name="title" 
-                 className="form-control mb-2" placeholder="Unnamed Quiz" />
-          <textarea name="description" 
-                     className="form-control mb-2" placeholder="Quiz Instructions" rows={4} />
+          <input type="text" name="title" onChange={handleSet}
+                 className="form-control mb-2" placeholder="Unnamed Quiz" value={quizDetails.title } />
+          <textarea name="description" onChange={handleSet}
+                     className="form-control mb-2" placeholder="Quiz Instructions" rows={4} value={quizDetails.description} />
           <br/>
           <div className="row justify-content-end mb-3">
       <div className="col-auto mt-1">
            <label htmlFor="wd-type" >Quiz Type</label>
        </div>
        <div className="col-8 d-flex">
-       <select id="wd-type" className="form-select border form-border-gray">
+       <select id="wd-type"  onChange={handleSet} value ={quizDetails.quizType} className="form-select border form-border-gray">
           <option selected value="Graded Quiz">Graded Quiz</option>
             <option value="Practice Quiz">Practice Quiz</option>
             <option value="Graded Survey">Graded Survey</option>
@@ -77,7 +90,7 @@ function QuizEditor() {
            <label htmlFor="wd-group" >Assignment group</label>
        </div>
        <div className="col-8 d-flex">
-       <select id="wd-group" className="form-select border form-border-gray">
+       <select id="wd-group"  onChange={handleSet} value ={quizDetails.assignmentGroup} className="form-select border form-border-gray">
 =          <option value="Quizzes">Quizzes</option>
             <option value="Exams">Exams</option>
             <option selected value="Assignments">Assignments</option>
@@ -92,17 +105,17 @@ function QuizEditor() {
         
         <div >
           <div  className="my-3">
-      <input type="checkbox" className=" form-check-input mr-3 border form-border-gray"  name="check-entry-options" id="wd-text-entry" />
+      <input type="checkbox"  onChange={handleSet} checked={quizDetails.shuffleAnswers} className=" form-check-input mr-3 border form-border-gray"  name="check-entry-options" id="wd-text-entry" />
       <label htmlFor="wd-shuffle">Shuffle Answers</label>
       </div >
       <div className="my-3 d-flex align-items-center">
-  <input type="checkbox" className="form-check-input border form-border-gray me-2" name="check-website-url" id="wd-website-url" />
+  <input type="checkbox"  onChange={handleSet} checked={quizDetails.timeLimit} className="form-check-input border form-border-gray me-2" name="check-website-url" id="wd-website-url" />
   <label htmlFor="wd-website-url" className="me-3">Time Limit</label>
   <input type="number" name="timeLimit" className="form-control me-2"  style={{ width: '50px' }} />
   Minutes
         </div>
         <div className='form-control border form-border-gray'>
-          <input type="checkbox" className=" form-check-input me-3 border form-border-gray"  name="check-entry-options" id="wd-text-entry" />
+          <input type="checkbox"  onChange={handleSet} checked={quizDetails.multipleAttempts} className=" form-check-input me-3 border form-border-gray"  name="check-entry-options" id="wd-text-entry" />
           <label htmlFor="wd-multuple-attempts">Allow Multiple Attempts</label>
                       </div>
 
@@ -123,15 +136,15 @@ function QuizEditor() {
         <label htmlFor="wd-assign-to"><strong>Assign to </strong></label><br/>
         <input id="wd-assign-to" className="form-control border form-border-gray my-2" placeholder="Everyone" />
         <label htmlFor="wd-assign-to"><strong>Due </strong></label><br/>
-        <input id = "wd-due-date" name ="due_date" className="form-control border form-border-gray my-2" type="date"  />
+        <input id = "wd-due-date"  onChange={handleSet} value={quizDetails.due} name ="due_date" className="form-control border form-border-gray my-2" type="date"  />
         <div className="row my-4">
         <div className="col-auto">
         <label htmlFor="wd-available from"><strong>Avaiable from</strong></label>
-        <input id = "wd-available from" name ="available_from_date" className="form-control border form-border-gray my-2" type="date"  />
+        <input id = "wd-available from"  onChange={handleSet} value={quizDetails.availableFrom} name ="available_from_date" className="form-control border form-border-gray my-2" type="date"  />
         </div>
         <div className="col-auto ms-4">
         <label htmlFor="available until"><strong> Until </strong> </label>
-        <input id ="available until"  name ="due_date" className="form-control border form-border-gray my-2" type="date" />
+        <input id ="available until"  onChange={handleSet} value={quizDetails.availableUntil}  name ="due_date" className="form-control border form-border-gray my-2" type="date" />
   </div>
         </div>
         

@@ -25,8 +25,7 @@ export default function Dashboard({
     const newCourse = { ...course, id: generateUniqueId(), }; 
     setCourse(newCourse); 
     setIsNewCourse(true); 
-    console.log(newCourse);
-    console.log("k");
+
   };
 
   useEffect(() => {
