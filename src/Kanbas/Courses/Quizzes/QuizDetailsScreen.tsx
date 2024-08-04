@@ -10,7 +10,7 @@ export default function QuizDetails() {
     const dispatch = useDispatch();
     const {quizzes} = useSelector((state: any) => state.quizzesReducer);
     const quiz =  quizzes ? quizzes.find((q: any) => q._id === qid):[];
-    console.log(quiz);
+
     const getQuizzes = async () => {
 
         if (qid) {

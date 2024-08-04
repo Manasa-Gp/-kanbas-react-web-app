@@ -4,7 +4,8 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { setQuizzes } from './reducer';
-import { findQuizzesForCourse } from "./client";
+import { findQuizzesForCourse,deleteQuizDetails } from "./client";
+import {deleteQuiz} from "./reducer";
 import { MdArrowDropDown } from "react-icons/md";
 import { IoRocketOutline } from "react-icons/io5";
 import GreenCheckmark from './GreenCheckmark';
@@ -16,6 +17,11 @@ export default function Quizzes() {
   const dispatch = useDispatch();
   const {quizzes} = useSelector((state: any) => state.quizzesReducer);
   const mapQuiz = quizzes ? quizzes.filter((q: any) => q.course === cid):[];
+
+  const removeQuiz = async (quizId: string) => {
+    await deleteQuizDetails(quizId);
+    dispatch(deleteQuiz(quizId));
+  };
 
   const loadQuizzes = async () => {
 
@@ -84,7 +90,7 @@ export default function Quizzes() {
         <a className="dropdown-item" href="#" >Edit</a>
     </li>
     <li>
-        <a className="dropdown-item" href="#" >Delete</a>
+        <a className="dropdown-item" onClick={()=>removeQuiz(q._id)}>Delete</a>
     </li>
     <li>
         <a className="dropdown-item" href="#" >Publish/Unpublish</a>

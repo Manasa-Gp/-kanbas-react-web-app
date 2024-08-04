@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {findQuizzesForCourse, GetQuizDetails} from "./client";
-// import { setQuizDetails as reduxSetQuizDetails } from './reducer';
+import { createQuiz,updateQuizDetails } from './client';
+import {addQuiz,updateQuiz} from "./reducer";
 import QuestionEditor from './QuestionEditor';
 import { setQuizzes } from './reducer';
 
@@ -18,9 +18,17 @@ function QuizEditor() {
     _id: qid ? qid : `quiz-${Date.now()}`,
     title: quiz?.title || '',
     description: quiz?.description || '',
+    course: quiz?.course || 'RS101',
+    due: quiz?.due || '',
+    availableFrom: quiz?.availableFrom || '',
+    availableUntil: quiz?.availableUntil || '',
+    for: quiz?.for || 'Everyone',
+    published: quiz?.published || false,
     quizType: quiz?.quizType || 'Graded Quiz',
+    points: quiz?.points || 10,
     assignmentGroup: quiz?.assignmentGroup || 'Quizzes',
     shuffleAnswers: quiz?.shuffleAnswers || false,
+    timeLimitCheckbox: quiz?.timeLimitCheckbox || true,
     timeLimit: quiz?.timeLimit || 20,
     multipleAttempts: quiz?.multipleAttempts || false,
     showCorrectAnswers: quiz?.showCorrectAnswers || '',
@@ -28,23 +36,48 @@ function QuizEditor() {
     oneQuestionAtATime: quiz?.oneQuestionAtATime || true,
     webcamRequired: quiz?.webcamRequired || false,
     lockQuestionsAfterAnswering: quiz?.lockQuestionsAfterAnswering || false,
-    due: quiz?.due || '',
-    availableFrom: quiz?.availableFrom || '',
-    availableUntil: quiz?.availableUntil || '',
     questions: quiz?.questions || []
-  });
+});
 
+  const createNewQuiz = async() => {
+    const newQuiz = await createQuiz(cid as string, quiz);
+    dispatch(addQuiz(newQuiz));
+    navigate(`/Kanbas/Courses/${cid}/Quiz`);
+  };
+
+  const QuizUpdated = async() => {
+    console.log("QuizUpdated")
+    console.log(quizDetails);
+    const status = await updateQuizDetails(qid as string,quizDetails);
+    dispatch(updateQuiz(quiz));
+    navigate(`/Kanbas/Courses/${cid}/Quizzes`);
+  };
   const handleSet = (e: any) => {
-    const { name, value } = e.target;
-    setQuizDetails(prevDetails => ({
-      ...prevDetails,
-      [name]: value
-    }));
+    console.log("handleName",e.target.name);
+    console.log("handleSet",e.target.value);
+    const value = e.target.value;
+    setQuizDetails({...quizDetails, [e.target.name]: value});
+    console.log(quizDetails);
   };
 
   const handleCancel = () => {
     navigate(`/Kanbas/Courses/${cid}/Quizzes`);
   };
+
+  const saveQuiz = async () => {
+    if (qid) {
+        console.log("QuizUpdated");
+        console.log(quizDetails);
+        const status = await updateQuizDetails(qid as string, quizDetails);
+        dispatch(updateQuiz(quizDetails));
+        navigate(`/Kanbas/Courses/${cid}/Quizzes`);
+    } else {
+        const newQuiz = await createQuiz(cid as string, quizDetails);
+        dispatch(addQuiz(newQuiz));
+        navigate(`/Kanbas/Courses/${cid}/Quiz`);
+    }
+};
+
 
   // useEffect(() => {
   //   if (qid && !quiz) {
@@ -136,15 +169,15 @@ function QuizEditor() {
         <label htmlFor="wd-assign-to"><strong>Assign to </strong></label><br/>
         <input id="wd-assign-to" className="form-control border form-border-gray my-2" placeholder="Everyone" />
         <label htmlFor="wd-assign-to"><strong>Due </strong></label><br/>
-        <input id = "wd-due-date"  onChange={handleSet} value={quizDetails.due} name ="due_date" className="form-control border form-border-gray my-2" type="date"  />
+        <input id = "wd-due-date"  onChange={handleSet} value={quizDetails.due} name ="due" className="form-control border form-border-gray my-2" type="date"  />
         <div className="row my-4">
         <div className="col-auto">
         <label htmlFor="wd-available from"><strong>Avaiable from</strong></label>
-        <input id = "wd-available from"  onChange={handleSet} value={quizDetails.availableFrom} name ="available_from_date" className="form-control border form-border-gray my-2" type="date"  />
+        <input id = "wd-available from"  onChange={handleSet} value={quizDetails.availableFrom} name ="availableFrom" className="form-control border form-border-gray my-2" type="date"  />
         </div>
         <div className="col-auto ms-4">
         <label htmlFor="available until"><strong> Until </strong> </label>
-        <input id ="available until"  onChange={handleSet} value={quizDetails.availableUntil}  name ="due_date" className="form-control border form-border-gray my-2" type="date" />
+        <input id ="available until"  onChange={handleSet} value={quizDetails.availableUntil}  name ="availableUntil" className="form-control border form-border-gray my-2" type="date" />
   </div>
         </div>
         
@@ -161,7 +194,7 @@ function QuizEditor() {
       )}
       <div className="mt-3 row float-end me-3 mb-3" >
         <button style={{width: '150px'}} onClick={handleCancel} className="btn btn-secondary">Cancel</button>
-        <button  style={{width: '150px'}} className="btn btn-danger ms-2">{qid ? 'Update' : 'Create'} & Save</button>
+        <button  style={{width: '150px'}} onClick = {saveQuiz} className="btn btn-danger ms-2">{qid ? 'Update' : 'Create'} & Save</button>
       </div>
 
     </div>
