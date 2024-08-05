@@ -36,7 +36,7 @@ function QuizEditor() {
     oneQuestionAtATime: quiz?.oneQuestionAtATime || true,
     webcamRequired: quiz?.webcamRequired || false,
     lockQuestionsAfterAnswering: quiz?.lockQuestionsAfterAnswering || false,
-    questions: quiz?.questions || []
+    questions: quiz?.questions || [],
 });
 
 

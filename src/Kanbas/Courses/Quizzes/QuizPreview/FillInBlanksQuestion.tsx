@@ -1,32 +1,23 @@
 import React from 'react';
 
 interface QuestionProps {
-    question: {
-      id: string;
-      title: string;
-      questionText: string;
-      choices?: { text: string; isCorrect: boolean }[];
-      isTrue?: boolean;
-    };
-    answer: any;
-    onChange: (answer: any) => void;
-  }
+  question: string;
+  options: { }; // Object with keys as option identifiers
+  answer: string; // Changed type to string to match key
+  onChange: (answer: string) => void; // Changed type to string to match key
+}
   
 function FillInBlanksQuestion({ question, answer, onChange }: QuestionProps) {
   return (
     <div>
-      <h4>{question.title}</h4>
-      <p>{question.questionText}</p>
-      {question.choices && question.choices.map((choice, index) => (
-        <div key={index}>
+      <h4>{question}</h4>
+
           <input
             type="text"
             value={answer || ''}
             onChange={(e) => onChange(e.target.value)}
           />
         </div>
-      ))}
-    </div>
   );
 }
 export default FillInBlanksQuestion;

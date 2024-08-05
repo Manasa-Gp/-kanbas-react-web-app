@@ -1,34 +1,37 @@
 import React from 'react';
 
+
+
 interface QuestionProps {
-    question: {
-      id: string;
-      title: string;
-      questionText: string;
-      choices?: { text: string; isCorrect: boolean }[];
-      isTrue?: boolean;
-    };
-    answer: any;
-    onChange: (answer: any) => void;
-  }
-  
-function MultipleChoiceQuestion({ question, answer, onChange }: QuestionProps) {
+  question: string;
+  options: { [key: string]: string }; // Object with keys as option identifiers
+  answer: string; // Changed type to string to match key
+  onChange: (answer: string) => void; // Changed type to string to match key
+}
+
+function MultipleChoiceQuestion({ question, answer, options, onChange }: QuestionProps) {
+  console.log("Hello");
+  console.log(options);
   return (
     <div>
-      <h4>{question.title}</h4>
-      <p>{question.questionText}</p>
-      {question.choices && question.choices.map((choice, index) => (
+      <p>{question}</p>
+      
+      {options && Object.entries(options).map(([key, choice], index) => (
         <label key={index}>
+
           <input
             type="radio"
-            name={`question-${question.id}`}
-            checked={answer === choice.text}
-            onChange={() => onChange(choice.text)}
+            name={`question-${question}`}
+            value={key} // Use key for value
+            checked={answer === key} // Compare with key
+            onChange={() => onChange(key)} // Pass key to onChange
           />
-          {choice.text}
+                    {key}
+                    {choice}
         </label>
       ))}
     </div>
   );
 }
+
 export default MultipleChoiceQuestion;

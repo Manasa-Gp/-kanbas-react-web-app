@@ -21,6 +21,10 @@ export default function QuizDetails() {
       const handleEditQuiz = () => {
         navigate(`/Kanbas/Courses/${cid}/Quizzes/edit/${qid}`);
       };
+
+      const handlePreview = () => {
+        navigate(`/Kanbas/Courses/${cid}/Quizzes/preview/${qid}`);
+      };
       useEffect(() => {
         getQuizzes();
       }, []);
@@ -30,7 +34,7 @@ export default function QuizDetails() {
     return (
         <div style={{ maxWidth: '800px', margin: '20px auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                <button  style={{ margin: '5px' }}>Preview</button>
+                <button  style={{ margin: '5px' }} onClick={handlePreview}>Preview</button>
                 <button  style={{ margin: '5px' }} onClick={handleEditQuiz}>Edit</button>
             </div>
             <hr />
