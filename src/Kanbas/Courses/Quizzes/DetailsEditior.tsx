@@ -18,15 +18,15 @@ function QuizEditor() {
     _id: qid ? qid : `quiz-${Date.now()}`,
     title: quiz?.title || '',
     description: quiz?.description || '',
-    course: quiz?.course || 'RS101',
+    course: quiz?.course || '',
     due: quiz?.due || '',
     availableFrom: quiz?.availableFrom || '',
     availableUntil: quiz?.availableUntil || '',
-    for: quiz?.for || 'Everyone',
+    for: quiz?.for || '',
     published: quiz?.published || false,
-    quizType: quiz?.quizType || 'Graded Quiz',
+    quizType: quiz?.quizType || '',
     points: quiz?.points || 10,
-    assignmentGroup: quiz?.assignmentGroup || 'Quizzes',
+    assignmentGroup: quiz?.assignmentGroup || '',
     shuffleAnswers: quiz?.shuffleAnswers || false,
     timeLimitCheckbox: quiz?.timeLimitCheckbox || true,
     timeLimit: quiz?.timeLimit || 20,
@@ -39,35 +39,21 @@ function QuizEditor() {
     questions: quiz?.questions || []
 });
 
-  const createNewQuiz = async() => {
-    const newQuiz = await createQuiz(cid as string, quiz);
-    dispatch(addQuiz(newQuiz));
-    navigate(`/Kanbas/Courses/${cid}/Quiz`);
-  };
 
-  const QuizUpdated = async() => {
-    console.log("QuizUpdated")
-    console.log(quizDetails);
-    const status = await updateQuizDetails(qid as string,quizDetails);
-    dispatch(updateQuiz(quiz));
-    navigate(`/Kanbas/Courses/${cid}/Quizzes`);
-  };
-  const handleSet = (e: any) => {
-    console.log("handleName",e.target.name);
-    console.log("handleSet",e.target.value);
+  const handleSet = (e:any) => {
     const value = e.target.value;
-    setQuizDetails({...quizDetails, [e.target.name]: value});
-    console.log(quizDetails);
+    setQuizDetails({...quizDetails, [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : value,
+    });
+    console.log("check check")
+    console.log(e.target.type,e.target.checked);
+    console.log(quizDetails); 
   };
-
   const handleCancel = () => {
     navigate(`/Kanbas/Courses/${cid}/Quizzes`);
   };
 
   const saveQuiz = async () => {
     if (qid) {
-        console.log("QuizUpdated");
-        console.log(quizDetails);
         const status = await updateQuizDetails(qid as string, quizDetails);
         dispatch(updateQuiz(quizDetails));
         navigate(`/Kanbas/Courses/${cid}/Quizzes`);
@@ -110,7 +96,7 @@ function QuizEditor() {
            <label htmlFor="wd-type" >Quiz Type</label>
        </div>
        <div className="col-8 d-flex">
-       <select id="wd-type"  onChange={handleSet} value ={quizDetails.quizType} className="form-select border form-border-gray">
+       <select id="wd-type"  name="quizType"   value ={quizDetails.quizType} onChange={handleSet} className="form-select border form-border-gray">
           <option  value="Graded Quiz">Graded Quiz</option>
             <option value="Practice Quiz">Practice Quiz</option>
             <option value="Graded Survey">Graded Survey</option>
@@ -123,7 +109,7 @@ function QuizEditor() {
            <label htmlFor="wd-group" >Assignment group</label>
        </div>
        <div className="col-8 d-flex">
-       <select id="wd-group"  onChange={handleSet} value ={quizDetails.assignmentGroup} className="form-select border form-border-gray">
+       <select id="wd-group"   name="assignmentGroup" onChange={handleSet} value ={quizDetails.assignmentGroup} className="form-select border form-border-gray">
 =          <option value="Quizzes">Quizzes</option>
             <option value="Exams">Exams</option>
             <option  value="Assignments">Assignments</option>
@@ -138,17 +124,17 @@ function QuizEditor() {
         
         <div >
           <div  className="my-3">
-      <input type="checkbox"  onChange={handleSet} checked={quizDetails.shuffleAnswers} className=" form-check-input mr-3 border form-border-gray"  name="shuffleAnswers" id="wd-text-entry" />
+      <input type="checkbox" name="shuffleAnswers" onChange={handleSet} checked={quizDetails.shuffleAnswers} className=" form-check-input mr-3 border form-border-gray"   id="wd-text-entry" />
       <label htmlFor="wd-shuffle">Shuffle Answers</label>
       </div >
       <div className="my-3 d-flex align-items-center">
-  <input type="checkbox"  onChange={handleSet} checked={quizDetails.timeLimitCheckbox} className="form-check-input border form-border-gray me-2" name="timeLimitCheckbox" id="wd-website-url" />
+  <input type="checkbox"  name="timeLimitCheckbox" onChange={handleSet} checked={quizDetails.timeLimitCheckbox} className="form-check-input border form-border-gray me-2"  id="wd-website-url" />
   <label htmlFor="wd-website-url" className="me-3">Time Limit</label>
   <input type="number" name="timeLimit" onChange={handleSet} value ={quizDetails.timeLimit} className="form-control me-2"  style={{ width: '50px' }} />
   Minutes
         </div>
         <div className='form-control border form-border-gray'>
-          <input type="checkbox"  onChange={handleSet} checked={quizDetails.multipleAttempts} className=" form-check-input me-3 border form-border-gray"  name="multipleAttempts" id="wd-text-entry" />
+          <input type="checkbox" name="multipleAttempts"  onChange={handleSet} checked={quizDetails.multipleAttempts} className=" form-check-input me-3 border form-border-gray"   id="wd-text-entry" />
           <label htmlFor="wd-multuple-attempts">Allow Multiple Attempts</label>
                       </div>
 
