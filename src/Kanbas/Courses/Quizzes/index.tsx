@@ -87,7 +87,8 @@ export default function Quizzes() {
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="quizMenuButton">
                  <li>
-        <a className="dropdown-item" href="#" >Edit</a>
+                 <Link to={`/Kanbas/Courses/${cid}/Quizzes/edit/${q._id}`} className="">
+                 Edit</Link>
     </li>
     <li>
         <a className="dropdown-item" onClick={()=>removeQuiz(q._id)}>Delete</a>

@@ -111,7 +111,7 @@ function QuizEditor() {
        </div>
        <div className="col-8 d-flex">
        <select id="wd-type"  onChange={handleSet} value ={quizDetails.quizType} className="form-select border form-border-gray">
-          <option selected value="Graded Quiz">Graded Quiz</option>
+          <option  value="Graded Quiz">Graded Quiz</option>
             <option value="Practice Quiz">Practice Quiz</option>
             <option value="Graded Survey">Graded Survey</option>
             <option value="Ungraded Survey">Ungraded Survey</option>
@@ -126,7 +126,7 @@ function QuizEditor() {
        <select id="wd-group"  onChange={handleSet} value ={quizDetails.assignmentGroup} className="form-select border form-border-gray">
 =          <option value="Quizzes">Quizzes</option>
             <option value="Exams">Exams</option>
-            <option selected value="Assignments">Assignments</option>
+            <option  value="Assignments">Assignments</option>
             <option value="Projects">Projects</option>
          </select>
        </div>
@@ -138,17 +138,17 @@ function QuizEditor() {
         
         <div >
           <div  className="my-3">
-      <input type="checkbox"  onChange={handleSet} checked={quizDetails.shuffleAnswers} className=" form-check-input mr-3 border form-border-gray"  name="check-entry-options" id="wd-text-entry" />
+      <input type="checkbox"  onChange={handleSet} checked={quizDetails.shuffleAnswers} className=" form-check-input mr-3 border form-border-gray"  name="shuffleAnswers" id="wd-text-entry" />
       <label htmlFor="wd-shuffle">Shuffle Answers</label>
       </div >
       <div className="my-3 d-flex align-items-center">
-  <input type="checkbox"  onChange={handleSet} checked={quizDetails.timeLimit} className="form-check-input border form-border-gray me-2" name="check-website-url" id="wd-website-url" />
+  <input type="checkbox"  onChange={handleSet} checked={quizDetails.timeLimitCheckbox} className="form-check-input border form-border-gray me-2" name="timeLimitCheckbox" id="wd-website-url" />
   <label htmlFor="wd-website-url" className="me-3">Time Limit</label>
-  <input type="number" name="timeLimit" className="form-control me-2"  style={{ width: '50px' }} />
+  <input type="number" name="timeLimit" onChange={handleSet} value ={quizDetails.timeLimit} className="form-control me-2"  style={{ width: '50px' }} />
   Minutes
         </div>
         <div className='form-control border form-border-gray'>
-          <input type="checkbox"  onChange={handleSet} checked={quizDetails.multipleAttempts} className=" form-check-input me-3 border form-border-gray"  name="check-entry-options" id="wd-text-entry" />
+          <input type="checkbox"  onChange={handleSet} checked={quizDetails.multipleAttempts} className=" form-check-input me-3 border form-border-gray"  name="multipleAttempts" id="wd-text-entry" />
           <label htmlFor="wd-multuple-attempts">Allow Multiple Attempts</label>
                       </div>
 
