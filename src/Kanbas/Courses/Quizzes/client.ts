@@ -28,3 +28,19 @@ export const deleteQuizDetails = async (quizId: string) => {
     const response = await axios.delete(`${QUIZZES_API}/${quizId}`);
     return response.data;
 };
+
+
+export const addQuestionToQuiz = async (quizId: string, question: any) => {
+    const response = await axios.post(`${QUIZZES_API}/${quizId}/questions`, question);
+    return response.data;
+};
+
+export const removeQuestionFromQuiz = async (quizId:string, questionId: string) => {
+    const response = await axios.delete(`${QUIZZES_API}/${quizId}/questions/${questionId}`);
+    return response.data;
+};
+
+export const updateQuestionInQuiz = async (quizId: string, questionId: string, question: any) => {
+    const response = await axios.put(`${QUIZZES_API}/${quizId}/questions/${questionId}`, question);
+    return response.data;
+};
