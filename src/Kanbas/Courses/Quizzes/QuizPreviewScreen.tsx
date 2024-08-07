@@ -10,7 +10,7 @@ import FillInBlanksQuestion from './QuizPreview/FillInBlanksQuestion';
 interface Question {
   type: string;
   question:string,
-  answer:string,
+  answer:string[],
   options: { [key: string]: string },
   quiz: string,
   points:Number
@@ -51,7 +51,7 @@ function QuizPreviewScreen() {
     setCurrentQuestion((prev) => (prev > 0 ? prev - 1 : prev));
   };
 
-  const handleAnswerChange = (questionId: string, answer: string) => {
+  const handleAnswerChange = (questionId: string, answer: string[]) => {
     setAnswers((prev) => ({
       ...prev,
       [questionId]: answer,
@@ -59,6 +59,7 @@ function QuizPreviewScreen() {
   };
 
   const currentQuestionData = quiz.questions[currentQuestion];
+  console.log(currentQuestionData);
   let QuestionComponent = null;
 
   switch (currentQuestionData.type) {
@@ -80,6 +81,7 @@ function QuizPreviewScreen() {
       <h1>{quiz.title}</h1>
       <p>{quiz.description}</p>
       <div>
+        
         <h2>Question {currentQuestion + 1}</h2>
         <div>Type: {currentQuestionData.type}</div>
         {currentQuestionData.type === 'MCQ' && (

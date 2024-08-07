@@ -3,7 +3,7 @@ import React from 'react';
 interface QuestionProps {
   question: string;
   options: { }; // Object with keys as option identifiers
-  answer: string; // Changed type to string to match key
+  answer: string[]; // Changed type to string to match key
   onChange: (answer: string) => void; // Changed type to string to match key
 }
   
@@ -14,7 +14,7 @@ function FillInBlanksQuestion({ question, answer, onChange }: QuestionProps) {
 
           <input
             type="text"
-            value={answer || ''}
+            value={answer[0] || ''}
             onChange={(e) => onChange(e.target.value)}
           />
         </div>

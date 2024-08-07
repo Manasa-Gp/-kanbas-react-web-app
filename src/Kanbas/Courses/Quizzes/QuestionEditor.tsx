@@ -1,34 +1,34 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MultipleChoiceEditor from './QuestionEditor/MultipleChoiceEditor';
 import TrueFalseEditor from './QuestionEditor/TrueFalseEditor';
 import FillInBlanksEditor from './QuestionEditor/FillInBlanksEditor';
 
 export default function QuestionEditor() {
-  const { courseId, quizId } = useParams<{ courseId: string; quizId: string }>();
+  const { cid, qid } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [questionType, setQuestionType] = useState('multipleChoice');
+
+  const [questionType, setQuestionType] = useState('MCQ');
+  console.log("hasQuestionType");
+  console.log(questionType);
 
   const handleSave = (questionData:any) => {
-    // Placeholder for save logic
-    console.log('Saving data:', questionData);
-    // Navigate back to quiz details
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`);
+    navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`);
   };
 
   const handleCancel = () => {
-    navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`);
+    navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`);
   };
 
   const renderEditor = () => {
     switch (questionType) {
-      case 'multipleChoice':
+      case 'MCQ':
         return <MultipleChoiceEditor onSave={handleSave} onCancel={handleCancel} />;
-      case 'trueFalse':
+      case 'TF':
         return <TrueFalseEditor onSave={handleSave} onCancel={handleCancel} />;
-      case 'fillInBlanks':
+      case 'FIB':
         return <FillInBlanksEditor onSave={handleSave} onCancel={handleCancel} />;
       default:
         return null;
@@ -37,9 +37,9 @@ export default function QuestionEditor() {
   return (
     <div>
       <select value={questionType} onChange={(e) => setQuestionType(e.target.value)}>
-        <option value="multipleChoice">Multiple Choice</option>
-        <option value="trueFalse">True/False</option>
-        <option value="fillInBlanks">Fill in the Blanks</option>
+        <option value="MCQ">Multiple Choice</option>
+        <option value="TF">True/False</option>
+        <option value="FIB">Fill in the Blanks</option>
       </select>
       {renderEditor()}
     </div>

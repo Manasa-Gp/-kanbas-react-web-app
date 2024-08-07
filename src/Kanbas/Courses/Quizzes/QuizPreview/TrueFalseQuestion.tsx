@@ -3,12 +3,15 @@ import React from 'react';
 interface QuestionProps {
   question: string;
   options: { [key: string]: string }; // Object with keys as option identifiers
-  answer: string; // Changed type to string to match key
+  answer: string[]; // Changed type to string to match key
   onChange: (answer: string) => void; // Changed type to string to match key
 }
 
 
 function TrueFalseQuestion({ question, answer,options, onChange }: QuestionProps) {
+  console.log("TF")
+  console.log(answer);
+
   return (
     <div>
       <h4>{question}</h4>
@@ -16,12 +19,11 @@ function TrueFalseQuestion({ question, answer,options, onChange }: QuestionProps
               
       {options && Object.entries(options).map(([key, choice], index) => (
         <label key={index}>
-
           <input
             type="radio"
             name={`question-${question}`}
             value={key} // Use key for value
-            checked={answer === key} // Compare with key
+            checked={answer[0] === key} // Compare with key
             onChange={() => onChange(key)} // Pass key to onChange
           />
                     {key}

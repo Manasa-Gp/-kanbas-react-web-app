@@ -1,18 +1,13 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { FaTrash } from "react-icons/fa";
-
-interface Answer {
-  text: string;
-  isCorrect: boolean;
-}
+import { MdDeleteOutline } from 'react-icons/md';
 
 interface Question {
-  title: string;
+  question: string;
   points: number;
-  questionText: string;
-  choices: Answer[];
+  options: { text: string, isCorrect: boolean }[];
+  answer: string[]; // Array of strings for correct answers
 }
 
 interface Props {
@@ -22,50 +17,42 @@ interface Props {
 
 function MultipleChoiceEditor({ onSave, onCancel }: Props) {
   const [question, setQuestion] = useState<Question>({
-    title: '',
     points: 1,
-    questionText: '',
-    choices: [{ text: '', isCorrect: true }]
+    question: '',
+    options: [{ text: '', isCorrect: false }], // Initializing with one option
+    answer: [],
   });
 
   const handleAddChoice = () => {
     setQuestion({
       ...question,
-      choices: [...question.choices, { text: '', isCorrect: false }]
+      options: [...question.options, { text: '', isCorrect: false }]
     });
   };
 
-  const handleChoiceChange = (index: number, text: string) => {
-    const newChoices = question.choices.map((choice, i) => {
-      if (i === index) return { ...choice, text };
-      return choice;
-    });
-    setQuestion({ ...question, choices: newChoices });
+  const handleAnswerChange = (index: number, text: string) => {
+    const newOptions = question.options.map((option, i) =>
+      i === index ? { ...option, text } : option
+    );
+    setQuestion({ ...question, options: newOptions });
   };
 
-  const handleChoiceCorrectChange = (index: number) => {
-    const newChoices = question.choices.map((choice, i) => {
-      return { ...choice, isCorrect: i === index };
-    });
-    setQuestion({ ...question, choices: newChoices });
+  const handleCorrectChange = (index: number) => {
+    const newOptions = question.options.map((option, i) =>
+      ({ ...option, isCorrect: i === index })
+    );
+    setQuestion({ ...question, options: newOptions });
   };
 
   const handleRemoveChoice = (index: number) => {
-    const newChoices = question.choices.filter((_, i) => i !== index);
-    setQuestion({ ...question, choices: newChoices });
+    const newOptions = question.options.filter((_, i) => i !== index);
+    setQuestion({ ...question, options: newOptions });
   };
 
   return (
     <div>
-      <br/>
-      <input
-        type="text"
-        className="form-control mb-2"
-        placeholder="Question Title"
-        value={question.title}
-        onChange={(e) => setQuestion({ ...question, title: e.target.value })}
-      />
-      <h4>pts:</h4>
+      <br />
+      <h4>Points:</h4>
       <input
         type="number"
         className="form-control mb-2"
@@ -76,37 +63,38 @@ function MultipleChoiceEditor({ onSave, onCancel }: Props) {
       <h4>Question:</h4>
       <ReactQuill
         theme="snow"
-        value={question.questionText}
-        onChange={(value) => setQuestion({ ...question, questionText: value })}
+        value={question.question}
+        onChange={(value) => setQuestion({ ...question, question: value })}
       />
-      {question.choices.map((choice, index) => (
+      {question.options.map((option, index) => (
         <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <input
             type="radio"
-            name="correctAnswer"
-            checked={choice.isCorrect}
-            onChange={() => handleChoiceCorrectChange(index)}
-          />
+            name="correct"
+            checked={option.isCorrect}
+            onChange={() => handleCorrectChange(index)}
+          />&nbsp;
           <input
             type="text"
-            value={choice.text}
-            onChange={(e) => handleChoiceChange(index, e.target.value)}
+            value={option.text}
+            onChange={(e) => handleAnswerChange(index, e.target.value)}
             style={{ marginLeft: '10px', flexGrow: 1 }}
           />
-          {question.choices.length > 1 && (
+          {index !== 0 && (
             <button onClick={() => handleRemoveChoice(index)} className="text-danger me-4">
-            <FaTrash />
-          </button>
+              <MdDeleteOutline />
+            </button>
           )}
         </div>
       ))}
       <div className="mt-3">
-        <button className="btn btn-secondary "onClick={handleAddChoice}>Add Answer</button>
+        <button className="btn btn-secondary" onClick={handleAddChoice}>Add Answer</button>
         <button className="btn btn-success ms-2" onClick={() => onSave(question)}>Save</button>
         <button className="btn btn-danger ms-2" onClick={onCancel}>Cancel</button>
       </div>
-      <br/>
+      <br />
     </div>
   );
 }
+
 export default MultipleChoiceEditor;
