@@ -4,16 +4,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MultipleChoiceQuestion from './QuizPreview/MultipleChoiceQuestion';
 import TrueFalseQuestion from './QuizPreview/TrueFalseQuestion';
 import FillInBlanksQuestion from './QuizPreview/FillInBlanksQuestion';
-
-
+import {removeQuestionFromQuiz} from './client';
+import {updateQuiz} from './reducer';
 
 interface Question {
   type: string;
-  question:string,
-  answer:string[],
-  options: { [key: string]: string },
-  quiz: string,
-  points:Number
+  question: string;
+  answer: string[];
+  options: { [key: string]: string };
+  quiz: string;
+  points: number;
+  title: string;
 }
 
 interface Quiz {
@@ -58,8 +59,37 @@ function QuizPreviewScreen() {
     }));
   };
 
+  const handleDeleteQuestion = async() => {
+    try {
+      const questionId = currentQuestion;
+      await removeQuestionFromQuiz(qid, questionId);
+
+      // Update Redux store or local state
+      const updatedQuestions = quiz.questions.filter((_, index) => index !== currentQuestion);
+      dispatch(updateQuiz({ ...quiz, questions: updatedQuestions }));
+
+      // Move to the next question or previous one if it's the last question
+      if (currentQuestion >= updatedQuestions.length) {
+        setCurrentQuestion(updatedQuestions.length - 1);
+      } else {
+        setCurrentQuestion((prev) => (prev > 0 ? prev - 1 : prev));
+      }
+
+    } catch (error) {
+      console.error('Failed to delete question:', error);
+      // Handle error as needed, e.g., show an error message to the user
+    }
+  };
+
+
+  const handleEditQuestion = () => {
+    navigate(`/Kanbas/Courses/${cid}/Quizzes/edit/${qid}/questionedit/${currentQuestion}`);
+  };
+
   const currentQuestionData = quiz.questions[currentQuestion];
-  console.log(currentQuestionData);
+   console.log("testing");
+   console.log('Question Data:', JSON.stringify(currentQuestionData, null, 2));
+
   let QuestionComponent = null;
 
   switch (currentQuestionData.type) {
@@ -81,15 +111,15 @@ function QuizPreviewScreen() {
       <h1>{quiz.title}</h1>
       <p>{quiz.description}</p>
       <div>
-        
-        <h2>Question {currentQuestion + 1}</h2>
+        <h2>{currentQuestionData.title}</h2>
         <div>Type: {currentQuestionData.type}</div>
         {currentQuestionData.type === 'MCQ' && (
           <MultipleChoiceQuestion
             question={currentQuestionData.question}
             options={currentQuestionData.options}
             answer={currentQuestionData.answer}
-            onChange={(answer: any) => handleAnswerChange(currentQuestionData.question, answer)}
+            title = {currentQuestionData.title}
+            onChange={(answer:any) => handleAnswerChange(currentQuestionData.question, answer)}
           />
         )}
         {currentQuestionData.type === 'TF' && (
@@ -97,15 +127,17 @@ function QuizPreviewScreen() {
             question={currentQuestionData.question}
             options={currentQuestionData.options}
             answer={currentQuestionData.answer}
-            onChange={(answer: any) => handleAnswerChange(currentQuestionData.question, answer)}
+            title = {currentQuestionData.title}
+            onChange={(answer:any) => handleAnswerChange(currentQuestionData.question, answer)}
           />
         )}
-         {currentQuestionData.type === 'FIB' && (
+        {currentQuestionData.type === 'FIB' && (
           <FillInBlanksQuestion
             question={currentQuestionData.question}
             options={currentQuestionData.options}
             answer={currentQuestionData.answer}
-            onChange={(answer: any) => handleAnswerChange(currentQuestionData.question, answer)}
+            title = {currentQuestionData.title}
+            onChange={(answer:any) => handleAnswerChange(currentQuestionData.question, answer)}
           />
         )}
       </div>
@@ -115,6 +147,12 @@ function QuizPreviewScreen() {
         </button>
         <button onClick={handleNextQuestion} disabled={currentQuestion === quiz.questions.length - 1}>
           Next
+        </button>
+        <button onClick={handleEditQuestion}>
+          Edit Question
+        </button>
+        <button onClick={handleDeleteQuestion}>
+          Delete Question
         </button>
       </div>
     </div>

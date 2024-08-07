@@ -130,7 +130,7 @@ function QuizEditor() {
       <div className="my-3 d-flex align-items-center">
   <input type="checkbox"  name="timeLimitCheckbox" onChange={handleSet} checked={quizDetails.timeLimitCheckbox} className="form-check-input border form-border-gray me-2"  id="wd-website-url" />
   <label htmlFor="wd-website-url" className="me-3">Time Limit</label>
-  <input type="number" name="timeLimit" onChange={handleSet} value ={quizDetails.timeLimit} className="form-control me-2"  style={{ width: '50px' }} />
+  <input type="number" name="timeLimit" onChange={handleSet} value ={quizDetails.timeLimit} className="form-control me-2"  style={{ width: '80px' }} />
   Minutes
         </div>
         <div className='form-control border form-border-gray'>

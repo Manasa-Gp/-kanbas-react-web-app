@@ -4,10 +4,11 @@ interface QuestionProps {
   question: string;
   options: { }; // Object with keys as option identifiers
   answer: string[]; // Changed type to string to match key
+  title: string;
   onChange: (answer: string) => void; // Changed type to string to match key
 }
   
-function FillInBlanksQuestion({ question, answer, onChange }: QuestionProps) {
+function FillInBlanksQuestion({ question, answer ,onChange }: QuestionProps) {
   return (
     <div>
       <h4>{question}</h4>

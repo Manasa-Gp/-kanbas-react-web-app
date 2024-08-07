@@ -35,12 +35,12 @@ export const addQuestionToQuiz = async (quizId: string, question: any) => {
     return response.data;
 };
 
-export const removeQuestionFromQuiz = async (quizId:string, questionId: string) => {
+export const removeQuestionFromQuiz = async (quizId:any, questionId: any) => {
     const response = await axios.delete(`${QUIZZES_API}/${quizId}/questions/${questionId}`);
     return response.data;
 };
 
-export const updateQuestionInQuiz = async (quizId: string, questionId: string, question: any) => {
+export const updateQuestionInQuiz = async (quizId: string, questionId: any, question: any) => {
     const response = await axios.put(`${QUIZZES_API}/${quizId}/questions/${questionId}`, question);
     return response.data;
 };

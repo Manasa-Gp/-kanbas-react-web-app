@@ -4,13 +4,13 @@ interface QuestionProps {
   question: string;
   options: { [key: string]: string }; // Object with keys as option identifiers
   answer: string[]; // Changed type to string to match key
+  title: string;
   onChange: (answer: string) => void; // Changed type to string to match key
 }
 
 
-function TrueFalseQuestion({ question, answer,options, onChange }: QuestionProps) {
-  console.log("TF")
-  console.log(answer);
+function TrueFalseQuestion({ question, answer,options,title, onChange }: QuestionProps) {
+
 
   return (
     <div>

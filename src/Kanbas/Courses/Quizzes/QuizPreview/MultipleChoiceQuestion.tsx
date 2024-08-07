@@ -6,16 +6,15 @@ interface QuestionProps {
   question: string;
   options: { [key: string]: string }; // Object with keys as option identifiers
   answer: string[]; // Changed type to string to match key
+  title: string;
   onChange: (answer: string) => void; // Changed type to string to match key
 }
 
-function MultipleChoiceQuestion({ question, answer, options, onChange }: QuestionProps) {
-  console.log("Hello");
-  console.log(options);
+function MultipleChoiceQuestion({ question, answer, options,title, onChange }: QuestionProps) {
+
   return (
     <div>
       <p>{question}</p>
-      
       {options && Object.entries(options).map(([key, choice], index) => (
         <label key={index}>
 

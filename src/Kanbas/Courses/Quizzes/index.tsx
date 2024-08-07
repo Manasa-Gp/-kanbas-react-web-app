@@ -75,7 +75,7 @@ export default function Quizzes() {
                 </Link>
               <h6>
                 <p className="wd-fg-color-red">
-                  <span className="wd-fg-color-black"> | <b>Due</b> {'No Due Date'} | {0} pts</span>
+                  <span className="wd-fg-color-black"> | <b>Due</b> {q.due} | {q.points} pts</span>
                 </p>
               </h6>
             </div>
