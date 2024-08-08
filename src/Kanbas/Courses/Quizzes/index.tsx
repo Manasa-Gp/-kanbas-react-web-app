@@ -4,7 +4,7 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { setQuizzes } from './reducer';
-import { findQuizzesForCourse,deleteQuizDetails } from "./client";
+import { findQuizzesForCourse,deleteQuizDetails,toggleQuizPublish } from "./client";
 import {deleteQuiz} from "./reducer";
 import { MdArrowDropDown } from "react-icons/md";
 import { IoRocketOutline } from "react-icons/io5";
@@ -17,16 +17,26 @@ export default function Quizzes() {
   const dispatch = useDispatch();
   const {quizzes} = useSelector((state: any) => state.quizzesReducer);
   const mapQuiz = quizzes ? quizzes.filter((q: any) => q.course === cid):[];
+  const [quizList, setQuizListLocal] = useState<any[]>([]);
+
 
   const removeQuiz = async (quizId: string) => {
     await deleteQuizDetails(quizId);
     dispatch(deleteQuiz(quizId));
+  };
+  const updatePublishStatus = async (quizId: string, published: boolean) => {
+ 
+    await toggleQuizPublish(quizId,published);
+   
+    const quizzesData = await findQuizzesForCourse(cid as string);
+    dispatch(setQuizzes(quizzesData));
   };
 
   const loadQuizzes = async () => {
 
     if (cid) {
       const quizzesData = await findQuizzesForCourse(cid as string);
+      setQuizListLocal(quizzes);
       dispatch(setQuizzes(quizzesData));
     }
   };
@@ -35,8 +45,24 @@ export default function Quizzes() {
   };
   useEffect(() => {
     loadQuizzes();
-  }, []);
+  }, [cid]);
+  const getAvailabilityStatus = (availableDate: any, availableUntilDate: any) => {
+    
+    const currentDate = new Date();
+    const availableDateObj = new Date(availableDate);
+    const availableUntilDateObj = new Date(availableUntilDate);
 
+    if (currentDate > availableUntilDateObj) {
+
+      return 'Closed';
+    } else if (currentDate >= availableDateObj && currentDate <= availableUntilDateObj) {
+      return 'Available';
+    } else if (currentDate < availableDateObj) 
+      {
+
+        return `Not available until ${availableDate}`;
+      }
+  };
   return (
     <div id="wd-quizzes">
       <div className="d-flex justify-content-between mb-2">
@@ -64,7 +90,7 @@ export default function Quizzes() {
         Assignment Quizzes
         </div>
         <ul className="wd-lessons list-group rounded-0 wd-padded-left wd-bg-color-green">
-        {mapQuiz.map((q: any) => (
+        {quizList.map((q: any) => (
           <li key={q._id} className="wd-lesson list-group-item d-flex align-items-center p-3">
             <div className="icon-container me-2">
               <IoRocketOutline className="text-success fs-5" />
@@ -74,8 +100,9 @@ export default function Quizzes() {
                   {q.title}
                 </Link>
               <h6>
+          
                 <p className="wd-fg-color-red">
-                  <span className="wd-fg-color-black"> | <b>Due</b> {q.due} | {q.points} pts</span>
+                  <span className="wd-fg-color-black">{getAvailabilityStatus(q.availableFrom, q.availableUntil)} | <b>Due</b> {q.due} | {q.points} pts</span>
                 </p>
               </h6>
             </div>
@@ -94,7 +121,7 @@ export default function Quizzes() {
         <a className="dropdown-item" onClick={()=>removeQuiz(q._id)}>Delete</a>
     </li>
     <li>
-        <a className="dropdown-item" href="#" >Publish/Unpublish</a>
+        <a className="dropdown-item" onClick = {()=>updatePublishStatus(q._id, q.published)} >Publish/Unpublish</a>
     </li>
                 </ul>
              </div>

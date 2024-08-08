@@ -44,3 +44,7 @@ export const updateQuestionInQuiz = async (quizId: string, questionId: any, ques
     const response = await axios.put(`${QUIZZES_API}/${quizId}/questions/${questionId}`, question);
     return response.data;
 };
+export const toggleQuizPublish = async (quizId: any,published:boolean) => {
+    const response = await axios.put(`${QUIZZES_API}/${quizId}/publish`,{published});
+    return response.data;
+};
