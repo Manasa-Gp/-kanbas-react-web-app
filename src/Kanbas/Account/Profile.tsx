@@ -33,6 +33,13 @@ export default function Profile() {
       <h1>Profile</h1>
       {profile && (
         <div>
+            <input
+            value={profile._id}
+            onChange={(e) =>
+              setProfile({ ...profile, _id: e.target.value })
+            }
+            className="form-control mb-2"
+          />
           <input
             value={profile.username}
             onChange={(e) =>

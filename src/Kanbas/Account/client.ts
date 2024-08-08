@@ -18,6 +18,9 @@ export const profile = async () => {
   console.log("Profiler data:",response.data);
   return response.data;
 };
+
+
+
 export const signup = async (credentials: any) => {
   const response = await axiosWithCredentials.post(
     `${USERS_API}/signup`,
@@ -29,3 +32,14 @@ export const signout = async () => {
   const response = await axiosWithCredentials.post(`${USERS_API}/signout`);
   return response.data;
 };
+
+export const fetchCoursesByUserId = async (userId: any) => {
+  const response = await axios.get(`${USERS_API}/${userId}/courses`);
+  return response.data;
+};
+
+export const getUserEnrollments = async (userId: string) => {
+  const response = await axios.get(`${USERS_API}/${userId}/enrollments`);
+  return response.data;
+};
+

@@ -17,7 +17,7 @@ export default function Kanbas() {
     setCourses(courses);
   };
   useEffect(() => {
-    fetchCourses();
+    fetchCourses();;
   }, []);
 
   const [course, setCourse] = useState<any>({
@@ -80,3 +80,5 @@ export default function Kanbas() {
 </div>
 </Provider>
 );}
+
+
