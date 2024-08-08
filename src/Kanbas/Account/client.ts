@@ -38,8 +38,12 @@ export const fetchCoursesByUserId = async (userId: any) => {
   return response.data;
 };
 
-export const getUserEnrollments = async (userId: string) => {
-  const response = await axios.get(`${USERS_API}/${userId}/enrollments`);
-  return response.data;
+export const getUserEnrollments = async (username: string): Promise<string[]> => {
+  try {
+    const response = await axios.get(`${USERS_API}/${username}/enrollments`);
+    return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+    console.error("Error fetching user enrollments:", error);
+    throw error; 
+  }
 };
-

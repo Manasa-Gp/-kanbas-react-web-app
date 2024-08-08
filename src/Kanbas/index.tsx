@@ -4,20 +4,55 @@ import "./styles.css";
 import { Routes, Route, Navigate } from "react-router";
 import Courses from "./Courses";
 import * as client from "./Courses/client";
-
 import { useState,useEffect } from "react";
 import store from "./store";
 import { Provider } from "react-redux";
 import Account from "./Account";
 import ProtectedRoute from "./Account/ProtectedRoute";
+import * as profile_client from "./Account/client";
+
+
 export default function Kanbas() {
   const [courses, setCourses] = useState<any[]>([]);
+  const [profile, setProfile] = useState<any>({});
+
+
+
+  const fetchProfile = async () => {
+    try {
+      const account = await profile_client.profile();
+      setProfile(account);
+    } catch (err: any) {
+      console.log("Profiler error: react")
+    }
+  };
+ 
+ 
+
   const fetchCourses = async () => {
-    const courses = await client.fetchAllCourses();
-    setCourses(courses);
+    // const courses = await client.fetchAllCourses();
+    
+    const courses_ids = await profile_client.getUserEnrollments(profile.username);
+    console.log("*****************************************")
+    console.log("PROFILE USER NAME",profile.username );
+    console.log("COURSES IDS",courses_ids );
+    console.log("*****************************************")
+   
+    const filtered_courses = client.fetchCoursesByIds(courses_ids);
+
+
+    setCourses( await filtered_courses);
+
+   
   };
   useEffect(() => {
-    fetchCourses();;
+    fetchProfile();
+    console.log("PROFILE USER NAME",profile.username );
+    if (profile.username) {
+      fetchCourses();
+     
+    }
+   
   }, []);
 
   const [course, setCourse] = useState<any>({
