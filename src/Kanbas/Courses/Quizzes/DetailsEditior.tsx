@@ -5,6 +5,7 @@ import { createQuiz,updateQuizDetails } from './client';
 import {addQuiz,updateQuiz} from "./reducer";
 import QuestionEditor from './QuestionEditor';
 import { setQuizzes } from './reducer';
+import QuestionList from './QuestionList';
 
 function QuizEditor() {
   const { cid, qid } = useParams<{ cid: string; qid: string }>();
@@ -80,8 +81,11 @@ function QuizEditor() {
       <div className="nav nav-tabs">
         <button className={`nav-link ${activeTab === 'detail' ? 'active' : ''}`}
                 onClick={() => setActiveTab('detail')}>Details</button>
+        <button className={`nav-link ${activeTab === 'questionlist' ? 'active' : ''}`}
+                onClick={() => setActiveTab('questionlist')}>Questions</button>
         <button className={`nav-link ${activeTab === 'question' ? 'active' : ''}`}
-                onClick={() => setActiveTab('question')}>Questions</button>
+                onClick={() => setActiveTab('question')}>Questions Edit</button>
+ 
       </div>
       <br/>
       {activeTab === 'detail' && (
@@ -171,6 +175,14 @@ function QuizEditor() {
         </div>
       </div>
         </>
+      
+      
+      )}
+     {activeTab === 'questionlist' && (
+        <div>
+          <p>Questions editor will be implemented here.</p>
+          <QuestionList/>
+        </div>
       )}
       {activeTab === 'question' && (
         <div>
@@ -178,6 +190,7 @@ function QuizEditor() {
           <QuestionEditor/>
         </div>
       )}
+ 
       <div className="mt-3 row float-end me-3 mb-3" >
         <button style={{width: '150px'}} onClick={handleCancel} className="btn btn-secondary">Cancel</button>
         <button  style={{width: '150px'}} onClick = {saveQuiz} className="btn btn-danger ms-2">{qid ? 'Update' : 'Create'} & Save</button>

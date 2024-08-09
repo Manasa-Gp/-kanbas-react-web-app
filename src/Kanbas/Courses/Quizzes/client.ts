@@ -30,7 +30,7 @@ export const deleteQuizDetails = async (quizId: string) => {
 };
 
 
-export const addQuestionToQuiz = async (quizId: string, question: any) => {
+export const addQuestionToQuiz = async (quizId: any, question: any) => {
     const response = await axios.post(`${QUIZZES_API}/${quizId}/questions`, question);
     return response.data;
 };
