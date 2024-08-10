@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 export default function StudentDashboard({
   course,
   courses,
@@ -18,6 +17,12 @@ export default function StudentDashboard({
         My Courses ({courses.length})
       </h2> 
       <hr />
+      {/* Add Course Button */}
+      <div className="mb-3">
+        <Link to="/Kanbas/Courses/Add" className="btn btn-success">
+          Add Course
+        </Link>
+      </div>
       <div className="row" id="student-dashboard-courses">
         <div className="row row-cols-1 row-cols-md-5 g-4">
           {courses.map((course) => (
@@ -28,7 +33,6 @@ export default function StudentDashboard({
               >
                 <div className="card rounded-3 overflow-hidden">
                   <img src={`${course.images}`} height="190" />
-
                   <div className="card-body">
                     <span
                       className="wd-dashboard-course-link"

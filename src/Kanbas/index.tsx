@@ -10,6 +10,7 @@ import { Provider, useSelector } from "react-redux";
 import Account from "./Account";
 import ProtectedRoute from "./Account/ProtectedRoute";
 import * as profile_client from "./Account/client";
+import AddCourse from "./Dashboard/AddCourse";
 
 
 export default function Kanbas() {
@@ -36,6 +37,7 @@ export default function Kanbas() {
             <Route path="Courses/:cid/*" element={<ProtectedRoute><Courses /> </ProtectedRoute>} />
             <Route path="Calendar" element={<h1>Calendar</h1>} />
             <Route path="Inbox" element={<h1>Inbox</h1>} />
+            <Route path="Courses/Add" element={<AddCourse/>} />
       </Routes>
     </div>
   </div>

@@ -47,3 +47,13 @@ export const getUserEnrollments = async (username: string): Promise<string[]> =>
     throw error; 
   }
 };
+
+export const enrollInCourse = async (username: string, courseId: string): Promise<void> => {
+  try {
+    console.log("clients",username,courseId);
+    await axios.post(`${USERS_API}/${username}/enroll`, { courseId });
+  } catch (error) {
+    console.error("Error enrolling in course:", error);
+    throw error; 
+  }
+};
