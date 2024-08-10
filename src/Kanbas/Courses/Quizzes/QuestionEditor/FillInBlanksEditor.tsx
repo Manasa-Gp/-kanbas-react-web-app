@@ -1,204 +1,128 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { FaTrash } from "react-icons/fa";
+import { updateQuestionInQuiz, addQuestionToQuiz } from '../client';
+import { useNavigate } from 'react-router';
+
+
+
+interface Question {
+  question: string;
+  points: number;
+  options: { [key: string]: string }; // Object with keys as option identifiers
+  answer: string[]; // Changed type to string to match key
+  title: string;
+  quiz:string;
+  type:string;
+}
 
 interface FillInBlanksEditorProps {
-  onSave: (questionData: any) => void;
+  onSave: (questionData: Question) => void;
   onCancel: () => void;
+  question?: Question;
+  questindex?: number;
+  quizID: any;
 }
 
-interface Answer {
-  text: string;
-}
-
-interface QuestionData {
-  title: string;
-  points: number;
-  questionText: string;
-  correctAnswers: Answer[];
-}
-
-function FillInBlanksEditor({ onSave, onCancel }: FillInBlanksEditorProps) {
-  const [question, setQuestion] = useState<QuestionData>({
-    title: '',
-    points: 1,
-    questionText: '',
-    correctAnswers: [{ text: '' }]
+function FillInBlanksEditor({ question: initialQuestion, questindex: quesid, quizID: qid, onSave, onCancel }: FillInBlanksEditorProps) {
+  const navigate = useNavigate();
+  const [questionData, setQuestionData] = useState<Question>({
+    points: initialQuestion?.points || 5,
+    question:initialQuestion?.question || '',
+    options: initialQuestion?.options ||{ 'a': 'what'}, // Initializing with one option
+    answer: initialQuestion?.answer ||[],
+    title: initialQuestion?.title ||'',
+    type: initialQuestion?.type || 'FIB',
+    quiz: initialQuestion?.quiz || qid,
   });
 
+  useEffect(() => {
+    if (initialQuestion) {
+      setQuestionData(initialQuestion);
+    }
+  }, [initialQuestion]);
+
   const handleAnswerChange = (index: number, value: string) => {
-    let newAnswers = question.correctAnswers.map((answer, i) => {
-      if (i === index) {
-        return { ...answer, text: value };
-      }
-      return answer;
-    });
-    setQuestion({ ...question, correctAnswers: newAnswers });
+    const newAnswers = questionData.answer.map((answer, i) => 
+      i === index ? value : answer
+    );
+    setQuestionData(prevState => ({ ...prevState, answer: newAnswers }));
   };
-
+  
   const addAnswer = () => {
-    setQuestion({ ...question, correctAnswers: [...question.correctAnswers, { text: '' }] });
+    setQuestionData(prevState => ({
+      ...prevState,
+      answer: [...prevState.answer, '']
+    }));
+  };
+  
+  const removeAnswer = (index: number) => {
+    const newAnswers = questionData.answer.filter((_, i) => i !== index);
+    setQuestionData(prevState => ({ ...prevState, answer: newAnswers }));
   };
 
-  const removeAnswer = (index: number) => {
-    let newAnswers = question.correctAnswers.filter((_, i) => i !== index);
-    setQuestion({ ...question, correctAnswers: newAnswers });
+  const handleSave = async () => {
+    try {
+      if (initialQuestion) {
+        await updateQuestionInQuiz(qid, quesid, questionData);
+      } else {
+        await addQuestionToQuiz(qid, questionData);
+      }
+      // Optionally navigate or handle success as needed
+      // navigate('/some-path'); // if you want to navigate after saving
+    } catch (error) {
+      console.error('Failed to save question:', error);
+      // Handle error as needed, e.g., show an error message to the user
+    }
   };
 
   return (
-    <div>
-      <br/>
+    <div style={{ display: "flex", flexDirection: "column", margin: "20px", padding: "20px" }}>
       <input
         type="text"
         className="form-control mb-2"
         placeholder="Question Title"
-        value={question.title}
-        onChange={(e) => setQuestion({ ...question, title: e.target.value })}
+        value={questionData.title}
+        onChange={(e) => setQuestionData({ ...questionData, title: e.target.value })}
       />
-      <h4>pts:</h4>
+      <h4>Points:</h4>
       <input
         type="number"
         className="form-control mb-2"
         placeholder="Points"
-        value={question.points}
-        onChange={(e) => setQuestion({ ...question, points: parseInt(e.target.value, 10) })}
+        value={questionData.points}
+        onChange={(e) => setQuestionData({ ...questionData, points: parseInt(e.target.value, 10) })}
       />
       <h4>Question:</h4>
-      <ReactQuill theme="snow" value={question.questionText} onChange={(value) => setQuestion({ ...question, questionText: value })} />
-      {question.correctAnswers.map((answer, index) => (
+      <ReactQuill
+        theme="snow"
+        value={questionData.question}
+        onChange={(value) => setQuestionData({ ...questionData, question: value })}
+      />
+      {questionData.answer.map((answer, index) => (
         <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-          <input type="text" placeholder="Correct Answer" value={answer.text} onChange={(e) => handleAnswerChange(index, e.target.value)} />
-          <br/>
-          <button onClick={() => removeAnswer(index)} className="text-danger me-4">
-            <FaTrash />
-          </button>
+          <input
+            type="text"
+            placeholder="Correct Answer"
+            value={answer}
+            onChange={(e) => handleAnswerChange(index, e.target.value)}
+            style={{ marginRight: '10px' }}
+          />
+          {questionData.answer.length > 1 && (
+            <button onClick={() => removeAnswer(index)} className="text-danger">
+              <FaTrash />
+            </button>
+          )}
         </div>
       ))}
       <div className="mt-3">
-        <button className="btn btn-secondary "onClick={addAnswer}>Add Answer</button>
-        <button className="btn btn-success ms-2" onClick={onSave}>Save</button>
+        <button className="btn btn-secondary" onClick={addAnswer}>Add Answer</button>
+        <button className="btn btn-success ms-2" onClick={handleSave}>Save</button>
         <button className="btn btn-danger ms-2" onClick={onCancel}>Cancel</button>
       </div>
-      <br/>
     </div>
   );
 }
+
 export default FillInBlanksEditor;
-
-
-// import React, { useState } from 'react';
-// import ReactQuill from 'react-quill';
-// import 'react-quill/dist/quill.snow.css';
-// import { FaTrash } from "react-icons/fa";
-// import { addQuestionToQuiz, updateQuestionInQuiz, removeQuestionFromQuiz } from '../client';
-
-// interface FillInBlanksEditorProps {
-//   onSave: (questionData: any) => void;
-//   onCancel: () => void;
-//   quizId: any;
-//   questionId?: string; // Optional for editing an existing question
-// }
-
-// interface Answer {
-//   text: string;
-// }
-
-// interface QuestionData {
-//   title: string;
-//   points: number;
-//   questionText: string;
-//   correctAnswers: Answer[];
-// }
-
-// function FillInBlanksEditor({ onSave, onCancel, quizId, questionId }: FillInBlanksEditorProps) {
-//   const [question, setQuestion] = useState<QuestionData>({
-//     title: '',
-//     points: 1,
-//     questionText: '',
-//     correctAnswers: [{ text: '' }]
-//   });
-
-//   const handleAnswerChange = (index: number, value: string) => {
-//     let newAnswers = question.correctAnswers.map((answer, i) => {
-//       if (i === index) {
-//         return { ...answer, text: value };
-//       }
-//       return answer;
-//     });
-//     setQuestion({ ...question, correctAnswers: newAnswers });
-//   };
-
-//   const addAnswer = () => {
-//     setQuestion({ ...question, correctAnswers: [...question.correctAnswers, { text: '' }] });
-//   };
-
-//   const removeAnswer = (index: number) => {
-//     let newAnswers = question.correctAnswers.filter((_, i) => i !== index);
-//     setQuestion({ ...question, correctAnswers: newAnswers });
-//   };
-
-//   const handleSave = async () => {
-//     try {
-//       if (questionId) {
-//         await updateQuestionInQuiz(quizId, questionId, question); // Update existing question
-//       } else {
-//         await addQuestionToQuiz(quizId, question); // Add new question
-//       }
-//       onSave(question);
-//     } catch (error) {
-//       console.error("Error saving question:", error);
-//     }
-//   };
-
-//   const handleDelete = async (index: number) => {
-//     try {
-//       if (questionId) {
-//         await removeQuestionFromQuiz(quizId, questionId); // Remove question from quiz
-//       }
-//       removeAnswer(index); // Remove answer locally
-//     } catch (error) {
-//       console.error("Error deleting question:", error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <br/>
-//       <input
-//         type="text"
-//         className="form-control mb-2"
-//         placeholder="Question Title"
-//         value={question.title}
-//         onChange={(e) => setQuestion({ ...question, title: e.target.value })}
-//       />
-//       <h4>pts:</h4>
-//       <input
-//         type="number"
-//         className="form-control mb-2"
-//         placeholder="Points"
-//         value={question.points}
-//         onChange={(e) => setQuestion({ ...question, points: parseInt(e.target.value, 10) })}
-//       />
-//       <h4>Question:</h4>
-//       <ReactQuill theme="snow" value={question.questionText} onChange={(value) => setQuestion({ ...question, questionText: value })} />
-//       {question.correctAnswers.map((answer, index) => (
-//         <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-//           <input type="text" placeholder="Correct Answer" value={answer.text} onChange={(e) => handleAnswerChange(index, e.target.value)} />
-//           <br/>
-//           <button onClick={() => handleDelete(index)} className="text-danger me-4">
-//             <FaTrash />
-//           </button>
-//         </div>
-//       ))}
-//       <div className="mt-3">
-//         <button className="btn btn-secondary" onClick={addAnswer}>Add Answer</button>
-//         <button className="btn btn-success ms-2" onClick={handleSave}>Save</button>
-//         <button className="btn btn-danger ms-2" onClick={onCancel}>Cancel</button>
-//       </div>
-//       <br/>
-//     </div>
-//   );
-// }
-
-// export default FillInBlanksEditor;

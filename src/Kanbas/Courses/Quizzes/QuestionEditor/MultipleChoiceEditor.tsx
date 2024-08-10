@@ -1,254 +1,150 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { FaTrash } from "react-icons/fa";
-
-interface Answer {
-  text: string;
-  isCorrect: boolean;
-}
+import { MdDeleteOutline } from 'react-icons/md';
+import { updateQuestionInQuiz,addQuestionToQuiz } from '../client';
+import { useNavigate } from 'react-router';
 
 interface Question {
-  title: string;
+  question: string;
   points: number;
-  questionText: string;
-  choices: Answer[];
+  options: { [key: string]: string }; // Object with keys as option identifiers
+  answer: string[]; // Changed type to string to match key
+  title: string;
+  quiz:string;
+  type:string;
 }
 
 interface Props {
   onSave: (question: Question) => void;
   onCancel: () => void;
+  question?: Question;
+  questindex?:number; //
+  quizID:any; //
 }
-
-function MultipleChoiceEditor({ onSave, onCancel }: Props) {
-  const [question, setQuestion] = useState<Question>({
-    title: '',
-    points: 1,
-    questionText: '',
-    choices: [{ text: '', isCorrect: true }]
+function MultipleChoiceEditor({question: initialQuestion,questindex: quesid ,quizID: qid,onSave, onCancel }: Props) {
+  const navigate = useNavigate();
+  const [questionData, setQuestionData] = useState<Question>({
+    points: initialQuestion?.points || 5,
+    question:initialQuestion?.question || '',
+    options: initialQuestion?.options ||{ 'a': 'what'}, // Initializing with one option
+    answer: initialQuestion?.answer ||[],
+    title: initialQuestion?.title ||'',
+    type: initialQuestion?.type || 'MCQ',
+    quiz: initialQuestion?.quiz || qid,
   });
 
+  useEffect(() => {
+    if (initialQuestion) {
+      setQuestionData(initialQuestion);
+    }
+  }, [initialQuestion]);
+
   const handleAddChoice = () => {
-    setQuestion({
-      ...question,
-      choices: [...question.choices, { text: '', isCorrect: false }]
+    const newOptionKey = `option${Object.keys(questionData.options).length + 1}`;
+    setQuestionData({
+      ...questionData,
+      options: { ...questionData.options, [newOptionKey]: '' },
     });
   };
 
-  const handleChoiceChange = (index: number, text: string) => {
-    const newChoices = question.choices.map((choice, i) => {
-      if (i === index) return { ...choice, text };
-      return choice;
+  const handleAnswerChange = (key: string, text: string) => {
+    setQuestionData(prev => ({
+      ...prev,
+      options: {
+        ...prev.options,
+        [key]: text
+      }
+    }));
+
+  };
+
+  const handleCorrectChange = (key: string) => {
+    setQuestionData({
+      ...questionData,
+      answer: [key]
     });
-    setQuestion({ ...question, choices: newChoices });
   };
 
-  const handleChoiceCorrectChange = (index: number) => {
-    const newChoices = question.choices.map((choice, i) => {
-      return { ...choice, isCorrect: i === index };
+  const handleRemoveChoice = (key: string) => {
+    const newOptions = { ...questionData.options };
+    delete newOptions[key];
+    setQuestionData({
+      ...questionData,
+      options: newOptions
     });
-    setQuestion({ ...question, choices: newChoices });
   };
-
-  const handleRemoveChoice = (index: number) => {
-    const newChoices = question.choices.filter((_, i) => i !== index);
-    setQuestion({ ...question, choices: newChoices });
+  const removeSpecificTags = (html: string): string => {
+    // Remove only </p> tags
+    return html.replace(/<\/p>/gi, '');
   };
+  
 
+
+  const handleSave = async () => {
+    try {
+      if (initialQuestion) {
+       
+
+        await updateQuestionInQuiz(qid, quesid, questionData);
+      } else {
+        await addQuestionToQuiz(qid, questionData);
+      }    } catch (error) {
+      console.error('Failed to save question:', error);
+      // Handle error as needed, e.g., show an error message to the user
+    }
+  
+
+  };
+ 
   return (
     <div>
-      <br/>
-      <input
-        type="text"
-        className="form-control mb-2"
-        placeholder="Question Title"
-        value={question.title}
-        onChange={(e) => setQuestion({ ...question, title: e.target.value })}
-      />
-      <h4>pts:</h4>
+
+      <br />
+      <h4>Points:</h4>
       <input
         type="number"
         className="form-control mb-2"
         placeholder="Points"
-        value={question.points}
-        onChange={(e) => setQuestion({ ...question, points: parseInt(e.target.value, 10) })}
+        value={questionData.points}
+        onChange={(e) => setQuestionData({ ...questionData, points: parseInt(e.target.value, 10) })}
       />
       <h4>Question:</h4>
       <ReactQuill
         theme="snow"
-        value={question.questionText}
-        onChange={(value) => setQuestion({ ...question, questionText: value })}
+        value={questionData.question}
+        onChange={(value) => setQuestionData({ ...questionData, question: value })}
+
       />
-      {question.choices.map((choice, index) => (
-        <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+       {Object.entries(questionData.options).map(([key, value]) => (
+        <div key={key} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <input
             type="radio"
-            name="correctAnswer"
-            checked={choice.isCorrect}
-            onChange={() => handleChoiceCorrectChange(index)}
-          />
+            name="correct"
+            checked={questionData.answer[0]=== key}
+            onChange={() => handleCorrectChange(key)}
+          />&nbsp;
           <input
             type="text"
-            value={choice.text}
-            onChange={(e) => handleChoiceChange(index, e.target.value)}
+            value={value}
+            onChange={(e) => handleAnswerChange(key, e.target.value)}
             style={{ marginLeft: '10px', flexGrow: 1 }}
           />
-          {question.choices.length > 1 && (
-            <button onClick={() => handleRemoveChoice(index)} className="text-danger me-4">
-            <FaTrash />
-          </button>
+          {Object.keys(questionData.options).length > 1 && (
+            <button onClick={() => handleRemoveChoice(key)} className="text-danger me-4">
+              <MdDeleteOutline />
+            </button>
           )}
         </div>
       ))}
       <div className="mt-3">
-        <button className="btn btn-secondary "onClick={handleAddChoice}>Add Answer</button>
-        <button className="btn btn-success ms-2" onClick={() => onSave(question)}>Save</button>
+        <button className="btn btn-secondary" onClick={handleAddChoice}>Add Answer</button>
+        <button className="btn btn-success ms-2" onClick={handleSave}>Save</button>
         <button className="btn btn-danger ms-2" onClick={onCancel}>Cancel</button>
       </div>
-      <br/>
+      <br />
     </div>
   );
 }
+
 export default MultipleChoiceEditor;
-
-
-// import React, { useState, ChangeEvent } from 'react';
-// import ReactQuill from 'react-quill';
-// import 'react-quill/dist/quill.snow.css';
-// import { FaTrash } from "react-icons/fa";
-// import { addQuestionToQuiz, updateQuestionInQuiz, removeQuestionFromQuiz } from '../client';
-
-// interface Answer {
-//   text: string;
-//   isCorrect: boolean;
-// }
-
-// interface Question {
-//   title: string;
-//   points: number;
-//   questionText: string;
-//   choices: Answer[];
-// }
-
-// interface Props {
-//   onSave: (question: Question) => void;
-//   onCancel: () => void;
-//   quizId: any;
-//   questionId?: string; // Optional for editing an existing question
-// }
-
-// function MultipleChoiceEditor({ onSave, onCancel, quizId, questionId }: Props) {
-//   const [question, setQuestion] = useState<Question>({
-//     title: '',
-//     points: 1,
-//     questionText: '',
-//     choices: [{ text: '', isCorrect: true }]
-//   });
-
-//   const handleAddChoice = () => {
-//     setQuestion({
-//       ...question,
-//       choices: [...question.choices, { text: '', isCorrect: false }]
-//     });
-//   };
-
-//   const handleChoiceChange = (index: number, text: string) => {
-//     const newChoices = question.choices.map((choice, i) => {
-//       if (i === index) return { ...choice, text };
-//       return choice;
-//     });
-//     setQuestion({ ...question, choices: newChoices });
-//   };
-
-//   const handleChoiceCorrectChange = (index: number) => {
-//     const newChoices = question.choices.map((choice, i) => {
-//       return { ...choice, isCorrect: i === index };
-//     });
-//     setQuestion({ ...question, choices: newChoices });
-//   };
-
-//   const handleRemoveChoice = (index: number) => {
-//     const newChoices = question.choices.filter((_, i) => i !== index);
-//     setQuestion({ ...question, choices: newChoices });
-//   };
-
-//   const handleSave = async () => {
-//     try {
-//       if (questionId) {
-//         await updateQuestionInQuiz(quizId, questionId, question); // Update existing question
-//       } else {
-//         await addQuestionToQuiz(quizId, question); // Add new question
-//       }
-//       onSave(question);
-//     } catch (error) {
-//       console.error("Error saving question:", error);
-//     }
-//   };
-
-//   const handleDelete = async (index: number) => {
-//     try {
-//       if (questionId) {
-//         await removeQuestionFromQuiz(quizId, questionId); // Remove question from quiz
-//       }
-//       handleRemoveChoice(index); // Remove choice locally
-//     } catch (error) {
-//       console.error("Error deleting question:", error);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <br/>
-//       <input
-//         type="text"
-//         className="form-control mb-2"
-//         placeholder="Question Title"
-//         value={question.title}
-//         onChange={(e) => setQuestion({ ...question, title: e.target.value })}
-//       />
-//       <h4>pts:</h4>
-//       <input
-//         type="number"
-//         className="form-control mb-2"
-//         placeholder="Points"
-//         value={question.points}
-//         onChange={(e) => setQuestion({ ...question, points: parseInt(e.target.value, 10) })}
-//       />
-//       <h4>Question:</h4>
-//       <ReactQuill
-//         theme="snow"
-//         value={question.questionText}
-//         onChange={(value) => setQuestion({ ...question, questionText: value })}
-//       />
-//       {question.choices.map((choice, index) => (
-//         <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-//           <input
-//             type="radio"
-//             name="correctAnswer"
-//             checked={choice.isCorrect}
-//             onChange={() => handleChoiceCorrectChange(index)}
-//           />
-//           <input
-//             type="text"
-//             value={choice.text}
-//             onChange={(e) => handleChoiceChange(index, e.target.value)}
-//             style={{ marginLeft: '10px', flexGrow: 1 }}
-//           />
-//           {question.choices.length > 1 && (
-//             <button onClick={() => handleDelete(index)} className="text-danger me-4">
-//               <FaTrash />
-//             </button>
-//           )}
-//         </div>
-//       ))}
-//       <div className="mt-3">
-//         <button className="btn btn-secondary" onClick={handleAddChoice}>Add Answer</button>
-//         <button className="btn btn-success ms-2" onClick={handleSave}>Save</button>
-//         <button className="btn btn-danger ms-2" onClick={onCancel}>Cancel</button>
-//       </div>
-//       <br/>
-//     </div>
-//   );
-// }
-
-// export default MultipleChoiceEditor;

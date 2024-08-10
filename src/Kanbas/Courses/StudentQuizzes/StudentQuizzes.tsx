@@ -3,27 +3,22 @@ import { FaPlus } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { setQuizzes } from './reducer';
-import { findQuizzesForCourse,deleteQuizDetails,toggleQuizPublish } from "./client";
-import {deleteQuiz} from "./reducer";
+import { setQuizzes } from '../Quizzes/reducer';
+import { findQuizzesForCourse,toggleQuizPublish } from "../Quizzes/client";
 import { MdArrowDropDown } from "react-icons/md";
 import { IoRocketOutline } from "react-icons/io5";
-import GreenCheckmark from './GreenCheckmark';
-import RedBan from './RedBan';
 
-export default function Quizzes() {
-  const { cid } = useParams();
+
+export default function StudentQuizzes() {
+  const { cid,qid } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {quizzes} = useSelector((state: any) => state.quizzesReducer);
-  const mapQuiz = quizzes ? quizzes.filter((q: any) => q.course === cid):[];
+  const quiz = quizzes.find((q: any) => q._id === qid);
   const [quizList, setQuizListLocal] = useState<any[]>([]);
 
 
-  const removeQuiz = async (quizId: string) => {
-    await deleteQuizDetails(quizId);
-    dispatch(deleteQuiz(quizId));
-  };
+
   const updatePublishStatus = async (quizId: string, published: boolean) => {
  
     await toggleQuizPublish(quizId,published);
@@ -33,7 +28,7 @@ export default function Quizzes() {
   };
 
   const loadQuizzes = async () => {
-
+     console.log('Loading sq');
     if (cid) {
       const quizzesData = await findQuizzesForCourse(cid as string);
       setQuizListLocal(quizzesData);
@@ -65,22 +60,7 @@ export default function Quizzes() {
   };
   return (
     <div id="wd-quizzes">
-      <div className="d-flex justify-content-between mb-2">
-        <input type="text" className="form-control" placeholder="Search for Quiz" style={{ maxWidth: '300px' }} />
-        <div>
-          <button onClick={handleAddQuiz}  className="btn btn-lg btn-danger me-1">
-            <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} /> Add Quiz
-          </button>
-          <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-              <IoEllipsisVertical className="position-relative" style={{ fontSize: '30px' }} />
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a className="dropdown-item" href="#" >Delete All Quizzes</a></li>
-              <li><a className="dropdown-item" href="#">Publish All</a></li>
-              <li><a className="dropdown-item" href="#">Unpublish All</a></li>
-            </ul>
-        </div>
-      </div>
+    
       <hr />
       <br/>
         <ul id="wd-modules" className="list-group rounded-0">
@@ -96,7 +76,8 @@ export default function Quizzes() {
               <IoRocketOutline className="text-success fs-5" />
             </div>
             <div className="quiz-details flex-grow-1">
-                <Link to={`/Kanbas/Courses/${cid}/Quizzes/Details/${q._id}`} className="wd-quiz-link">
+            {q._id}
+                <Link to={`/Kanbas/Courses/${cid}/Quizzes/attempt/${q._id}`} className="wd-quiz-link">
                   {q.title}
                 </Link>
               <h6>
@@ -107,7 +88,6 @@ export default function Quizzes() {
               </h6>
             </div>
             <div className="d-flex align-items-center">
-            {q.published ? <GreenCheckmark /> : <RedBan />}
               <div className="dropdown">
                 <button className="btn dropdown-toggle " type="button" id="quizMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                   <IoEllipsisVertical style={{ fontSize: '20px' }} />
@@ -117,9 +97,7 @@ export default function Quizzes() {
                  <Link to={`/Kanbas/Courses/${cid}/Quizzes/edit/${q._id}`} className="">
                  Edit</Link>
     </li>
-    <li>
-        <a className="dropdown-item" onClick={()=>removeQuiz(q._id)}>Delete</a>
-    </li>
+
     <li>
         <a className="dropdown-item" onClick = {()=>updatePublishStatus(q._id, q.published)} >Publish/Unpublish</a>
     </li>

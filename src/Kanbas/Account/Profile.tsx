@@ -2,7 +2,7 @@ import * as client from "./client";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCurrentUser } from "./reducer";
+import { clearProfile, setCurrentUser,setProfileUser } from "./reducer";
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>({});
@@ -12,6 +12,7 @@ export default function Profile() {
   const fetchProfile = async () => {
     try {
       const account = await client.profile();
+      dispatch(setProfileUser(account));
       setProfile(account);
     } catch (err: any) {
       console.log("Profiler error: react")
@@ -20,6 +21,8 @@ export default function Profile() {
   };
   const signout = async () => {
     await client.signout();
+    console.log("signout 2");
+    dispatch(clearProfile());
     dispatch(setCurrentUser(null));
 
     navigate("/Kanbas/Account/Signin");

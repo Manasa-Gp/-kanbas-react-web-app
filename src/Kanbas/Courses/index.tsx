@@ -11,12 +11,19 @@ import PeopleTable from "./people/table";
 import Quizzes from "./Quizzes";
 import QuizEditor from "./Quizzes/DetailsEditior";
 import QuizDetails from "./Quizzes/QuizDetailsScreen";
+import StudentQuizzes from "./StudentQuizzes/StudentQuizzes";
 import QuizPreviewScreen from "./Quizzes/QuizPreviewScreen";
+import { useSelector } from "react-redux";
+import AttemptQuiz from "./StudentQuizzes/AttemptQuizPage";
+import QuizPage from "./StudentQuizzes/QuizPage";
+import QuizReview from "./StudentQuizzes/QuizReview";
 export default function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   console.log(cid);
   const course = courses.find((course) => course._id === cid);
   const { pathname } = useLocation();
+  const profileUser = useSelector((state: any) => state.accountReducer.profile) || null;
+
   return (
     <div id="wd-courses">
    
@@ -41,11 +48,16 @@ export default function Courses({ courses }: { courses: any[]; }) {
           <Route path="Grades" element={<Grades />} />
           <Route path="People" element={<PeopleTable />} />
           <Route path="People/:uid" element={<PeopleTable />} />
-          <Route path="Quizzes" element={<Quizzes />} />
+          {/* Conditional rendering based on the role */}
+          <Route path="Quizzes" element={profileUser?.role === "STUDENT" ? <StudentQuizzes /> : <Quizzes />} />
+          <Route path="Quizzes/attempt/:qid" element={<AttemptQuiz />} />
           <Route path="Quizzes/edit/:qid" element={<QuizEditor />} />
           <Route path="Quizzes/Details/:qid" element={<QuizDetails />} /> 
           <Route path="Quizzes/new" element={<QuizEditor />} />
+          <Route path="Quizzes/start/:qid" element={<QuizPage />} />
           <Route path="Quizzes/preview/:qid" element={<QuizPreviewScreen />} />
+          <Route path="/Quizzes/review/:qid" element={<QuizReview />} />
+
           
         </Routes>
       </div>
