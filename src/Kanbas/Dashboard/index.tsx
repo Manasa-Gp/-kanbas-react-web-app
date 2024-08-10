@@ -24,19 +24,7 @@ export default function Dashboard({
    startDate: "2023-09-10", endDate: "2023-12-15", description: "New Description",
  });
  
-  useEffect(() => {
-  
-      fetchCourses();
-    
- 
-  }, []);
 
-  const fetchCourses = async () => {
-    const courses = await client.fetchAllCourses();
-    setCourses(courses);
-
-   
-  };
 
   const addNewCourse = async () => {
     const newCourse = await client.createCourse(course);
