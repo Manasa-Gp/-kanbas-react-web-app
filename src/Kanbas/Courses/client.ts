@@ -23,7 +23,7 @@ export const updateCourse = async (course: any) => {
   return response.data;
 };
 
-export const fetchCoursesByIds = async (ids: string[]): Promise<any[]> => {
+export const fetchCoursesByIds = async (ids: any): Promise<any[]> => {
   const response = await axios.get(`${COURSES_API}/ids`, {
     params: { ids } 
   });

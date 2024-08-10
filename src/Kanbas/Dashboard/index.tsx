@@ -5,34 +5,67 @@ import FacultyDashboard from "./FacultyDashboard";
 import StudentDashboard from "./StudentDashboard";
 import * as profile_client from "../Account/client";
 import * as client from "../Courses/client";
-import { setCourses } from "../Courses/reducer";
+import { setTheCourses } from "../Courses/reducer";
 
 const generateUniqueId = () => '_' + Math.random().toString(36).slice(2, 9);
 
 export default function Dashboard({
-  courses,
-  course,
-  setCourse,
-  addNewCourse,
-  deleteCourse,
-  updateCourse,
+
 }: {
-  courses: any[];
-  course: any;
-  setCourse: (course: any) => void;
-  addNewCourse: () => void;
-  deleteCourse: (course: any) => void;
-  updateCourse: () => void;
+
 }) 
 
 {
   const [isNewCourse, setIsNewCourse] = useState(false);
-  const [filteredCourses, setFilteredCourses] = useState(courses);
   const dispatch = useDispatch();
+  const [courses, setCourses] = useState<any[]>([]);
+  const [course, setCourse] = useState<any>({
+    name: "New Course", number: "New Number",
+   startDate: "2023-09-10", endDate: "2023-12-15", description: "New Description",
+ });
+ 
+  useEffect(() => {
+  
+      fetchCourses();
+    
+ 
+  }, []);
 
+  const fetchCourses = async () => {
+    const courses = await client.fetchAllCourses();
+    setCourses(courses);
+
+   
+  };
+
+  const addNewCourse = async () => {
+    const newCourse = await client.createCourse(course);
+    setCourses([ ...courses, newCourse ]);
+  };
+
+  const deleteCourse = async (courseId: string) => {
+    await client.deleteCourse(courseId);
+    setCourses(courses.filter(
+      (c) => c._id !== courseId));
+  };
+
+  const updateCourse = async () => {
+    console.log('updateCourse');
+    await client.updateCourse(course);
+    setCourses(
+      courses.map((c) => {
+        if (c._id === course._id) {
+          return course;
+        } else {
+          return c;
+        }
+      })
+    );
+
+  };
        
   const profileUser = useSelector((state: any) => state.accountReducer.profile)||null;
-
+  console.log("aloha");
 
   const handleAddNewCourse = () => {
     const newCourse = { ...course, id: generateUniqueId(), }; 
@@ -47,9 +80,8 @@ export default function Dashboard({
         if (profileUser && (profileUser.role === "STUDENT" || profileUser.role === "FACULTY")) {
           const coursesIds = await profile_client.getUserEnrollments(profileUser.username);
           const fetchedCourses = await client.fetchCoursesByIds(coursesIds);
-
-          setFilteredCourses(fetchedCourses);
-
+          setCourses(fetchedCourses);
+          dispatch(setTheCourses(fetchedCourses));
           
           console.log("Fetched Courses:", fetchedCourses);
         }
@@ -76,7 +108,7 @@ export default function Dashboard({
   if (profileUser.role === "STUDENT") {
     return (
       <StudentDashboard
-        courses={filteredCourses}
+        courses={courses}
         course={course}
       />
     );
