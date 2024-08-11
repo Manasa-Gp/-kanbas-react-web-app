@@ -160,6 +160,8 @@ function QuizPage() {
         }));
         dispatch(addAttempt(newAttempt));
       }
+      navigate(`/Kanbas/Courses/${cid}/Quizzes/review/${qid}`);
+
     };
   
     const currentQuestionData = quiz.questions[currentQuestion];
