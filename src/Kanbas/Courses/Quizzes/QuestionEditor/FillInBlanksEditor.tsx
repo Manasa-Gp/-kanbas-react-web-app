@@ -66,6 +66,7 @@ function FillInBlanksEditor({ question: initialQuestion, questindex: quesid, qui
     try {
       if (initialQuestion) {
         await updateQuestionInQuiz(qid, quesid, questionData);
+        onSave(questionData);
       } else {
         await addQuestionToQuiz(qid, questionData);
       }

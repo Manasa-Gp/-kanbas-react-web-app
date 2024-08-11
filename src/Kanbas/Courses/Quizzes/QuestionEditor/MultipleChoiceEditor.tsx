@@ -110,6 +110,7 @@ function MultipleChoiceEditor({question: initialQuestion,questindex: quesid ,qui
         quiz: qid,
       });
     }
+    onCancel();
   };
 
  

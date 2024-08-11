@@ -4,8 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MultipleChoiceQuestion from './QuizPreview/MultipleChoiceQuestion';
 import TrueFalseQuestion from './QuizPreview/TrueFalseQuestion';
 import FillInBlanksQuestion from './QuizPreview/FillInBlanksQuestion';
-import {removeQuestionFromQuiz} from './client';
-import {updateQuiz} from './reducer';
 import { createQuizAttempt, getQuizAttemptBy, updateQuizAttempts } from '../StudentQuizzes/client';
 import { addAttempt, setAttempt, updateAttempt } from '../StudentQuizzes/reducer';
 
@@ -50,7 +48,6 @@ function QuizPreviewScreen() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { quizzes } = useSelector((state: RootState) => state.quizzesReducer);
-    const attempts = useSelector((state: RootState) => state.quizAttemptsReducer.attempts);
     const profileUser = useSelector((state: any) => state.accountReducer.profile) || null;
     const quiz = quizzes.find((q) => q._id === qid);
   
@@ -61,20 +58,17 @@ function QuizPreviewScreen() {
       quiz: qid,
       score: 0,
       number: 0,
-      username:profileUser.username,
+      username: profileUser.username,
       attempts: Array(quiz ? quiz.questions.length : 0).fill([""]),
     });
-  
+    const [showScore, setShowScore] = useState(false); // State to manage score display
+
     // Fetch existing attempt from the server if not found in the state
     useEffect(() => {
       const fetchQuizAttempt = async () => {
         try {
-
           if (profileUser && cid && qid) {
             const existingAttempt = await getQuizAttemptBy(profileUser.username, cid, qid);
-            // console.log("local ex nattempts");
-            // console.log("local ex nattempts",existingAttempt );
-
             if (existingAttempt && existingAttempt._id) {
               setLocalQuizAttempt({
                 _id: existingAttempt._id,
@@ -82,14 +76,13 @@ function QuizPreviewScreen() {
                 quiz: existingAttempt.quiz,
                 score: existingAttempt.score,
                 number: existingAttempt.number,
-                username:profileUser.username,
+                username: profileUser.username,
                 attempts: existingAttempt.attempts,
               });
             }
           }
           dispatch(setAttempt(localQuizAttempt));
-          console.log("local v attempts", localQuizAttempt)
-        } catch (error:any) {
+        } catch (error: any) {
           console.error("Error fetching quiz attempt:", error.message);
         }
       };
@@ -102,9 +95,8 @@ function QuizPreviewScreen() {
         const updatedAttempts = [...localQuizAttempt.attempts];
         if (currentQuestion < quiz.questions.length) {
           const currentQuestionData = quiz.questions[currentQuestion];
-          if (currentQuestionData.type === 'FIB'  && updatedAttempts[currentQuestion].length === 0 ) {
+          if (currentQuestionData.type === 'FIB' && updatedAttempts[currentQuestion].length === 0) {
             updatedAttempts[currentQuestion] = Array(currentQuestionData.answer.length).fill("");
-            console.log(`[QuizPage] Updated attempts for question ${currentQuestion} with ${currentQuestionData.answer.length} empty strings:`, updatedAttempts[currentQuestion]);
             setLocalQuizAttempt((prev) => ({
               ...prev,
               attempts: updatedAttempts,
@@ -113,13 +105,11 @@ function QuizPreviewScreen() {
         }
       }
     }, [currentQuestion, quiz]);
-  
-    // If quiz is not found, display a message
+
     if (!quiz) {
       return <div>Quiz not found</div>;
     }
   
-    // Handle navigation between questions
     const handleNextQuestion = () => {
       setCurrentQuestion((prev) => (prev < quiz.questions.length - 1 ? prev + 1 : prev));
     };
@@ -128,12 +118,9 @@ function QuizPreviewScreen() {
       setCurrentQuestion((prev) => (prev > 0 ? prev - 1 : prev));
     };
   
-    // Update localQuizAttempt state
     const handleAnswerChange = (questionIndex: number, selectedAnswer: string[]) => {
-      console.log("select__",selectedAnswer);
       const updatedAttempts = [...localQuizAttempt.attempts] as any;
   
-      // Ensure that the selected answer is an array
       if (Array.isArray(selectedAnswer)) {
         updatedAttempts[questionIndex] = selectedAnswer;
       } else {
@@ -146,42 +133,64 @@ function QuizPreviewScreen() {
       }));
     };
   
-   const saveAttempt = async () => {
-  try {
-    // Reduce the number of attempts by 1
-    const updatedAttempt = {
-      ...localQuizAttempt,
-      number: 0,
+    const saveAttempt = async () => {
+      try {
+        // Calculate the score
+        let score = 0;
+        if (quiz) {
+          quiz.questions.forEach((question, index) => {
+            const userAnswers = localQuizAttempt.attempts[index] || [];
+            const correctAnswers = question.answer;
+    
+            if (question.type === 'MCQ' || question.type === 'TF') {
+              if (userAnswers.length === 1 && correctAnswers.includes(userAnswers[0])) {
+
+                score += question.points;
+              }
+            } else if (question.type === 'FIB') {
+              if (userAnswers.length === correctAnswers.length && 
+                  userAnswers.every((ans:any, idx:any) => ans === correctAnswers[idx])) {
+                score += question.points;
+              }
+            }
+          });
+        }
+        console.log("score: " + score)
+        const updatedAttempt = {
+          ...localQuizAttempt,
+          score,
+          number: 0,
+        };
+        setLocalQuizAttempt(updatedAttempt);
+
+
+    
+        if (updatedAttempt._id) {
+          await updateQuizAttempts(updatedAttempt._id, updatedAttempt);
+          dispatch(updateAttempt(updatedAttempt));
+        } else {
+          const newAttempt = await createQuizAttempt(updatedAttempt);
+          setLocalQuizAttempt((prev) => ({
+            ...prev,
+            _id: newAttempt._id,
+          }));
+          dispatch(addAttempt(newAttempt));
+        }
+
+        // Set the showScore state to true
+        setShowScore(true);
+
+        // Navigate or show success message
+      } catch (error: any) {
+        console.error("Error saving quiz attempt:", error.message);
+      }
     };
 
-    if (updatedAttempt._id) {
-      // Update existing attempt
-      console.log("updated",updatedAttempt);
-      await updateQuizAttempts(updatedAttempt._id, updatedAttempt);
-      dispatch(updateAttempt(updatedAttempt));
-    } else {
-      // Create a new attempt if none exists
-      const newAttempt = await createQuizAttempt(updatedAttempt);
-      setLocalQuizAttempt((prev) => ({
-        ...prev,
-        _id: newAttempt._id,
-      }));
-      dispatch(addAttempt(newAttempt));
-    }
-
-  } catch (error: any) {
-    console.error("Error saving quiz attempt:", error.message);
-  }
-};
-
-  
     const currentQuestionData = quiz.questions[currentQuestion];
-    console.log("jer", currentQuestionData);
     if (!currentQuestionData) {
       return <div>No question data available</div>;
     }
   
-    // Determine which question component to render
     let QuestionComponent = null;
   
     switch (currentQuestionData.type) {
@@ -225,9 +234,13 @@ function QuizPreviewScreen() {
           </button>
           <button onClick={saveAttempt}>Save Attempt</button>
         </div>
+        {showScore && (
+          <div>
+            <h2>Your Score: {localQuizAttempt.score}</h2>
+          </div>
+        )}
       </div>
     );
   }
   
-  export default QuizPreviewScreen;
-  
+export default QuizPreviewScreen;

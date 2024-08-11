@@ -38,12 +38,29 @@ function TrueFalseEditor({ question: initialQuestion, questindex: quesid, quizID
   useEffect(() => {
     if (initialQuestion) {
       setQuestionData(prevData => ({
-        ...prevData,
-        ...initialQuestion,
-        options: { 'a': 'True', 'b': 'False' } // Ensure options are always True/False
+        ...initialQuestion, // Spread the initialQuestion data
+        points: initialQuestion.points || 1,
+        question: initialQuestion.question || '',
+        options: { 'a': 'True', 'b': 'False' }, // Fixed True/False options
+        answer: initialQuestion.answer || [],
+        title: initialQuestion.title || '',
+        type: 'TF', // Ensure type is always 'TF'
+        quiz: initialQuestion.quiz || qid,
       }));
+    } else {
+      // Initialize with default values if there's no initialQuestion
+      setQuestionData({
+        points: 1,
+        question: '',
+        options: { 'a': 'True', 'b': 'False' },
+        answer: [],
+        title: '',
+        type: 'TF',
+        quiz: qid,
+      });
     }
-  }, [initialQuestion]);
+  }, [initialQuestion, qid]);
+  
 
   const handleCorrectChange = (key: string) => {
     setQuestionData({
@@ -56,14 +73,14 @@ function TrueFalseEditor({ question: initialQuestion, questindex: quesid, quizID
     try {
       if (initialQuestion) {
         await updateQuestionInQuiz(qid, quesid, questionData);
+        onSave(questionData);
       } else {
         await addQuestionToQuiz(qid, questionData);
-      }
-      // Handle success as needed, e.g., redirect or show a message
-    } catch (error) {
+      }    } catch (error) {
       console.error('Failed to save question:', error);
       // Handle error as needed, e.g., show an error message to the user
     }
+
   };
 
   return (
