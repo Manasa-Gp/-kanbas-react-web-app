@@ -19,7 +19,6 @@ function QuizReview() {
       const fetchAttempt = async () => {
         try {
           const attempt = await getQuizAttemptBy(profileUser.username, cid, qid);
-          console.log("attempt",attempt);
           setExistingAttempt(attempt);
         } catch (error) {
           console.error('Error fetching quiz attempt:', error);
@@ -31,10 +30,8 @@ function QuizReview() {
   }, [profileUser, cid, qid]);
   const renderQuestion = (question: any, index: number) => {
     const userAnswers = existingAttempt?.attempts[index] || []; // Get the user's answer for this question
-    console.log(`Question ${index + 1} User Answers:`, userAnswers);
     
     const correctAnswers = question.answer || []; // Correct answers for this question
-    console.log(`Question ${index + 1} Correct Answers:`, correctAnswers);
   
     switch (question.type) {
       case 'MCQ':
@@ -48,11 +45,7 @@ function QuizReview() {
                 const isSelected = userAnswers.includes(key);
                 const isCorrectlyAnswered = isCorrect && isSelected;
                 const isIncorrectlyAnswered = !isCorrect && isSelected;
-                console.log(`Option ${option}:`);
-                console.log(`  isCorrect: ${isCorrect}`);
-                console.log(`  isSelected: ${isSelected}`);
-                console.log(`  isCorrectlyAnswered: ${isCorrectlyAnswered}`);
-                console.log(`  isIncorrectlyAnswered: ${isIncorrectlyAnswered}`);
+       
                 return (
                   <li
                     key={i}
@@ -82,11 +75,7 @@ function QuizReview() {
                 const isSelected = userAnswers.includes(key);
                 const isCorrectlyAnswered = isCorrect && isSelected;
                 const isIncorrectlyAnswered = !isCorrect && isSelected;
-                console.log(`Option ${option}:`);
-                console.log(`  isCorrect: ${isCorrect}`);
-                console.log(`  isSelected: ${isSelected}`);
-                console.log(`  isCorrectlyAnswered: ${isCorrectlyAnswered}`);
-                console.log(`  isIncorrectlyAnswered: ${isIncorrectlyAnswered}`);
+        
                 return (
                   <li
                     key={i}
@@ -115,10 +104,7 @@ function QuizReview() {
                 const isCorrect = correctAnswers.includes(userAnswers[i]);
                 const isCorrectlyAnswered = isCorrect && isSelected;
                 const isIncorrectlyAnswered = !isCorrect && isSelected;
-                console.log(`  isCorrecthh: ${isCorrect}`);
-                console.log(`  isSelected: ${isSelected}`);
-                console.log(`  isCorrectlyAnswered: ${isCorrectlyAnswered}`);
-                console.log(`  isIncorrectlyAnswered: ${isIncorrectlyAnswered}`);
+   
                 return (
                   <li
                     key={i}

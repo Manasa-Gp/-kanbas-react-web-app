@@ -5,7 +5,7 @@ interface QuestionProps {
   options: { [key: string]: string }; // Object with keys as option identifiers
   answer: string[]; // Changed type to string to match key
   title: string;
-  onChange: (answer: string) => void; // Changed type to string to match key
+  onChange: (answer: string[]) => void; // Changed type to string to match key
 }
 
 
@@ -18,17 +18,18 @@ function TrueFalseQuestion({ question, answer,options,title, onChange }: Questio
       <label>
               
       {options && Object.entries(options).map(([key, choice], index) => (
-        <label key={index}>
+            <div key={index} style={{ marginBottom: '8px' }}> 
+        <label >
           <input
             type="radio"
-            name={`question-${question}`}
+            name={question}
             value={key} // Use key for value
-            checked={answer[0] === key} // Compare with key
-            onChange={() => onChange(key)} // Pass key to onChange
+            checked={answer.includes(key)}
+            onChange={() => onChange([key])} // Pass key to onChange
           />
-                    {key}
-                    {choice}
+                  {choice}
         </label>
+        </div>
       ))}
       </label>
     </div>

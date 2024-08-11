@@ -22,6 +22,7 @@ interface Quiz {
   _id: string;
   title: string;
   description: string;
+  howManyAttempts: number;
   questions: Question[];
 }
 
@@ -57,6 +58,7 @@ function QuizPage() {
       course: cid,
       quiz: qid,
       score: 0,
+      number: quiz?.howManyAttempts,
       username:profileUser.username,
       attempts: Array(quiz ? quiz.questions.length : 0).fill([""]),
     });
@@ -77,6 +79,7 @@ function QuizPage() {
                 course: existingAttempt.course,
                 quiz: existingAttempt.quiz,
                 score: existingAttempt.score,
+                number: existingAttempt.number,
                 username:profileUser.username,
                 attempts: Array(quiz ? quiz.questions.length : 0).fill([""]),
               });
@@ -141,28 +144,36 @@ function QuizPage() {
       }));
     };
   
-    // Save or update the quiz attempt
-    const saveAttempt = async () => {
-        // console.log("localQuizAttempt update id", localQuizAttempt._id);
-
-      if (localQuizAttempt._id) {
-        // Update existing attempt
-        // console.log("localQuizAttempt update check", localQuizAttempt.attempts);
-        await updateQuizAttempts(localQuizAttempt._id, localQuizAttempt);
-        // console.log("checking attempt " + localQuizAttempt);
-        dispatch(updateAttempt(localQuizAttempt));
-      } else {
-        // console.log("localQuizAttempt", localQuizAttempt.attempts);
-        const newAttempt = await createQuizAttempt(localQuizAttempt);
-        setLocalQuizAttempt((prev) => ({
-          ...prev,
-          _id: newAttempt._id,
-        }));
-        dispatch(addAttempt(newAttempt));
-      }
-      navigate(`/Kanbas/Courses/${cid}/Quizzes/review/${qid}`);
-
+   const saveAttempt = async () => {
+  try {
+    // Reduce the number of attempts by 1
+    const updatedAttempt = {
+      ...localQuizAttempt,
+      number: (localQuizAttempt.number ?? 1) > 0 ? (localQuizAttempt.number ?? 1) - 1 : 0,
     };
+
+    if (updatedAttempt._id) {
+      // Update existing attempt
+      console.log("updated",updatedAttempt);
+      await updateQuizAttempts(updatedAttempt._id, updatedAttempt);
+      dispatch(updateAttempt(updatedAttempt));
+    } else {
+      // Create a new attempt if none exists
+      const newAttempt = await createQuizAttempt(updatedAttempt);
+      setLocalQuizAttempt((prev) => ({
+        ...prev,
+        _id: newAttempt._id,
+      }));
+      dispatch(addAttempt(newAttempt));
+    }
+
+    // Navigate to the review page
+    navigate(`/Kanbas/Courses/${cid}/Quizzes/review/${qid}`);
+  } catch (error: any) {
+    console.error("Error saving quiz attempt:", error.message);
+  }
+};
+
   
     const currentQuestionData = quiz.questions[currentQuestion];
     console.log("jer", currentQuestionData);
