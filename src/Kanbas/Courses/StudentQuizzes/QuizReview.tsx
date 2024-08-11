@@ -57,6 +57,8 @@ function QuizReview() {
                     {option}
                     {isCorrectlyAnswered && ' ✅'}
                     {isIncorrectlyAnswered && ' ❌'}
+                    {existingAttempt?.number === 0 && !isSelected && isCorrect && ' (Correct Answer)'}
+
                   </li>
                 );
               })}
@@ -87,6 +89,7 @@ function QuizReview() {
                     {option}
                     {isCorrectlyAnswered && ' ✅'}
                     {isIncorrectlyAnswered && ' ❌'}
+                    {existingAttempt?.number === 0 && !isSelected && isCorrect && ' (Correct Answer)'}
                   </li>
                 );
               })}
@@ -116,6 +119,7 @@ function QuizReview() {
                     {userAnswers[i]}
                     {isCorrectlyAnswered && ' ✅'}
                     {isIncorrectlyAnswered && ' ❌'}
+                    {existingAttempt?.number === 0 && !isCorrect && ` (Correct Answer: ${answer})`}
                   </li>
                 );
               })}
@@ -131,6 +135,8 @@ function QuizReview() {
   return (
     <div>
       <h1>Quiz Review</h1>
+
+      <h4>Score: {existingAttempt?.score} </h4> 
       {quiz ? (
         <div>
           {quiz.questions.map((question: any, index: number) => renderQuestion(question, index))}

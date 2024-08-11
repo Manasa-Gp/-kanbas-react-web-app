@@ -147,10 +147,36 @@ function QuizPage() {
    const saveAttempt = async () => {
   try {
     // Reduce the number of attempts by 1
-    const updatedAttempt = {
+  
+
+    let score = 0;
+    if (quiz) {
+      quiz.questions.forEach((question, index) => {
+        const userAnswers = localQuizAttempt.attempts[index] || [];
+        const correctAnswers = question.answer;
+
+        if (question.type === 'MCQ' || question.type === 'TF') {
+          if (userAnswers.length === 1 && correctAnswers.includes(userAnswers[0])) {
+
+            score += question.points;
+          }
+        } else if (question.type === 'FIB') {
+          if (userAnswers.length === correctAnswers.length && 
+              userAnswers.every((ans:any, idx:any) => ans === correctAnswers[idx])) {
+            score += question.points;
+          }
+        }
+      });
+    }
+    console.log("score: " + score)
+     const updatedAttempt = {
       ...localQuizAttempt,
-      number: (localQuizAttempt.number ?? 1) > 0 ? (localQuizAttempt.number ?? 1) - 1 : 0,
+      score,
+      number:(localQuizAttempt.number ?? 1) > 0 ? (localQuizAttempt.number ?? 1) - 1 : 0,
     };
+    setLocalQuizAttempt(updatedAttempt);
+
+
 
     if (updatedAttempt._id) {
       // Update existing attempt
