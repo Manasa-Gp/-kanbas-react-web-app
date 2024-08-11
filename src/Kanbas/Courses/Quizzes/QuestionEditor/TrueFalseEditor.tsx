@@ -31,13 +31,17 @@ function TrueFalseEditor({ question: initialQuestion, questindex: quesid, quizID
     options: { 'a': 'True', 'b': 'False' }, // Fixed True/False options
     answer: initialQuestion?.answer || [],
     title: initialQuestion?.title || '',
-    type: initialQuestion?.type || 'TF',
+    type: 'TF',
     quiz: initialQuestion?.quiz || qid,
   });
 
   useEffect(() => {
     if (initialQuestion) {
-      setQuestionData(initialQuestion);
+      setQuestionData(prevData => ({
+        ...prevData,
+        ...initialQuestion,
+        options: { 'a': 'True', 'b': 'False' } // Ensure options are always True/False
+      }));
     }
   }, [initialQuestion]);
 

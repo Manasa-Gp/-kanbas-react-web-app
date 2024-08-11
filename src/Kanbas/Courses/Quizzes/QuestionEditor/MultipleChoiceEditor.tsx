@@ -30,7 +30,7 @@ function MultipleChoiceEditor({question: initialQuestion,questindex: quesid ,qui
     options: initialQuestion?.options ||{ 'a': 'what'}, // Initializing with one option
     answer: initialQuestion?.answer ||[],
     title: initialQuestion?.title ||'',
-    type: initialQuestion?.type || 'MCQ',
+    type: 'MCQ',
     quiz: initialQuestion?.quiz || qid,
   });
 

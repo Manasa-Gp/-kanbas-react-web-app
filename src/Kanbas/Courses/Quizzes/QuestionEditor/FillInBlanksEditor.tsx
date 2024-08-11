@@ -33,7 +33,7 @@ function FillInBlanksEditor({ question: initialQuestion, questindex: quesid, qui
     options: initialQuestion?.options ||{ 'a': 'what'}, // Initializing with one option
     answer: initialQuestion?.answer ||[],
     title: initialQuestion?.title ||'',
-    type: initialQuestion?.type || 'FIB',
+    type:  'FIB',
     quiz: initialQuestion?.quiz || qid,
   });
 
