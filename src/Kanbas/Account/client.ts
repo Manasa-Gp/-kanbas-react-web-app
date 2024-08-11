@@ -47,3 +47,8 @@ export const getUserEnrollments = async (username: string): Promise<string[]> =>
     throw error; 
   }
 };
+
+export const updateUser = async (userId: any, userData: any) => {
+  const response = await axios.put(`${USERS_API}/${userId}`, userData);
+  return response.data;
+};
