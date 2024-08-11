@@ -42,7 +42,7 @@ export default function QuestionList() {
     points: 5,
     question: '',
     options: { 'a': 'what' },
-    answer: [],
+    answer: ["a"],
     title: 'New Question',
     type: 'MCQ',
     quiz: qid,

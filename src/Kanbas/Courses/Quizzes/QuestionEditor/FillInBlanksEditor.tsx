@@ -31,7 +31,7 @@ function FillInBlanksEditor({ question: initialQuestion, questindex: quesid, qui
     points: initialQuestion?.points || 5,
     question:initialQuestion?.question || '',
     options: initialQuestion?.options ||{ 'a': 'what'}, // Initializing with one option
-    answer: initialQuestion?.answer ||[],
+    answer: initialQuestion?.answer ||["fill"],
     title: initialQuestion?.title ||'',
     type:  'FIB',
     quiz: initialQuestion?.quiz || qid,
@@ -39,7 +39,10 @@ function FillInBlanksEditor({ question: initialQuestion, questindex: quesid, qui
 
   useEffect(() => {
     if (initialQuestion) {
-      setQuestionData(initialQuestion);
+      setQuestionData({
+        ...initialQuestion,
+        type: "FIB"
+      });
     }
   }, [initialQuestion]);
 

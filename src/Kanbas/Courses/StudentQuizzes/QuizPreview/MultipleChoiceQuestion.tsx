@@ -26,7 +26,7 @@ console.log("Multiple",answer)
             checked={answer.includes(key)}
             onChange={() => onChange([key])} // Pass key to onChange
           /> 
-          {key}. {choice}  
+           {choice}  
         </label>
       </div>
     ))}
