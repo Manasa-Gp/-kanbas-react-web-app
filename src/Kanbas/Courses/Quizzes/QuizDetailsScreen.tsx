@@ -48,7 +48,7 @@ export default function QuizDetails() {
                         ["Shuffle Answers", quiz.shuffleAnswers ? 'Yes' : 'No'],
                         ["Time Limit", `${quiz.timeLimit} minutes`],
                         ["Multiple Attempts", quiz.multipleAttempts ? 'Yes' : 'No'],
-                        ["How Many Attempts", quiz.HowManyAttempts],
+                        ["How Many Attempts", quiz.howManyAttempts],
                         ["Show Correct Answers", quiz.showCorrectAnswers],
                         ["Access Code", quiz.accessCode],
                         ["One Question at a Time", quiz.oneQuestionAtATime ? 'Yes' : 'No'],

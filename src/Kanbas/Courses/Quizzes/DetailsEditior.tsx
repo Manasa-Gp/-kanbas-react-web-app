@@ -97,8 +97,7 @@ const PublishandSave = async () => {
                 onClick={() => setActiveTab('detail')}>Details</button>
         <button className={`nav-link ${activeTab === 'questionlist' ? 'active' : ''}`}
                 onClick={() => setActiveTab('questionlist')}>Questions</button>
-        <button className={`nav-link ${activeTab === 'question' ? 'active' : ''}`}
-                onClick={() => setActiveTab('question')}>Questions Edit</button>
+
  
       </div>
       <br/>
@@ -155,7 +154,29 @@ const PublishandSave = async () => {
           <input type="checkbox" name="multipleAttempts"  onChange={handleSet} checked={quizDetails.multipleAttempts} className=" form-check-input me-3 border form-border-gray"   id="wd-text-entry" />
           <label htmlFor="wd-multuple-attempts">Allow Multiple Attempts</label>
                       </div>
-
+                      <div className="my-3">
+                 
+                  <label htmlFor="wd-show-correct-answers">Show Correct Answers</label>
+                  <input type="text" name="showCorrectAnswers" onChange={handleSet} value={quizDetails.showCorrectAnswers} className="form-control border form-border-gray me-2" id="wd-show-correct-answers" />
+                </div>
+                <div className="my-3">
+                  <label htmlFor="wd-access-code">Access Code</label>
+                  <input type="text" name="accessCode" onChange={handleSet} value={quizDetails.accessCode} className="form-control border form-border-gray me-2" placeholder="Enter Access Code" />
+                </div>
+                <label htmlFor="wd-access-code">How Many Attempts</label>
+                  <input type="text" name="howManyAttempts" onChange={handleSet} value={quizDetails.howManyAttempts} className="form-control border form-border-gray me-2" placeholder="Enter Access Code" />
+                <div className="my-3">
+                  <input type="checkbox" name="oneQuestionAtATime" onChange={handleSet} checked={quizDetails.oneQuestionAtATime} className="form-check-input me-3 border form-border-gray" id="wd-one-question-at-a-time" />
+                  <label htmlFor="wd-one-question-at-a-time">One Question at a Time</label>
+                </div>
+                <div className="my-3">
+                  <input type="checkbox" name="webcamRequired" onChange={handleSet} checked={quizDetails.webcamRequired} className="form-check-input me-3 border form-border-gray" id="wd-webcam-required" />
+                  <label htmlFor="wd-webcam-required">Webcam Required</label>
+                </div>
+                <div className="my-3">
+                  <input type="checkbox" name="lockQuestionsAfterAnswering" onChange={handleSet} checked={quizDetails.lockQuestionsAfterAnswering} className="form-check-input me-3 border form-border-gray" id="wd-lock-questions-after-answering" />
+                  <label htmlFor="wd-lock-questions-after-answering">Lock Questions After Answering</label>
+                </div>
    
       </div>
       </div>
@@ -188,28 +209,25 @@ const PublishandSave = async () => {
     </div>
         </div>
       </div>
-        </>
-      
-      
-      )}
-     {activeTab === 'questionlist' && (
-        <div>
-          <p>Questions editor will be implemented here.</p>
-          <QuestionList/>
-        </div>
-      )}
-      {activeTab === 'question' && (
-        <div>
-          <p>Questions editor will be implemented here.</p>
-          <QuestionEditor/>
-        </div>
-      )}
- 
       <div className="mt-3 row float-end me-3 mb-3" >
         <button style={{width: '150px'}} onClick={handleCancel} className="btn btn-secondary">Cancel</button>
         <button  style={{width: '150px'}} onClick = {saveQuiz} className="btn btn-danger ms-2">{qid ? 'Update' : 'Create'}</button>
         <button  style={{width: '150px'}} onClick = {PublishandSave} className="btn btn-danger ms-2">Publish& {qid ? 'Update' : 'Create'}</button>
       </div>
+        </>
+        
+      
+      
+      )}
+    
+
+      {activeTab === 'questionlist' && (
+        <div>
+          <p>Questions editor will be implemented here.</p>
+          <QuestionList/>
+        </div>
+      )}
+     
 
     </div>
   );

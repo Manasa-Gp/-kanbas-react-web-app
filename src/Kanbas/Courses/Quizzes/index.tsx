@@ -94,6 +94,11 @@ export default function Quizzes() {
       </div>
       <hr />
       <br/>
+      {quizList.length === 0 ? (
+        <div className="text-center">
+          <p>No quizzes available. Click the + Quiz button to add a quiz.</p>
+        </div>
+      ) : (
         <ul id="wd-modules" className="list-group rounded-0">
     <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
       <div className="wd-title p-3 ps-2 bg-secondary">
@@ -143,6 +148,7 @@ export default function Quizzes() {
       </ul>
       </li>
       </ul>
+      )}
     </div>
   );
 }

@@ -71,15 +71,22 @@ export default function QuestionList() {
 
   return (
     <div id="wd-quizzes">
-      <button onClick={handleAddQuestion} className="btn btn-lg btn-danger me-1">
+      <button onClick={handleAddQuestion} className="btn btn-danger me-1">
         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} /> Add Question
       </button>
       <br />
+      <hr />
+      {quiz.questions.length === 0 ? (
+        <div className="text-center">
+          <p>No questions available in this quiz. Click the + Question  to add a question.</p>
+ 
+        </div>
+      ) : (
       <ul id="wd-modules" className="list-group rounded-0">
         <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
           <div className="wd-title p-3 ps-2 bg-secondary">
             <MdArrowDropDown className="me-1 fs-3" />
-            Assignment Quizzes
+             Questions
           </div>
           <ul className="wd-lessons list-group rounded-0 wd-padded-left wd-bg-color-green">
             {quiz.questions.map((question: Question, index: number) => (
@@ -120,6 +127,7 @@ export default function QuestionList() {
           </ul>
         </li>
       </ul>
+            )}
     </div>
   );
 }
