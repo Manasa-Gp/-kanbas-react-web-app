@@ -19,6 +19,7 @@ import QuizPage from "./StudentQuizzes/QuizPage";
 import QuizReview from "./StudentQuizzes/QuizReview";
 import { fetchCoursesByIds } from './client'; // Adjust the import path as necessary
 import { useEffect, useState } from "react";
+import QuestionEditor from "./Quizzes/QuestionEditor";
 
 export default function Courses() {
   const { cid } = useParams();
@@ -80,6 +81,8 @@ export default function Courses() {
           <Route path="Quizzes/start/:qid" element={<QuizPage />} />
           <Route path="Quizzes/preview/:qid" element={<QuizPreviewScreen />} />
           <Route path="/Quizzes/review/:qid" element={<QuizReview />} />
+          <Route path="Quizzes/edit/:qid/questionedit/:quid" element={<QuestionEditor />} />
+
 
           
         </Routes>

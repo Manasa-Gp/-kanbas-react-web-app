@@ -17,7 +17,11 @@ const accountSlice = createSlice({
     clearProfile: (state) => {
       state.profile = {};
     },
+    updateProfiler: (state, action) => {
+      // Assuming action.payload contains updated profile data
+      state.profile = { ...state.profile, ...action.payload };
+    },
   },
 });
-export const { setCurrentUser,setProfileUser,clearProfile } = accountSlice.actions;
+export const { setCurrentUser,setProfileUser,clearProfile,updateProfiler } = accountSlice.actions;
 export default accountSlice.reducer;

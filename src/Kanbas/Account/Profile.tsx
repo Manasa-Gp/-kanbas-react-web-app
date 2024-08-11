@@ -1,11 +1,11 @@
 import * as client from "./client";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { clearProfile, setCurrentUser,setProfileUser } from "./reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { clearProfile, setCurrentUser, setProfileUser, updateProfiler } from "./reducer";
 
 export default function Profile() {
-  const [profile, setProfile] = useState<any>({});
+  const profileFromStore = useSelector((state: any) => state.accountReducer.profile);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -13,86 +13,96 @@ export default function Profile() {
     try {
       const account = await client.profile();
       dispatch(setProfileUser(account));
-      setProfile(account);
     } catch (err: any) {
-      console.log("Profiler error: react")
+      console.log("Profile error:", err);
       navigate("/Kanbas/Account/Signin");
     }
   };
-  const signout = async () => {
-    await client.signout();
-    console.log("signout 2");
-    dispatch(clearProfile());
-    dispatch(setCurrentUser(null));
 
-    navigate("/Kanbas/Account/Signin");
+  const signout = async () => {
+    try {
+      await client.signout();
+      dispatch(clearProfile());
+      dispatch(setCurrentUser(null));
+      navigate("/Kanbas/Account/Signin");
+    } catch (err) {
+      console.error("Error during signout:", err);
+    }
+  };
+
+  const updateProfile = async () => {
+    try {
+      await client.updateUser(profileFromStore._id, profileFromStore);
+      dispatch(updateProfiler(profileFromStore)); // Ensure this action updates the Redux store
+      
+
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile. Please try again.");
+    }
   };
 
   useEffect(() => {
     fetchProfile();
   }, []);
+
   return (
     <div>
       <h1>Profile</h1>
-      {profile && (
+      {profileFromStore && (
         <div>
-            <input
-            value={profile._id}
-            onChange={(e) =>
-              setProfile({ ...profile, _id: e.target.value })
-            }
+          <input
+            value={profileFromStore._id}
+            className="form-control mb-2"
+            disabled
+          />
+          <input
+            value={profileFromStore.username || ""}
+            onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, username: e.target.value }))}
             className="form-control mb-2"
           />
           <input
-            value={profile.username}
-            onChange={(e) =>
-              setProfile({ ...profile, username: e.target.value })
-            }
+            value={profileFromStore.password || ""}
+            onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, password: e.target.value }))}
             className="form-control mb-2"
           />
           <input
-            value={profile.password}
-            onChange={(e) =>
-              setProfile({ ...profile, password: e.target.value })
-            }
+            value={profileFromStore.firstName || ""}
+            onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, firstName: e.target.value }))}
             className="form-control mb-2"
           />
           <input
-            value={profile.firstName}
-            onChange={(e) =>
-              setProfile({ ...profile, firstName: e.target.value })
-            }
+            value={profileFromStore.lastName || ""}
+            onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, lastName: e.target.value }))}
             className="form-control mb-2"
           />
           <input
-            value={profile.lastName}
-            onChange={(e) =>
-              setProfile({ ...profile, lastName: e.target.value })
-            }
-            className="form-control mb-2"
-          />
-          <input
-            value={profile.dob}
-            onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
+            value={profileFromStore.dob || ""}
+            onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, dob: e.target.value }))}
             type="date"
             className="form-control mb-2"
           />
           <input
-            value={profile.email}
-            onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+            value={profileFromStore.email || ""}
+            onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, email: e.target.value }))}
             className="form-control mb-2"
           />
           <select
-            onChange={(e) => setProfile({ ...profile, role: e.target.value })}
+            value={profileFromStore.role || "USER"}
+            onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, role: e.target.value }))}
             className="form-control mb-2"
           >
-            <option value="USER">User</option>{" "}
+            <option value="USER">User</option>
             <option value="ADMIN">Admin</option>
-            <option value="FACULTY">Faculty</option>{" "}
+            <option value="FACULTY">Faculty</option>
             <option value="STUDENT">Student</option>
           </select>
         </div>
       )}
+      <button onClick={updateProfile} className="btn btn-primary w-100 mb-2">
+        Update
+      </button>
       <button onClick={signout} className="btn btn-danger w-100">
         Sign out
       </button>

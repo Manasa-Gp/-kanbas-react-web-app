@@ -57,3 +57,8 @@ export const enrollInCourse = async (username: string, courseId: string): Promis
     throw error; 
   }
 };
+
+export const updateUser = async (userId: any, userData: any) => {
+  const response = await axios.put(`${USERS_API}/${userId}`, userData);
+  return response.data;
+};

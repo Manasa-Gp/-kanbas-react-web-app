@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MultipleChoiceEditor from './QuestionEditor/MultipleChoiceEditor';
 import TrueFalseEditor from './QuestionEditor/TrueFalseEditor';
 import FillInBlanksEditor from './QuestionEditor/FillInBlanksEditor';
+import { updateQuiz } from './reducer';
 
 export default function QuestionEditor() {
   const { cid, qid,quid } = useParams();
@@ -28,12 +29,28 @@ export default function QuestionEditor() {
   }, [question]);
 
   const handleSave = (questionData: any) => {
-    // Handle saving logic here
-    navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`);
+    console.log("reach request")
+
+    if (quiz) {
+      console.log("reach request")
+      const updatedQuestions = [...quiz.questions];
+      if (questionIndex >= 0) {
+        // Update existing question
+        updatedQuestions[questionIndex] = questionData;
+      } else {
+        // Add new question
+        updatedQuestions.push(questionData);
+      }
+      
+      const updatedQuiz = { ...quiz, questions: updatedQuestions };
+      console.log(updatedQuiz);
+      dispatch(updateQuiz(updatedQuiz));
+    }
+    navigate(`/Kanbas/Courses/${cid}/Quizzes/edit/${qid}`);
   };
 
   const handleCancel = () => {
-    navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}`);
+    navigate(`/Kanbas/Courses/${cid}/Quizzes/edit/${qid}`);
   };
 
   const renderEditor = () => {

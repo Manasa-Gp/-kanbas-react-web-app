@@ -21,15 +21,32 @@ export default function Quizzes() {
 
 
   const removeQuiz = async (quizId: string) => {
-    await deleteQuizDetails(quizId);
-    dispatch(deleteQuiz(quizId));
+    try {
+      // Remove the quiz from the server
+      await deleteQuizDetails(quizId);
+  
+      // Update Redux store
+      dispatch(deleteQuiz(quizId));
+  
+      // Update local state
+      setQuizListLocal((prevQuizList) => prevQuizList.filter((quiz) => quiz._id !== quizId));
+    } catch (error) {
+      console.error('Error deleting quiz:', error);
+      alert('Failed to delete quiz. Please try again.');
+    }
   };
+  
   const updatePublishStatus = async (quizId: string, published: boolean) => {
  
     await toggleQuizPublish(quizId,published);
    
     const quizzesData = await findQuizzesForCourse(cid as string);
+
+    // Update the Redux store with the new quizzes list
     dispatch(setQuizzes(quizzesData));
+
+    // Update the local state with the new quizzes list
+    setQuizListLocal(quizzesData);
   };
 
   const loadQuizzes = async () => {
@@ -71,14 +88,8 @@ export default function Quizzes() {
           <button onClick={handleAddQuiz}  className="btn btn-lg btn-danger me-1">
             <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} /> Add Quiz
           </button>
-          <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-              <IoEllipsisVertical className="position-relative" style={{ fontSize: '30px' }} />
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a className="dropdown-item" href="#" >Delete All Quizzes</a></li>
-              <li><a className="dropdown-item" href="#">Publish All</a></li>
-              <li><a className="dropdown-item" href="#">Unpublish All</a></li>
-            </ul>
+     
+  
         </div>
       </div>
       <hr />
@@ -114,8 +125,9 @@ export default function Quizzes() {
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="quizMenuButton">
                  <li>
-                 <Link to={`/Kanbas/Courses/${cid}/Quizzes/edit/${q._id}`} className="">
-                 Edit</Link>
+                 <Link to={`/Kanbas/Courses/${cid}/Quizzes/edit/${q._id}`} className="dropdown-item">
+                 Edit
+                 </Link>
     </li>
     <li>
         <a className="dropdown-item" onClick={()=>removeQuiz(q._id)}>Delete</a>

@@ -64,6 +64,7 @@ function TrueFalseEditor({ question: initialQuestion, questindex: quesid, quizID
 
   return (
     <div style={{ display: "flex", flexDirection: "column", margin: "20px", padding: "20px" }}>
+    <h4>Title:</h4>
       <input
         type="text"
         className="form-control mb-2"

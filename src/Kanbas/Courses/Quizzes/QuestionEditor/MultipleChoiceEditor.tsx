@@ -87,20 +87,46 @@ function MultipleChoiceEditor({question: initialQuestion,questindex: quesid ,qui
        
 
         await updateQuestionInQuiz(qid, quesid, questionData);
+        onSave(questionData);
       } else {
         await addQuestionToQuiz(qid, questionData);
       }    } catch (error) {
       console.error('Failed to save question:', error);
       // Handle error as needed, e.g., show an error message to the user
     }
-  
 
   };
+  const handleCancel = () => {
+    if (initialQuestion) {
+      setQuestionData(initialQuestion);
+    } else {
+      setQuestionData({
+        points: 5,
+        question: '',
+        options: { 'a': 'what' },
+        answer: [],
+        title: '',
+        type: 'MCQ',
+        quiz: qid,
+      });
+    }
+  };
+
  
   return (
     <div>
-
+ 
       <br />
+      <div className="mb-3">
+        <h4>Title:</h4>
+        <input
+          type="text"
+          className="form-control mb-2"
+          placeholder="Enter Question Title"
+          value={questionData.title}
+          onChange={(e) => setQuestionData({ ...questionData, title: e.target.value })}
+        />
+      </div>
       <h4>Points:</h4>
       <input
         type="number"
@@ -140,7 +166,7 @@ function MultipleChoiceEditor({question: initialQuestion,questindex: quesid ,qui
       <div className="mt-3">
         <button className="btn btn-secondary" onClick={handleAddChoice}>Add Answer</button>
         <button className="btn btn-success ms-2" onClick={handleSave}>Save</button>
-        <button className="btn btn-danger ms-2" onClick={onCancel}>Cancel</button>
+        <button className="btn btn-danger ms-2" onClick={handleCancel}>Cancel</button>
       </div>
       <br />
     </div>

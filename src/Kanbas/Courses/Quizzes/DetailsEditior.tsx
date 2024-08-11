@@ -38,6 +38,7 @@ function QuizEditor() {
     webcamRequired: quiz?.webcamRequired || false,
     lockQuestionsAfterAnswering: quiz?.lockQuestionsAfterAnswering || false,
     questions: quiz?.questions || [],
+    howManyAttempts:quiz?.howManyAttempts||1
 });
 
 
@@ -61,9 +62,22 @@ function QuizEditor() {
     } else {
         const newQuiz = await createQuiz(cid as string, quizDetails);
         dispatch(addQuiz(newQuiz));
-        navigate(`/Kanbas/Courses/${cid}/Quiz`);
+        navigate(`/Kanbas/Courses/${cid}/Quizzes`);
     }
 };
+
+const PublishandSave = async () => {
+  const updatedQuizDetails = { ...quizDetails, published: true };
+  if (qid) {
+    const status = await updateQuizDetails(qid as string, updatedQuizDetails);
+    dispatch(updateQuiz(updatedQuizDetails));
+  } else {
+    const newQuiz = await createQuiz(cid as string, updatedQuizDetails);
+    dispatch(addQuiz(newQuiz));
+  }
+  navigate(`/Kanbas/Courses/${cid}/Quizzes`);
+};
+
 
 
   // useEffect(() => {
@@ -193,7 +207,8 @@ function QuizEditor() {
  
       <div className="mt-3 row float-end me-3 mb-3" >
         <button style={{width: '150px'}} onClick={handleCancel} className="btn btn-secondary">Cancel</button>
-        <button  style={{width: '150px'}} onClick = {saveQuiz} className="btn btn-danger ms-2">{qid ? 'Update' : 'Create'} & Save</button>
+        <button  style={{width: '150px'}} onClick = {saveQuiz} className="btn btn-danger ms-2">{qid ? 'Update' : 'Create'}</button>
+        <button  style={{width: '150px'}} onClick = {PublishandSave} className="btn btn-danger ms-2">Publish& {qid ? 'Update' : 'Create'}</button>
       </div>
 
     </div>

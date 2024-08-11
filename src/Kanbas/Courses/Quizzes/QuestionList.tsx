@@ -7,7 +7,7 @@ import { MdArrowDropDown } from "react-icons/md";
 import GreenCheckmark from './GreenCheckmark';
 import RedBan from './RedBan';
 import { addQuestionToQuiz } from './client';
-import { setQuizzes } from './reducer';
+import { setQuizzes, updateQuiz } from './reducer';
 interface Question {
     type: string;
     question: string;
@@ -56,7 +56,14 @@ export default function QuestionList() {
   const handleAddQuestion = async () => {
     try {
       await addQuestionToQuiz(qid, questionData);
-      // Optionally, you might want to update the quiz list or navigate somewhere after adding the question
+      const updatedQuiz = {
+        ...quiz,
+        questions: [...quiz.questions, questionData],
+      };
+      dispatch(updateQuiz(updatedQuiz));
+
+
+      
     } catch (error) {
       console.error('Failed to save question:', error);
     }
@@ -81,17 +88,32 @@ export default function QuestionList() {
                   <IoRocketOutline className="text-success fs-5" />
                 </div>
                 <div className="quiz-details flex-grow-1">
-                  <Link to={`/Kanbas/Courses/${cid}/Quizzes/`} className="wd-quiz-link">
+                  <Link to={`/Kanbas/Courses/${cid}/Quizzes/edit/${qid}/questionedit/${index}`} className="wd-quiz-link">
                     {question.title}
                   </Link>
                   <h6>
                     <p className="wd-fg-color-red">
-                      <span className="wd-fg-color-black"> | <b>Due</b></span>
+                      <span className="wd-fg-color-black"> | {question.type}</span>
                     </p>
                   </h6>
                 </div>
-                <div className="d-flex align-items-center">
-                  {/* Additional content can go here */}
+                <div className="dropdown">
+                  <button
+                    className="btn dropdown-toggle"
+                    type="button"
+                    id={`dropdownMenuButton${index}`}
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <IoEllipsisVertical />
+                  </button>
+                  <ul className="dropdown-menu" aria-labelledby={`dropdownMenuButton${index}`}>
+                    <li>
+                      <Link to={`/Kanbas/Courses/${cid}/Quizzes/edit/${qid}/questionedit/${index}`} className="dropdown-item">
+                        Edit
+                      </Link>
+                    </li>
+                  </ul>
                 </div>
               </li>
             ))}

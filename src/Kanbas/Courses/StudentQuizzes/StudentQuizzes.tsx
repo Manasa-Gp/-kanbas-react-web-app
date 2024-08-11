@@ -14,23 +14,18 @@ export default function StudentQuizzes() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {quizzes} = useSelector((state: any) => state.quizzesReducer);
-  const quiz = quizzes.find((q: any) => q._id === qid);
+  const quiz = quizzes.find((q: any) => q._id === qid && q.published);
   const [quizList, setQuizListLocal] = useState<any[]>([]);
 
 
 
-  const updatePublishStatus = async (quizId: string, published: boolean) => {
- 
-    await toggleQuizPublish(quizId,published);
-   
-    const quizzesData = await findQuizzesForCourse(cid as string);
-    dispatch(setQuizzes(quizzesData));
-  };
+
 
   const loadQuizzes = async () => {
      console.log('Loading sq');
     if (cid) {
-      const quizzesData = await findQuizzesForCourse(cid as string);
+      const AllQuiz = await findQuizzesForCourse(cid as string);
+      const quizzesData = AllQuiz.filter((q: any) => q.published);
       setQuizListLocal(quizzesData);
       dispatch(setQuizzes(quizzesData));
     }
@@ -76,7 +71,6 @@ export default function StudentQuizzes() {
               <IoRocketOutline className="text-success fs-5" />
             </div>
             <div className="quiz-details flex-grow-1">
-            {q._id}
                 <Link to={`/Kanbas/Courses/${cid}/Quizzes/attempt/${q._id}`} className="wd-quiz-link">
                   {q.title}
                 </Link>
@@ -98,9 +92,7 @@ export default function StudentQuizzes() {
                  Edit</Link>
     </li>
 
-    <li>
-        <a className="dropdown-item" onClick = {()=>updatePublishStatus(q._id, q.published)} >Publish/Unpublish</a>
-    </li>
+ 
                 </ul>
              </div>
             </div>
