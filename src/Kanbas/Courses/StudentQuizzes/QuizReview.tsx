@@ -37,6 +37,7 @@ function QuizReview() {
       case 'MCQ':
         return (
           <div key={index} style={{ marginBottom: '20px' }}>
+            <h6>Points: {question.points}</h6>
             <h4>{question.question}</h4>
             <ul>
               {Object.keys(question.options).map((key: string, i: number) => {
@@ -69,6 +70,7 @@ function QuizReview() {
       case 'TF':
         return (
           <div key={index} style={{ marginBottom: '20px' }}>
+            <h6>Points: {question.points}</h6>
             <h4>{question.question}</h4>
             <ul>
             {Object.keys(question.options).map((key: string, i: number) => {
@@ -100,6 +102,7 @@ function QuizReview() {
       case 'FIB':
         return (
           <div key={index} style={{ marginBottom: '20px' }}>
+          <h6>Points: {question.points}</h6>
             <h4>{question.question}</h4>
             <ul>
               {question.answer.map((answer: string, i: number) => {

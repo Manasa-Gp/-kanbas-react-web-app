@@ -214,6 +214,7 @@ function QuizPreviewScreen() {
         <div>
           <h2>{currentQuestionData.title}</h2>
           <div>Type: {currentQuestionData.type}</div>
+          <div>Points: {currentQuestionData.points}</div>
           {QuestionComponent && (
             <QuestionComponent
               question={currentQuestionData.question}
