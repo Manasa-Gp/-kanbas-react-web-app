@@ -52,38 +52,44 @@ export default function Profile() {
       <h1>Profile</h1>
       {profileFromStore && (
         <div>
-          <input
+          {/* <input
             value={profileFromStore._id}
             className="form-control mb-2"
             disabled
-          />
+          /> */}
           <input
+            placeholder="username"
             value={profileFromStore.username || ""}
             onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, username: e.target.value }))}
             className="form-control mb-2"
           />
           <input
+            placeholder="password"
             value={profileFromStore.password || ""}
             onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, password: e.target.value }))}
             className="form-control mb-2"
           />
           <input
+            placeholder="first name"
             value={profileFromStore.firstName || ""}
             onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, firstName: e.target.value }))}
             className="form-control mb-2"
           />
           <input
+           placeholder="last name"
             value={profileFromStore.lastName || ""}
             onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, lastName: e.target.value }))}
             className="form-control mb-2"
           />
           <input
+          placeholder="dob"
             value={profileFromStore.dob || ""}
             onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, dob: e.target.value }))}
             type="date"
             className="form-control mb-2"
           />
           <input
+          placeholder="email"
             value={profileFromStore.email || ""}
             onChange={(e) => dispatch(setProfileUser({ ...profileFromStore, email: e.target.value }))}
             className="form-control mb-2"
