@@ -1,39 +1,83 @@
-export default function Assignments(){
-    return(
-        <div id="wd-assignments">
-            <input id="wd-search-assignment"
-                placeholder="Search for Assignments" />
-            <button id="wd-add-assignment-group">+ Group</button> <button id="wd-add-assignment">+ Assignment</button>
-            <h3 id="wd-assignments-title">
-            ASSIGNMENTS 40% of Total <button>+</button>
-            </h3>
-    
-            <ul id="wd-assignments">
-                <li className="wd-assignment-list-item" style={{margin: '0'}}>
-                    <a className="wd-assignment-link"href="#/Kanbas/Courses/1234/Assignments/123">
-                    A1-ENV + HTML
-                    </a>
-                </li>
-                <p style={{margin: '0'}}>Multiple Modules | <strong>Not available until</strong> May 6 at 12:00am|<br/> 
-                <strong>Due</strong> May 13 at 11:59pm | 100 pts</p>
-                <li className="wd-assignment-list-item">
-                    <a className="wd-assignment-link"href="#/Kanbas/Courses/1234/Assignments/123">
-                    A2-CSS+ BOOTSTRAP
-                    </a>
-                </li>
-                <p style={{margin: '0'}}>Multiple Modules | <strong>Not available until</strong> May 13 at 12:00am|<br/> 
-                <strong>Due</strong> May 20 at 11:59pm | 100 pts</p>
-                <li className="wd-assignment-list-item">
-                    <a className="wd-assignment-link"href="#/Kanbas/Courses/1234/Assignments/123">
-                    A3-JAVASCRIPT + REACT
-                    </a>
-                </li>
-                <p style={{margin: '0'}}>Multiple Modules | <strong>Not available until</strong> May 20 at 12:00am|<br/> 
-                <strong>Due</strong> May 27 at 11:59pm | 100 pts</p>
-            </ul>
+import AssignmentControls from "./AssignmentControls";
+import AssignControlButton from "./AssignControlButtons";
+import { BsGripVertical } from "react-icons/bs";
+import { MdAssignment } from "react-icons/md";
+import { IoMdArrowDropdown } from "react-icons/io";
+import { Link,useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setAssignment,deleteAssignment } from "./reducer";
+import GreenCheckmark from "./GreenCheckmark";
+import { IoEllipsisVertical } from "react-icons/io5";
+import * as client from "./client";
+import { useState, useEffect } from "react";
+
+export default function Assignments() {
+  const {cid} = useParams();
+  const dispatch = useDispatch();
+  const {assignments} = useSelector((state: any) => state.assignmentsReducer);
+  const mapAssign = assignments.filter((assignment: any) => assignment.course === cid);
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignment(assignments));
+  };
+  const removeAssignment = async (AssignmentId: string) => {
+    await client.deleteAssignment(AssignmentId);
+    dispatch(deleteAssignment(AssignmentId));
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+  return (
+    <div>
+      <div className="p-5">
+        <AssignmentControls cid={cid!}/>
+        <ul className="list-group rounded-0">
+          <li className="list-group-item p-0 mb-5 fs-5 border-gray">
+            <div className="wd-title p-3 ps-2 bg-secondary">
+              <BsGripVertical className="me-2 fs-3" />
+              <IoMdArrowDropdown className="me-1" />
+              ASSIGNMENTS
+              <div className="float-end me-2">
+      <GreenCheckmark />
+      <IoEllipsisVertical className="fs-4" />
+    </div>
             </div>
-            
-
-
-    );
+            <ul className="list-group rounded-0">
+              {mapAssign && mapAssign.map( (assign:any) => (
+                <li key={assign.id} className="list-group-item p-2 ps-1">
+                  <div className="row-layout">
+                    <div className="content-container">
+                      <BsGripVertical className="me-2 fs-3" />
+                      <MdAssignment className="me-2 fs-3" />
+                      <div>
+                        <Link
+                          className="wd-assignment-link"
+                          to={`/Kanbas/Courses/${cid}/Assignments/${assign.id}`}
+                        >
+                          {assign.id}
+                        </Link>
+                        <div>
+                          <p className="wd-assignment-due">
+                            <span className="fs-7 text-danger">Multiple Modules</span>
+                            <span className="mx-1">|</span>
+                            <span className="mt-1">
+                            <strong>Not available until</strong> {assign.available_from_date} at 12:00 am |
+                            </span>
+                            <span className="d-block mt-1">
+                              <strong>Due</strong> {assign.due_date} at 11:59 pm | {assign.points}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <AssignControlButton assignmentId= {assign.id}  deleteAssignment={(assignmentId) =>removeAssignment(assignmentId)}/>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
 }
