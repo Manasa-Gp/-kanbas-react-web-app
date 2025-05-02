@@ -12,6 +12,7 @@ export default function Signin() {
   const dispatch = useDispatch();
   const signin = async () => {
     try {
+      await new Promise(resolve => setTimeout(resolve, 20000));
       const currentUser = await client.signin(credentials);
       dispatch(setCurrentUser(currentUser));
       navigate("/Kanbas/Account/Profile");
