@@ -11,6 +11,7 @@ import Account from "./Account";
 import ProtectedRoute from "./Account/ProtectedRoute";
 import * as profile_client from "./Account/client";
 import AddCourse from "./Dashboard/AddCourse";
+import Session from "./Account/Session";
 
 
 export default function Kanbas() {
@@ -19,7 +20,7 @@ export default function Kanbas() {
 
   return (
     <Provider store={store}>
-
+<Session>
   <div id="wd-kanbas" className="h-100">
   <div className="d-flex h-100">
     <div className="d-none d-md-block bg-black" style = {{marginRight:"25px"}}>
@@ -42,6 +43,7 @@ export default function Kanbas() {
     </div>
   </div>
 </div>
+</Session>
 </Provider>
 );}
 
