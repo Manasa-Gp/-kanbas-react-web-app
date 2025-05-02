@@ -8,7 +8,7 @@ export default function Session({ children }: { children: any }) {
   const [pending, setPending] = useState(true);
   const [error, setError] = useState<string | null>(null); // For error handling
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const fetchProfile = async () => {
     try {
@@ -19,7 +19,7 @@ export default function Session({ children }: { children: any }) {
       console.error("Error fetching profile:", err);
       setError("Failed to fetch profile. Please log in again.");
       // Optionally redirect to login page if the error is related to authentication
-      history.push("/login"); // Replace with the correct route for login
+      navigate("/login");  // Replace with the correct route for login
     }
     setPending(false);
   };
