@@ -78,9 +78,12 @@ export const getUserEnrollments = async (username: string): Promise<string[]> =>
     const response = await axios.get(`${USERS_API}/${username}/enrollments`);
     return Array.isArray(response.data) ? response.data : [];
   } catch (error) {
-    handleError(error);  // Handle and log error
+    console.error("Error fetching user enrollments:", error);
+    // Return an empty array on error to match the expected return type
+    return [];
   }
 };
+
 
 // Enroll a user in a course
 export const enrollInCourse = async (username: string, courseId: string): Promise<void> => {
