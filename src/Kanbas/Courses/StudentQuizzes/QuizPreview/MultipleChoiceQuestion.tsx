@@ -15,7 +15,7 @@ function MultipleChoiceQuestion({ question, answer, options,title, onChange }: Q
 console.log("Multiple",answer)
   return (
     <div>
-    <p>{question}</p>
+    <h5>{question}</h5>
     {options && Object.entries(options).map(([key, choice], index) => (
       <div key={index} style={{ marginBottom: '8px' }}> {/* Adds space between options */}
         <label>

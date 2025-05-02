@@ -3,8 +3,8 @@ import { FaPlus } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { setQuizzes } from './reducer';
-import { findQuizzesForCourse,deleteQuizDetails,toggleQuizPublish } from "./client";
+import { setQuizzes, updateQuiz } from './reducer';
+import { findQuizzesForCourse,deleteQuizDetails,toggleQuizPublish, updateQuizDetails } from "./client";
 import {deleteQuiz} from "./reducer";
 import { MdArrowDropDown } from "react-icons/md";
 import { IoRocketOutline } from "react-icons/io5";
@@ -60,9 +60,33 @@ export default function Quizzes() {
   const handleAddQuiz = () => {
     navigate(`/Kanbas/Courses/${cid}/Quizzes/new`);
   };
+
+  // const calculateTotalPoints = async () => {
+  //   if (quizList.length > 0) {
+  //     const updatedQuizzes = quizList.map(async (quiz) => {
+  //       const totalPoints = quiz.questions.reduce((acc: number, question: any) => acc + (question.points || 0), 0);
+  //       const updatedQuiz = { ...quiz, points: totalPoints };
+  
+  //       // Update the specific quiz in the database
+  //       await updateQuizDetails(quiz._id as string, updatedQuiz);
+  //       dispatch(updateQuiz(updatedQuiz)); // Update the Redux store with the updated quiz
+  
+  //       return updatedQuiz;
+  //     });
+  
+  //     const resolvedQuizzes = await Promise.all(updatedQuizzes);
+  //     setQuizListLocal(resolvedQuizzes);
+  //     dispatch(setQuizzes(resolvedQuizzes));
+  //   }
+  // };
+
   useEffect(() => {
     loadQuizzes();
   }, [cid]);
+
+  // useEffect(() => {
+  //   calculateTotalPoints();
+  // }, [quizList]);
   const getAvailabilityStatus = (availableDate: any, availableUntilDate: any) => {
     
     const currentDate = new Date();
@@ -118,7 +142,7 @@ export default function Quizzes() {
               <h6>
           
                 <p className="wd-fg-color-red">
-                  <span className="wd-fg-color-black">{getAvailabilityStatus(q.availableFrom, q.availableUntil)} | <b>Due</b> {q.due} | {q.points} pts</span>
+                  <span className="wd-fg-color-black">{getAvailabilityStatus(q.availableFrom, q.availableUntil)} | <b>Due</b> {q.due} | {q.points} pts| {q.questions.length} questions</span>
                 </p>
               </h6>
             </div>

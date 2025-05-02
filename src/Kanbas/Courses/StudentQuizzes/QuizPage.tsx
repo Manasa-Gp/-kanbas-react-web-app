@@ -100,7 +100,7 @@ function QuizPage() {
         const updatedAttempts = [...localQuizAttempt.attempts];
         if (currentQuestion < quiz.questions.length) {
           const currentQuestionData = quiz.questions[currentQuestion];
-          if (currentQuestionData.type === 'FIB'  && updatedAttempts[currentQuestion].length === 0 ) {
+          if (currentQuestionData.type === 'FIB' ) {
             updatedAttempts[currentQuestion] = Array(currentQuestionData.answer.length).fill("");
             console.log(`[QuizPage] Updated attempts for question ${currentQuestion} with ${currentQuestionData.answer.length} empty strings:`, updatedAttempts[currentQuestion]);
             setLocalQuizAttempt((prev) => ({
@@ -171,8 +171,7 @@ function QuizPage() {
     console.log("score: " + score)
      const updatedAttempt = {
       ...localQuizAttempt,
-      score,
-      number:(localQuizAttempt.number ?? 1) > 0 ? (localQuizAttempt.number ?? 1) - 1 : 0,
+      score
     };
     setLocalQuizAttempt(updatedAttempt);
 
@@ -183,16 +182,7 @@ function QuizPage() {
       console.log("updated",updatedAttempt);
       await updateQuizAttempts(updatedAttempt._id, updatedAttempt);
       dispatch(updateAttempt(updatedAttempt));
-    } else {
-      // Create a new attempt if none exists
-      const newAttempt = await createQuizAttempt(updatedAttempt);
-      setLocalQuizAttempt((prev) => ({
-        ...prev,
-        _id: newAttempt._id,
-      }));
-      dispatch(addAttempt(newAttempt));
-    }
-
+    } 
     // Navigate to the review page
     navigate(`/Kanbas/Courses/${cid}/Quizzes/review/${qid}`);
   } catch (error: any) {

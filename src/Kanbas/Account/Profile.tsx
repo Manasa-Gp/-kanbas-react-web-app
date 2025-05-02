@@ -12,6 +12,7 @@ export default function Profile() {
   const fetchProfile = async () => {
     try {
       const account = await client.profile();
+      console.log("acc",account);
       dispatch(setProfileUser(account));
     } catch (err: any) {
       console.log("Profile error:", err);
@@ -44,7 +45,9 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    fetchProfile();
+    if(Object.keys(profileFromStore).length === 0){
+      fetchProfile();
+    }
   }, []);
 
   return (

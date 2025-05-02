@@ -7,6 +7,7 @@ import { setQuizzes } from '../Quizzes/reducer';
 import { findQuizzesForCourse,toggleQuizPublish } from "../Quizzes/client";
 import { MdArrowDropDown } from "react-icons/md";
 import { IoRocketOutline } from "react-icons/io5";
+import { getQuizAttemptBy } from './client';
 
 
 export default function StudentQuizzes() {
@@ -14,25 +15,42 @@ export default function StudentQuizzes() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {quizzes} = useSelector((state: any) => state.quizzesReducer);
+  const profileUser = useSelector((state: any) => state.accountReducer.profile); // Assuming you have a user profile in your state
   const quiz = quizzes.find((q: any) => q._id === qid && q.published);
   const [quizList, setQuizListLocal] = useState<any[]>([]);
+  const [quizAttempts, setQuizAttempts] = useState<{ [quizId: string]: any }>({});
 
 
 
 
 
   const loadQuizzes = async () => {
-     console.log('Loading sq');
-    if (cid) {
-      const AllQuiz = await findQuizzesForCourse(cid as string);
-      const quizzesData = AllQuiz.filter((q: any) => q.published);
-      setQuizListLocal(quizzesData);
-      dispatch(setQuizzes(quizzesData));
+    try {
+      if (cid) {
+        const AllQuiz = await findQuizzesForCourse(cid as string);
+        const quizzesData = AllQuiz.filter((q: any) => q.published);
+        setQuizListLocal(quizzesData);
+        dispatch(setQuizzes(quizzesData));
+  
+        // Load quiz attempts for the current user
+        const attemptsData: { [quizId: string]: any } = {};
+        for (let quiz of quizzesData) {
+          try {
+            const attempt = await getQuizAttemptBy(profileUser.username, cid, quiz._id);
+            attemptsData[quiz._id] = attempt || null; // Handle case where attempt does not exist
+          } catch (error) {
+            console.error(`Failed to load attempt for quiz ${quiz._id}:`, error);
+            attemptsData[quiz._id] = null; // Set to null if there's an error loading the attempt
+          }
+        }
+        setQuizAttempts(attemptsData);
+      }
+    } catch (error) {
+      console.error('Failed to load quizzes:', error);
+      // Optionally, set an error state here to show a message to the user
     }
   };
-  const handleAddQuiz = () => {
-    navigate(`/Kanbas/Courses/${cid}/Quizzes/new`);
-  };
+
   useEffect(() => {
     loadQuizzes();
   }, [cid]);
@@ -78,6 +96,9 @@ export default function StudentQuizzes() {
           
                 <p className="wd-fg-color-red">
                   <span className="wd-fg-color-black">{getAvailabilityStatus(q.availableFrom, q.availableUntil)} | <b>Due</b> {q.due} | {q.points} pts</span>
+                  {quizAttempts[q._id] && quizAttempts[q._id].score !== undefined ? (
+              <> | Score: {quizAttempts[q._id].score}</>
+            ) : null}
                 </p>
               </h6>
             </div>

@@ -30,6 +30,15 @@ export const deleteQuizDetails = async (quizId: string) => {
     return response.data;
 };
 
+export const updateQuizPoints = async (quizId:any, points:any) => {
+    try {
+        const response = await axios.put(`${QUIZZES_API}/${quizId}/points`, { points });
+        return response.data;
+    } catch (error:any) {
+        console.error(`Error updating quiz points: ${error}`);
+        throw new Error(error.response?.data?.error || error.message);
+    }
+};
 
 export const addQuestionToQuiz = async (quizId: any, question: any) => {
     const response = await axios.post(`${QUIZZES_API}/${quizId}/questions`, question);

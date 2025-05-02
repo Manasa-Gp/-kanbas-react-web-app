@@ -6,7 +6,7 @@ import { IoEllipsisVertical, IoRocketOutline } from "react-icons/io5";
 import { MdArrowDropDown } from "react-icons/md";
 import GreenCheckmark from './GreenCheckmark';
 import RedBan from './RedBan';
-import { addQuestionToQuiz } from './client';
+import { addQuestionToQuiz, updateQuizDetails, updateQuizPoints } from './client';
 import { setQuizzes, updateQuiz } from './reducer';
 interface Question {
     type: string;
@@ -53,21 +53,42 @@ export default function QuestionList() {
     return <div>Quiz not found</div>;
   }
 
+  const calculateTotalPoints = (questions: Question[]) => {
+    return questions.reduce((acc: number, question: Question) => acc + (question.points || 0), 0);
+  };
+
   const handleAddQuestion = async () => {
     try {
+      // Add the new question to the quiz
       await addQuestionToQuiz(qid, questionData);
+      
+      // Calculate total points after adding the new question
+      const updatedQuestions = [...quiz.questions, questionData];
+      const totalPoints = calculateTotalPoints(updatedQuestions);
+
       const updatedQuiz = {
         ...quiz,
-        questions: [...quiz.questions, questionData],
+        questions: updatedQuestions,
+        points: totalPoints, // Update the points in the quiz
       };
+
+      // Update the quiz in the database
+      await updateQuizPoints(qid as string, totalPoints);
+
+      // Update the Redux store with the updated quiz
       dispatch(updateQuiz(updatedQuiz));
 
+      // Optionally, update the local quizzes list in Redux
+      const updatedQuizzes = quizzes.map((q) =>
+        q._id === qid ? updatedQuiz : q
+      );
+      dispatch(setQuizzes(updatedQuizzes));
 
-      
     } catch (error) {
       console.error('Failed to save question:', error);
     }
   };
+
 
   return (
     <div id="wd-quizzes">

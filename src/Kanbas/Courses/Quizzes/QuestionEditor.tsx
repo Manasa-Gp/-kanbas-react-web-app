@@ -5,6 +5,7 @@ import MultipleChoiceEditor from './QuestionEditor/MultipleChoiceEditor';
 import TrueFalseEditor from './QuestionEditor/TrueFalseEditor';
 import FillInBlanksEditor from './QuestionEditor/FillInBlanksEditor';
 import { updateQuiz } from './reducer';
+import { updateQuizDetails, updateQuizPoints } from './client';
 
 export default function QuestionEditor() {
   const { cid, qid,quid } = useParams();
@@ -28,11 +29,11 @@ export default function QuestionEditor() {
     }
   }, [question]);
 
-  const handleSave = (questionData: any) => {
-    console.log("reach request")
-
+  const handleSave = async (questionData: any) => {
+    console.log("reach request");
+  
     if (quiz) {
-      console.log("reach request")
+      console.log("reach request");
       const updatedQuestions = [...quiz.questions];
       if (questionIndex >= 0) {
         // Update existing question
@@ -41,11 +42,23 @@ export default function QuestionEditor() {
         // Add new question
         updatedQuestions.push(questionData);
       }
-      
-      const updatedQuiz = { ...quiz, questions: updatedQuestions };
+  
+      // Calculate total points after adding/updating the question
+      const totalPoints = updatedQuestions.reduce((acc: number, question: any) => acc + (question.points || 0), 0);
+  
+      const updatedQuiz = { ...quiz, questions: updatedQuestions, points: totalPoints };
+  
       console.log(updatedQuiz);
+  
+      // Dispatch the updated quiz to the Redux store
       dispatch(updateQuiz(updatedQuiz));
+  
+      // Optionally, update the quiz details in the database
+      await updateQuizPoints(qid as string, totalPoints);
+
     }
+  
+    // Navigate back to the quiz editing page
     navigate(`/Kanbas/Courses/${cid}/Quizzes/edit/${qid}`);
   };
 

@@ -95,7 +95,7 @@ function QuizPreviewScreen() {
         const updatedAttempts = [...localQuizAttempt.attempts];
         if (currentQuestion < quiz.questions.length) {
           const currentQuestionData = quiz.questions[currentQuestion];
-          if (currentQuestionData.type === 'FIB' && updatedAttempts[currentQuestion].length === 0) {
+          if (currentQuestionData.type === 'FIB' && (updatedAttempts[currentQuestion].length === 0 || updatedAttempts[currentQuestion].length != currentQuestionData.answer.length)) {
             updatedAttempts[currentQuestion] = Array(currentQuestionData.answer.length).fill("");
             setLocalQuizAttempt((prev) => ({
               ...prev,

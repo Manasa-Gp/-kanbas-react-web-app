@@ -41,3 +41,4 @@ export const createQuizAttempt = async (quizAttempt:any) => {
       throw new Error(`Error retrieving quiz attempt: ${error.response?.data?.error || error.message}`);
     }
   };
+

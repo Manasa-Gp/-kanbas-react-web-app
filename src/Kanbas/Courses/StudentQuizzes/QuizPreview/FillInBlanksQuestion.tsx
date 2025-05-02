@@ -40,7 +40,8 @@ function FillInBlanksQuestion({ question, answer, onChange }: QuestionProps) {
 
   return (
     <div>
-      <h4>{question}</h4>
+    <h5>{question}</h5>
+
 
       {localAnswers.map((ans, index) => (
         <input

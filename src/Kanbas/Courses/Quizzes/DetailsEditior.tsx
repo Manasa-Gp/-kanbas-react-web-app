@@ -26,7 +26,7 @@ function QuizEditor() {
     for: quiz?.for || '',
     published: quiz?.published || false,
     quizType: quiz?.quizType || '',
-    points: quiz?.points || 10,
+    points: quiz?.points || 0,
     assignmentGroup: quiz?.assignmentGroup || '',
     shuffleAnswers: quiz?.shuffleAnswers || false,
     timeLimitCheckbox: quiz?.timeLimitCheckbox || true,
@@ -161,10 +161,14 @@ const PublishandSave = async () => {
                 </div>
                 <div className="my-3">
                   <label htmlFor="wd-access-code">Access Code</label>
-                  <input type="text" name="accessCode" onChange={handleSet} value={quizDetails.accessCode} className="form-control border form-border-gray me-2" placeholder="Enter Access Code" />
+                  <input type="text" name="accessCode" onChange={handleSet} value={quizDetails.accessCode} className="form-control border form-border-gray me-2"  />
+                </div>
+                <div className="my-3">
+                  <label htmlFor="wd-access-code">Points</label>
+                  <input type="text" name="points" onChange={handleSet} value={quizDetails.points} className="form-control border form-border-gray me-2" style={{ width: '80px' }}  />
                 </div>
                 <label htmlFor="wd-access-code">How Many Attempts</label>
-                  <input type="text" name="howManyAttempts" onChange={handleSet} value={quizDetails.howManyAttempts} className="form-control border form-border-gray me-2" placeholder="Enter Access Code" />
+                  <input type="text" name="howManyAttempts" onChange={handleSet} value={quizDetails.howManyAttempts} className="form-control border form-border-gray me-2"  />
                 <div className="my-3">
                   <input type="checkbox" name="oneQuestionAtATime" onChange={handleSet} checked={quizDetails.oneQuestionAtATime} className="form-check-input me-3 border form-border-gray" id="wd-one-question-at-a-time" />
                   <label htmlFor="wd-one-question-at-a-time">One Question at a Time</label>

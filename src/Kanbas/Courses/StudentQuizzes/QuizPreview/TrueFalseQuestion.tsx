@@ -14,9 +14,8 @@ function TrueFalseQuestion({ question, answer,options,title, onChange }: Questio
 
   return (
     <div>
-      <h4>{question}</h4>
+      <h5>{question}</h5>
       <label>
-              
       {options && Object.entries(options).map(([key, choice], index) => (
             <div key={index} style={{ marginBottom: '8px' }}> 
         <label >
