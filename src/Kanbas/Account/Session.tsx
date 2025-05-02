@@ -1,7 +1,7 @@
-import * as client from "./client";
 import { useEffect, useState } from "react";
-import { setCurrentUser } from "./reducer";
 import { useDispatch } from "react-redux";
+import { setCurrentUser } from "./reducer";  // Assuming this sets the user state
+import * as client from "./client";
 import { useNavigate } from "react-router-dom";
 
 export default function Session({ children }: { children: any }) {
@@ -10,16 +10,15 @@ export default function Session({ children }: { children: any }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Fetch the user profile and store in Redux
   const fetchProfile = async () => {
     try {
-      console.log("Fetching session...");
       const currentUser = await client.profile();
-      dispatch(setCurrentUser(currentUser));
+      dispatch(setCurrentUser(currentUser)); // Store the user data in Redux
     } catch (err: any) {
       console.error("Error fetching profile:", err);
       setError("Failed to fetch profile. Please log in again.");
-      // Optionally redirect to login page if the error is related to authentication
-      navigate("/login");  // Replace with the correct route for login
+      navigate("/signin");  // Redirect to sign-in page if error occurs
     }
     setPending(false);
   };
@@ -29,12 +28,12 @@ export default function Session({ children }: { children: any }) {
   }, []);
 
   if (pending) {
-    return <div>Loading...</div>; // A loading state while fetching profile
+    return <div>Loading...</div>; // Show loading state while session is being fetched
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message if any error occurs
+    return <div>{error}</div>; // Show error if there is one
   }
 
-  return children; // If everything is successful, render children
+  return children; // If session is valid, render children
 }
