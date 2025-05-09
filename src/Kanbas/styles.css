@@ -1,0 +1,108 @@
+body   {  margin: 0;  padding: 0;  }
+body * {  font-family: Arial, Helvetica, sans-serif;  }
+.btn-secondary {
+    --bs-btn-color: #000;
+    --bs-btn-bg: #c7cdd1;
+    --bs-btn-border-color: #c7cdd1;
+    --bs-btn-hover-color: #fff;
+  }
+  .bg-secondary {
+    background-color: #c7cdd1 !important
+  }
+  .border-gray {
+    border: 1px solid gray;
+  }
+
+  .form-check-input[type="checkbox"] {
+    margin-right: 4px !important;  
+}
+.form-border-gray {
+    border-color: rgb(176, 176, 176)!important;  
+}
+
+
+
+  icon-assignment{
+    font-style: normal;
+    content: "";
+}
+
+.wd-assignment-link {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;  /* Specify the font family */
+    font-weight: bold;
+    font-size: 16px;
+    display: inline-block;
+    line-height: 1;
+    text-decoration: none;  /* Optional: Removes underline from link */
+    color: #2D3B45;  /* Optional: Inherits the color from its parent */
+}
+
+.wd-assignment-due {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;   /* Specify the font family */
+    font-size: 12px;
+    display: inline-block;
+    line-height: 1;
+    text-decoration: none;  /* Optional: Removes underline from link */
+    color: #4C5860;  /* Optional: Inherits the color from its parent */
+
+}
+
+.row-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content-container {
+    display: flex;
+    align-items: center;
+}
+
+.rounded-rectangle-mini {
+    width: 100px;      
+    height: 30px;       
+    background-color: #dcddde;
+    border-radius: 15px; 
+    display: flex;      
+    justify-content: center;
+    align-items: center;
+    color: rgb(12, 12, 12);       
+    font-family: Arial, sans-serif; 
+    font-size: 14px; 
+    border-color: black;   
+}
+
+.square-button {
+
+    border-radius: 3px;
+    border: 1px solid;
+    font-size: 16px;
+    font-family:  "Lato Extended", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif
+   }
+
+.grayed {
+    border-color: #c7cdd1;
+    color: #2d3b45;
+    background-color: #F5F5F5;
+}
+.red {
+    border-color: #ff0000;
+    color: #ffffff;
+    background-color: #d41b2c;
+}
+
+
+.icon-large {
+  font-size: 20px; /* Adjust the size as needed */
+}
+.font-styler {
+font-family:  "Lato Extended", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 15px;
+}
+
+.course-font-style {
+  font-family:  "Lato Extended", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: large;
+}
+
